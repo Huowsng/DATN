@@ -120,10 +120,10 @@ function DetailProduct() {
                     </p>
                     <div className="underline"></div>
                     <br />
-                    <span>{type?.price}￥</span>&nbsp;&nbsp;&nbsp;&nbsp;アマウント: <span>{type?.amount}</span>
+                    <span>{type?.price} VND</span>&nbsp;&nbsp;&nbsp;&nbsp;Số lượng: <span>{type?.amount}</span>
                     <p>{detailProduct.description}</p>
                     <b />
-                    <label htmlFor="types">タイプを選択する:</label>
+                    <label htmlFor="types">Loại:</label>
                     <select onChange={checktype} name="type" id="type">
                         {detailProduct.types.map((type) => (
                             <option key={type._id} value={type._id}>
@@ -132,13 +132,13 @@ function DetailProduct() {
                         ))}
                     </select>
                     <Link to={`/detail/${detailProduct._id}`} className="cart" onClick={handleAddItem}>
-                        カートに追加
+                        Thêm vào giỏ hàng
                     </Link>
                 </div>
             </div>
             <br />
             <div className="description-detail">
-                <h1>説明</h1>
+                <h1>Đánh giá</h1>
                 <hr />
                 <p>{detailProduct.description}</p>
             </div>
@@ -146,7 +146,7 @@ function DetailProduct() {
             <br />
             <div className="product-info-tabs">
                 <div className="header-feedback">
-                    <h3> 製品レビュー ({feedback.length})</h3>
+                    <h3> xem xét sản phẩm ({feedback.length})</h3>
                     <div className="underline2"></div>
                 </div>
                 <div className="feedback-item">
@@ -158,7 +158,7 @@ function DetailProduct() {
             </div>
             <br />
             <div>
-                <h2 className="h2">関連製品</h2>
+                <h2 className="h2">Sản phẩm liên quan</h2>
                 <div className="products">
                     {products.map((product) => {
                         return product.category === detailProduct.category ? (

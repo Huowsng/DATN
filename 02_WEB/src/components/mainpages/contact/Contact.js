@@ -15,7 +15,7 @@ function Contact() {
                 <div className={cx('contactInfoItem')}>
                     <FontAwesomeIcon icon={faLocationDot} className={cx('contactIcon')} />
                     <div className={cx('contact-ss')}>
-                        <strong>アドレス</strong>
+                        <strong>Email</strong>
                         <p>21 Trương Văn Đa, Liên Chiểu, Đà Nẵng </p>
                     </div>
                 </div>

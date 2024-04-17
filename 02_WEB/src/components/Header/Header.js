@@ -73,27 +73,27 @@ function Header() {
         );
     };
 
-    // const loggedRouter = () => {
-    //     return (
-    //         <>
-    //             <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-    //                 <Link to="/history">
-    //                     <AiOutlineHistory />
-    //                 </Link>
-    //             </li>
-    //             <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-    //                 <Link to="/infor">
-    //                     <BiUser />
-    //                 </Link>
-    //             </li>
-    //             <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-    //                 <Link to="/" onClick={logoutUser}>
-    //                     <HiOutlineLogout />
-    //                 </Link>
-    //             </li>
-    //         </>
-    //     );
-    // };
+    const loggedRouter = () => {
+        return (
+            <>
+                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                    <Link to="/history">
+                        <AiOutlineHistory />
+                    </Link>
+                </li>
+                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                    <Link to="/infor">
+                        <BiUser />
+                    </Link>
+                </li>
+                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                    <Link to="/" onClick={logoutUser}>
+                        <HiOutlineLogout />
+                    </Link>
+                </li>
+            </>
+        );
+    };
 
     const styleMenu = {
         left: menu ? 0 : '-60%',
@@ -121,7 +121,7 @@ function Header() {
 
             <ul style={styleMenu}>
                 <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                    <Link to="/">{'ホーム'}</Link>
+                    <Link to="/">{'Trang chủ'}</Link>
                 </li>
                 <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
                     <Link to="/products">{isAdmin ? 'アイテム' : 'アイテム'}</Link>

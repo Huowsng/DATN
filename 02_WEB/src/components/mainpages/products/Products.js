@@ -72,7 +72,7 @@ function Products() {
             <div className="header-information">
                 <p className="header-label">店</p>
                 <div className="header-direction">
-                    <Link to="/">ホーム /</Link>
+                    <Link to="/">Trang chủ /</Link>
                     <Link to="/products">店</Link>
                 </div>
             </div>

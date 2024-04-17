@@ -31,7 +31,7 @@ function UserInfo() {
                     <div className="header-information">
                         <p className="header-label">Admin</p>
                         <div className="header-direction">
-                            <Link to="/">ホーム /</Link>
+                            <Link to="/">Trang chủ /</Link>
                             <Link to="/infor">マネージャー</Link>
                         </div>
                     </div>
@@ -39,14 +39,14 @@ function UserInfo() {
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/profile">個人情報</Link>
+                                <Link to="/profile">Thông tin cá nhân</Link>
                             </p>
                         </div>
                     </div>
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/history">すべての注文</Link>
+                                <Link to="/history">すべてのĐơn hàng</Link>
                             </p>
                         </div>
                     </div>
@@ -69,7 +69,7 @@ function UserInfo() {
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
                                 <Link to="/" onClick={logoutUser}>
-                                    ログアウト
+                                    Đăng xuất
                                 </Link>
                             </p>
                         </div>
@@ -78,24 +78,24 @@ function UserInfo() {
             ) : (
                 <div className="container-information">
                     <div className="header-information">
-                        <p className="header-label">アカウント詳細</p>
+                        <p className="header-label">Chi tiết tài khoản</p>
                         <div className="header-direction">
-                            <Link to="/">ホーム /</Link>
-                            <Link to="/infor">アカウント</Link>
+                            <Link to="/">Trang chủ /</Link>
+                            <Link to="/infor">Tài khoản</Link>
                         </div>
                     </div>
 
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/profile">個人情報</Link>
+                                <Link to="/profile">Thông tin cá nhân</Link>
                             </p>
                         </div>
                     </div>
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/cart">カート</Link>
+                                <Link to="/cart">Giỏ hàng</Link>
                             </p>
                         </div>
                     </div>
@@ -103,7 +103,7 @@ function UserInfo() {
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
                                 <Link to="/" onClick={logoutUser}>
-                                    ログアウト
+                                    Đăng xuất
                                 </Link>
                             </p>
                         </div>

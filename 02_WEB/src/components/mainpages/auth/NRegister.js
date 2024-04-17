@@ -45,7 +45,7 @@ function NRegister() {
                 <h2>登録する</h2>
                 <div className={cx('input-info')}>
                     <div className={cx('info-name')}>
-                        <p className={cx('info-label')}>名前</p>
+                        <p className={cx('info-label')}>Tên</p>
                         <TiStarburst color="red" fontSize="7pt" />
                     </div>
                     <input type="text" name="name" required value={user.name} onChange={onChangeInput} />
@@ -59,14 +59,14 @@ function NRegister() {
                 </div> */}
                 <div className={cx('input-info')}>
                     <div className={cx('info-name')}>
-                        <p className={cx('info-label')}>電話番号</p>
+                        <p className={cx('info-label')}>Số điện thoại</p>
                         <TiStarburst color="red" fontSize="7pt" />
                     </div>
                     <input type="tel" name="phone" required value={user.phone} onChange={onChangeInput} />
                 </div>
                 <div className={cx('input-info')}>
                     <div className={cx('info-name')}>
-                        <p className={cx('info-label')}>メールアドレス</p>
+                        <p className={cx('info-label')}>Email</p>
                         <TiStarburst color="red" fontSize="7pt" />
                     </div>
                     <input type="email" name="email" required value={user.email} onChange={onChangeInput} />

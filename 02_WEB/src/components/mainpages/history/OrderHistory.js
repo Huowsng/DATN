@@ -51,18 +51,18 @@ function OrderHistory() {
 
     return (
         <div className="history-page">
-            <h2>{isAdmin ? 'すべての注文' : 'My Order'}</h2>
+            <h2>{isAdmin ? 'すべてのĐơn hàng' : 'My Order'}</h2>
 
-            <h4>{history.length} 注文</h4>
+            <h4>{history.length} Đơn hàng</h4>
             {isAdmin ? (
                 <>
                     <table>
                         <thead>
                             <tr>
                                 <th>ID Thanh Toán</th>
-                                <th>購入日</th>
-                                <th>アドレス</th>
-                                <th>電話番号</th>
+                                <th>Ngày mua</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
                                 <th>ステータス</th>
                                 <th>デリバリー</th>
                                 <th>詳細</th>
@@ -81,9 +81,9 @@ function OrderHistory() {
                         <thead>
                             <tr>
                                 {/* <th>Item</th> */}
-                                <th>購入日</th>
-                                <th>アドレス</th>
-                                <th>電話番号</th>
+                                <th>Ngày mua</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
                                 <th>Status</th>
                                 <th>Delivery</th>
                                 <th></th>

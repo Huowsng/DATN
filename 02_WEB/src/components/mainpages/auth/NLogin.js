@@ -47,7 +47,7 @@ function NLogin() {
                 <h2>ログイン</h2>
                 <div className={cx('input-info')}>
                     <div className={cx('info-name')}>
-                        <p className={cx('info-label')}>メールアドレス</p>
+                        <p className={cx('info-label')}>Email</p>
                         <TiStarburst color="red" fontSize="7pt" />
                     </div>
                     <input type="email" name="email" required value={user.email} onChange={onChangeInput} />

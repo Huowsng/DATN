@@ -35,7 +35,7 @@ const Profile = () => {
                 <form>
                     <div className="name-information">
                         <div className="firstname-information">
-                            <label className="label-information">名前</label>
+                            <label className="label-information">Tên</label>
                             <input
                                 type="text"
                                 id="fname"
@@ -45,13 +45,13 @@ const Profile = () => {
                             />
                         </div>
                     </div>
-                    <label className="label-information">電話番号</label>
+                    <label className="label-information">Số điện thoại</label>
                     <input type="text" id="phone" name="phonenumber" value={phone} onChange={handlePhoneChange} />
                     {
                         //<label className="label-information">Address*</label>
                         //<input type="text" id="address" name="address" value={address} onChange={handleAddressChange} />
                     }
-                    <label className="label-information">メールアドレス</label>
+                    <label className="label-information">=Email</label>
                     <input type="text" id="email" name="email" value={email} onChange={handleEmailChange} />
                     <button
                         type="submit"

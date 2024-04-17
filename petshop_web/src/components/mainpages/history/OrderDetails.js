@@ -38,9 +38,9 @@ function OrderDetails() {
                     <table>
                         <thead>
                             <tr>
-                                <th>名前</th>
-                                <th>アドレス</th>
-                                <th>電話番号</th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
                                 <th>ステータス</th>
                             </tr>
                         </thead>

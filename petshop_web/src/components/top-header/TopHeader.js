@@ -44,7 +44,7 @@ export const TopHeader = () => {
     const loggedRouter = () => {
         return (
             <div className={cx('row2-topheader')}>
-                <p className={cx('userName_label')}>{user?.name} さん</p>
+                <p className={cx('userName_label')}>{user?.name} </p>
                 <ul className={cx('list-topheader')}>
                     <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
                         <Link to="/history">

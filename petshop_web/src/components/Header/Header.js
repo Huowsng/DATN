@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { GlobalState } from '../../GlobalState';
-import Menu from './icon/menu.svg';
+import Menu from '../Header/icon/icons8-menu.svg';
 import Close from './icon/close.svg';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -43,15 +43,15 @@ function Header() {
         return (
             <>
                 <div className="btn btn-primary" onClick={ToggleSidebar}>
-                    <i className="fa fa-bars"></i>
+                    <img src={Menu} alt="" width="30" />
                     <div className={`sidebar ${isOpen === true ? 'active' : ''}`}>
                         <div className="sd-body">
                             <ul>
                                 <li>
-                                    <Link to="/create_product">クリエート プロダクト</Link>
+                                    <Link to="/create_product">Add Product</Link>
                                 </li>
                                 <li>
-                                    <Link to="/category">クリエート カテゴリー</Link>
+                                    <Link to="/category">Add Category</Link>
                                 </li>
                                 {/* <li>
                                     <Link to="/revenue">Revenue</Link>
@@ -73,79 +73,56 @@ function Header() {
         );
     };
 
-    // const loggedRouter = () => {
-    //     return (
-    //         <>
-    //             <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-    //                 <Link to="/history">
-    //                     <AiOutlineHistory />
-    //                 </Link>
-    //             </li>
-    //             <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-    //                 <Link to="/infor">
-    //                     <BiUser />
-    //                 </Link>
-    //             </li>
-    //             <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-    //                 <Link to="/" onClick={logoutUser}>
-    //                     <HiOutlineLogout />
-    //                 </Link>
-    //             </li>
-    //         </>
-    //     );
-    // };
+    const loggedRouter = () => {
+        return (
+            <>
+                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                    <Link to="/history">
+                        <AiOutlineHistory />
+                    </Link>
+                </li>
+                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                    <Link to="/infor">
+                        <BiUser />
+                    </Link>
+                </li>
+                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                    <Link to="/" onClick={logoutUser}>
+                        <HiOutlineLogout />
+                    </Link>
+                </li>
+            </>
+        );
+    };
 
     const styleMenu = {
-        left: menu ? 0 : '-60%',
+        left: menu ? 0 : '-50%',
     };
 
     return (
         <header>
-            <div className="menu" onClick={() => setMenu(!menu)}>
-                <img src={Menu} alt="" width="30" />
-            </div>
-
-            {/* logo */}
-            {/* <div className="logo">
-        <h1>
-          <Link to="/">
-            {isAdmin ? (
-              //
-              'Admin'
-            ) : (
-              <img src={Logo} alt="PetFirst" />
-            )}
-          </Link>
-        </h1>
-      </div> */}
-
-            <ul style={styleMenu}>
-                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                    <Link to="/">{'Trang chủ'}</Link>
-                </li>
-                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                    <Link to="/products">{isAdmin ? 'Tìm kiếm' : 'Tìm kiếm'}</Link>
-                </li>
-                {/* {isAdmin ? (
+            <ul style={styleMenu} className="menu-container">
+                <div className="left-section">
+                    {isAdmin && adminRouter(
+                        <div onClick={() => setMenu(!menu)}>
+                            <img src={menu} alt="" width="500" className="menu" />
+                        </div>
+                    )}
+                </div>
+                <ul style={styleMenu} className="middle-section">
                     <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                        <Link to="/revenue">{'Revenue'}</Link>
+                        <Link to="/">{'Trang chủ'}</Link>
                     </li>
-                ) : (
                     <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                        <Link to="/ranking">{'Ranking'}</Link>
+                        <Link to="/products">{isAdmin ? 'Tìm kiếm' : 'Tìm kiếm'}</Link>
                     </li>
-                )} */}
-                {/* <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                    <Link to="/ranking">{isAdmin ? 'Revenue' : 'Ranking'}</Link>
-                </li> */}
-                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                    <Link to="/testchat">{'Liên hệ'}</Link>
-                </li>
-
-                {isAdmin && adminRouter()}
-                <li onClick={() => setMenu(!menu)}>
-                    <img src={Close} alt="" width="300" className="menu" />
-                </li>
+                    <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                        <Link to="/testchat">{'Liên hệ'}</Link>
+                    </li>
+                </ul>
+                <div onMouseEnter={onEnter} onMouseLeave={onLeave} className="right-section ">
+                    <Link to="/">{'Đăng tin'}</Link>
+                </div>
             </ul>
         </header>
     );

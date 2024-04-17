@@ -5,7 +5,6 @@ import { TiStarburst } from 'react-icons/ti';
 import classNames from 'classnames/bind';
 import { MdLogin } from 'react-icons/md';
 import { BsFacebook } from 'react-icons/bs';
-import Logo from '../../headers/icon/logo-white-1.svg';
 import styles from './NLogin.module.scss';
 
 const cx = classNames.bind(styles);

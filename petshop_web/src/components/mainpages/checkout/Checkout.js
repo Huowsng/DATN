@@ -121,7 +121,7 @@ const Checkout = () => {
               name="address"
               placeholder="example:!!  Robert Robertson,  1234 NW Bobcat Lane,  St. Robert "
             />
-            <label>電話番号</label>
+            <label>Số điện thoại</label>
             <input
               type="text"
               id="phone"
@@ -157,7 +157,7 @@ const Checkout = () => {
                                         placeholder="example:!!  Robert Robertson,  1234 NW Bobcat Lane,  St. Robert "
                                     />
                                     <label forhtml="city">
-                                        <i className="fa fa-institution"></i> 電話番号
+                                        <i className="fa fa-institution"></i> Số điện thoại
                                     </label>
                                     <input
                                         type="text"

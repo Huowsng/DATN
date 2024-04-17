@@ -62,7 +62,7 @@ const Feedback = (feedback) => {
     return (
         <>
             <div className="padding-feedback">
-                <span className="heading-feedback">ユーザー評価</span>
+                <span className="heading-feedback">Đánh giá của người dùng</span>
                 <span>{feedbacks.rating}</span>
                 <p>
                     <Rating
@@ -71,14 +71,14 @@ const Feedback = (feedback) => {
                         fullSymbol={<FaStar color={colors.orange} className="icon" />}
                         readonly
                     />
-                    &nbsp;{feedbacks.length} 件のレビューに基づく平均。
+                    &nbsp;{feedbacks.length} Trung bình dựa trên đánh giá。
                 </p>
                 {/* commnet */}
                 <hr style={{ border: '3px solid #f1f1f1' }} />
             </div>
             <div className="row-feedback padding-feedback">
                 <div className="side-feedback">
-                    <div>5 星</div>
+                    <div>5 Sao</div>
                 </div>
                 <div className="middle-feedback">
                     <div className="bar-container-feedback">
@@ -89,7 +89,7 @@ const Feedback = (feedback) => {
                     <div>{start5}</div>
                 </div>
                 <div className="side-feedback">
-                    <div>4 星</div>
+                    <div>4 Sao</div>
                 </div>
                 <div className="middle-feedback">
                     <div className="bar-container-feedback">
@@ -100,7 +100,7 @@ const Feedback = (feedback) => {
                     <div>{start4}</div>
                 </div>
                 <div className="side-feedback">
-                    <div>3 星</div>
+                    <div>3 Sao</div>
                 </div>
                 <div className="middle-feedback">
                     <div className="bar-container-feedback">
@@ -111,7 +111,7 @@ const Feedback = (feedback) => {
                     <div>{start3}</div>
                 </div>
                 <div className="side-feedback">
-                    <div>2 星</div>
+                    <div>2 Sao</div>
                 </div>
                 <div className="middle-feedback">
                     <div className="bar-container-feedback">
@@ -122,7 +122,7 @@ const Feedback = (feedback) => {
                     <div>{start2}</div>
                 </div>
                 <div className="side-feedback">
-                    <div>1 星</div>
+                    <div>1 Sao</div>
                 </div>
                 <div className="middle-feedback">
                     <div className="bar-container-feedback">

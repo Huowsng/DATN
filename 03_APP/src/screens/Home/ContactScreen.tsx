@@ -25,7 +25,7 @@ const ContactScreen = () => {
                     <View style={styles.contactSs}>
                     <TouchableOpacity style={styles.contactButton}>
                     <AntDesign name="enviroment" style={styles.contactIcon} />
-                        <Text style={styles.text}>Địa Chỉ {'\n'}62/4 Trần Bình Trọng, Phường 8, TP. Vũng Tàu </Text>
+                        <Text style={styles.text}>Email {'\n'}62/4 Trần Bình Trọng, Phường 8, TP. Vũng Tàu </Text>
                     </TouchableOpacity>                   
                     </View>
                 </View>

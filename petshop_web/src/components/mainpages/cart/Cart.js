@@ -138,7 +138,7 @@ function Cart() {
                 ))}
 
                 <div className="total">
-                    <h3>全部: ￥ {total}</h3>
+                    <h3>Giá: VND {total}</h3>
                     <PaypalButton total={total} tranSuccess={tranSuccess} />
                     <Link
                         to="/checkout"

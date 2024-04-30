@@ -116,7 +116,7 @@ function DetailProduct() {
                             fullSymbol={<FaStar color={colors.orange} className="icon" />}
                             readonly
                         />
-                        &nbsp;{feedback.length} レビュー
+                        &nbsp;{feedback.length} Đánh giá
                     </p>
                     <div className="underline"></div>
                     <br />

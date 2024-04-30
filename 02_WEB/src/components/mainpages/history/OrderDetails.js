@@ -41,7 +41,7 @@ function OrderDetails() {
                                 <th>Tên</th>
                                 <th>Email</th>
                                 <th>Số điện thoại</th>
-                                <th>ステータス</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,11 +57,11 @@ function OrderDetails() {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>プロダックト</th>
-                                <th>数量</th>
-                                <th>値段</th>
-                                <th>種類</th>
-                                <th>レビュー</th>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Loại</th>
+                                <th>Giá</th>
+                                <th>Đánh giá</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,11 +76,11 @@ function OrderDetails() {
                                     <td>$ {item.price}</td>
                                     {isAdmin ? (
                                         <td>
-                                            <Link to={`/detail/${item.product_id}`}>ユーザーレビューを見る</Link>
+                                            <Link to={`/detail/${item.product_id}`}>Xem đánh giá của người dùng</Link>
                                         </td>
                                     ) : (
                                         <td>
-                                            <Link to={`/comment/${item.product_id}`}>レビュー</Link>
+                                            <Link to={`/comment/${item.product_id}`}>Đánh giá</Link>
                                         </td>
                                     )}
                                 </tr>
@@ -93,11 +93,11 @@ function OrderDetails() {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>プロダックト</th>
-                            <th>数量</th>
-                            <th>値段</th>
-                            <th>種類</th>
-                            <th>レビュー</th>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Loại</th>
+                            <th>Giá</th>
+                            <th>Đánh giá</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,11 +112,11 @@ function OrderDetails() {
                                 <td>$ {item.price}</td>
                                 {isAdmin ? (
                                     <td>
-                                        <Link to={`/detail/${item.product_id}`}>ユーザーレビューを見る</Link>
+                                        <Link to={`/detail/${item.product_id}`}>Xem đánh giá của người dùng</Link>
                                     </td>
                                 ) : (
                                     <td>
-                                        <Link to={`/comment/${item.product_id}`}>レビュー</Link>
+                                        <Link to={`/comment/${item.product_id}`}>Đánh giá</Link>
                                     </td>
                                 )}
                             </tr>

@@ -46,6 +46,7 @@ import { TopHeader } from '../top-header/TopHeader';
 import Footer from '../footer/Footer';
 //testchat
 import TestChat from './contact/TestChat';
+import Postnews from './postnews/postnews';
 function Pages() {
     const state = useContext(GlobalState);
     const [isLogged] = state.userAPI.isLogged;
@@ -69,7 +70,7 @@ function Pages() {
             <Route path="products" element={<Products />} />
             <Route path="contact" element={<Contact />} />
             <Route path="testchat" element={<TestChat />} />
-
+            <Route path="dang-tin" element={<Postnews />} />  
             <Route path="detail/:id" element={<DetailProduct />} />
 
             <Route path="processed" element={isLogged ? <Processed /> : <Loading />} />

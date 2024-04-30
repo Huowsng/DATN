@@ -76,7 +76,7 @@ const ItemCorrect = (items) => {
                     </button>
                 </td>
                 <td>
-                    <Link to={`/history/${item._id}`}>見る</Link>
+                    <Link to={`/history/${item._id}`}>Xem</Link>
                 </td>
             </tr>
         </>

@@ -57,10 +57,10 @@ function Header() {
                         <div className="sd-body">
                             <ul>
                                 <li>
-                                    <Link to="/create_product">クリエート プロダクト</Link>
+                                    <Link to="/create_product">Thêm sản phẩm</Link>
                                 </li>
                                 <li>
-                                    <Link to="/category">クリエートカテゴリ</Link>
+                                    <Link to="/category">Thêm Category</Link>
                                 </li>
                                 {/* <li>
                   <Link to="/revenue">Revenue</Link>

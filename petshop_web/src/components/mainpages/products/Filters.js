@@ -21,7 +21,7 @@ function Filters() {
             <div className="row">
                 {/* <span>Lọc: </span> */}
                 <select name="category" value={category} onChange={handleCategory}>
-                    <option value="">Tất cả danh mục</option>
+                    <option value="">Tất cả  danh mục</option>
                     {categories.map((category) => (
                         <option value={'category=' + category._id} key={category._id}>
                             {category.name}

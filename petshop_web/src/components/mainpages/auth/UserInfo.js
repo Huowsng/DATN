@@ -32,7 +32,7 @@ function UserInfo() {
                         <p className="header-label">Admin</p>
                         <div className="header-direction">
                             <Link to="/">Trang chủ /</Link>
-                            <Link to="/infor">マネージャー</Link>
+                            <Link to="/infor">Admin</Link>
                         </div>
                     </div>
 
@@ -46,7 +46,7 @@ function UserInfo() {
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/history">すべてのĐơn hàng</Link>
+                                <Link to="/history">Tất cả Đơn hàng</Link>
                             </p>
                         </div>
                     </div>
@@ -54,14 +54,14 @@ function UserInfo() {
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/create_product">クリエート プロダクト</Link>
+                                <Link to="/create_product">Thêm sản phẩm</Link>
                             </p>
                         </div>
                     </div>
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/category">クリエートカテゴリ</Link>
+                                <Link to="/category">Thêm Category</Link>
                             </p>
                         </div>
                     </div>

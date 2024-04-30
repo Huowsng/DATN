@@ -40,11 +40,11 @@ function Filters() {
             <div className="row sort">
                 {/* <span>Xếp theo: </span> */}
                 <select value={sort} onChange={(e) => setSort(e.target.value)}>
-                    <option value="">新しいプロダックト</option>
-                    <option value="sort=oldest">古いプロダックト</option>
-                    <option value="sort=-sold"> プロダックト</option>
-                    <option value="sort=-price">値段: 高い-安い</option>
-                    <option value="sort=price">値段:安い-高い</option>
+                    <option value="">新しいSản phẩm</option>
+                    <option value="sort=oldest">古いSản phẩm</option>
+                    <option value="sort=-sold"> Sản phẩm</option>
+                    <option value="sort=-price">Loại: 高い-安い</option>
+                    <option value="sort=price">Loại:安い-高い</option>
                 </select>
             </div>
         </div>

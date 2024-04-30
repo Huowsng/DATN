@@ -12,13 +12,16 @@ import { AiOutlineHistory, AiOutlineHeart } from 'react-icons/ai';
 import { gsap } from 'gsap';
 // import { Route, Router } from 'react-router-dom';
 
-function Header() {
+function Header({hideFooter}) {
     const state = useContext(GlobalState);
     const [isLogged] = state.userAPI.isLogged;
     const [isAdmin] = state.userAPI.isAdmin;
     const [cart] = state.userAPI.cart;
     const [menu, setMenu] = useState(false);
-
+    
+    const hideFooterOnClick = () => {
+        hideFooter(); // Gọi hàm hideFooter từ prop khi click vào phần tử muốn ẩn footer
+    };
     const onEnter = ({ currentTarget }) => {
         gsap.to(currentTarget, {
             repeatDelay: 1,
@@ -114,14 +117,14 @@ function Header() {
                         <Link to="/">{'Trang chủ'}</Link>
                     </li>
                     <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                        <Link to="/products">{isAdmin ? 'Tìm kiếm' : 'Tìm kiếm'}</Link>
+                        <Link to="/products">{isAdmin ? 'Cửa hàng' : 'Cửa hàng'}</Link>
                     </li>
                     <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
                         <Link to="/testchat">{'Liên hệ'}</Link>
                     </li>
                 </ul>
                 <div onMouseEnter={onEnter} onMouseLeave={onLeave} className="right-section ">
-                    <Link to="/">{'Đăng tin'}</Link>
+                <Link to="/dang-tin" >{isAdmin ? 'Postnews' : 'Đăng tin'}</Link>
                 </div>
             </ul>
         </header>

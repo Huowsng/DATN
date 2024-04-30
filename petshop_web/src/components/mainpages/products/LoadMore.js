@@ -8,7 +8,7 @@ function LoadMore() {
 
     return (
         <div className="load_more">
-            {result < page * 9 ? '' : <button onClick={() => setPage(page + 1)}>すべて見る</button>}
+            {result < page * 9 ? '' : <button onClick={() => setPage(page + 1)}>すべてXem</button>}
         </div>
     );
 }

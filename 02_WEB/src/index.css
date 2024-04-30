@@ -57,7 +57,7 @@ button {
 /* ------------------ Categories ------------------ */
 @import url('./components/mainpages/categories/categories.css');
 
-/* ------------------- クリエート プロダクト -------------- */
+/* ------------------- Thêm sản phẩm -------------- */
 @import url('./components/mainpages/createProduct/createProduct.css');
 
 @import url('./components/mainpages/type/type.css');

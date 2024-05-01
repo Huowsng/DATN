@@ -124,7 +124,7 @@ function Header({hideFooter}) {
                     </li>
                 </ul>
                 <div onMouseEnter={onEnter} onMouseLeave={onLeave} className="right-section ">
-                <Link to="/dang-tin" >{isAdmin ? 'Postnews' : 'Đăng tin'}</Link>
+                <Link to="/create_product" >{isAdmin ? 'Postnews' : 'Đăng tin'}</Link>
                 </div>
             </ul>
         </header>

@@ -1,9 +1,12 @@
 .create_product {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-around;
+    max-width: 960px;
+    display: flex;
+    flex-direction: row; /* Phần tử con được sắp xếp từ trên xuống dưới */
+    justify-content: center; /* Căn các phần tử vào giữa theo chiều ngang */
+    margin: 0px auto;
+    background-color: rgb(244, 244, 244);
+    padding: 12px 12px;
+
 }
 .upload {
   max-width: 450px;
@@ -21,7 +24,7 @@
   outline: none;
 }
 #file_up::before {
-  content: '+';
+  content: '';
   position: absolute;
   width: 100%;
   height: 100%;
@@ -29,7 +32,6 @@
   left: 0;
   background: white;
   color: rgb(243, 98, 31);
-  font-size: 17rem;
   text-align: center;
   cursor: pointer;
   margin: auto;

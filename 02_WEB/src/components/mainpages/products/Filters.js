@@ -43,15 +43,12 @@ function Filters() {
                     <option value="">新しいSản phẩm</option>
                     <option value="sort=oldest">古いSản phẩm</option>
                     <option value="sort=-sold"> Sản phẩm</option>
-<<<<<<< HEAD
                     <option value="sort=-price">Giá : cao-thấp</option>
                     <option value="sort=price">Giá: thấp-cao</option>
                     <option value="sort=createdAt">Ngày: Tăng dần</option>
                     <option value="sort=-createdAt">Ngày: Giảm dần</option>
-=======
                     <option value="sort=-price">Loại: 高い-安い</option>
                     <option value="sort=price">Loại:安い-高い</option>
->>>>>>> parent of 73e918b (1/5)
                 </select>
             </div>
         </div>

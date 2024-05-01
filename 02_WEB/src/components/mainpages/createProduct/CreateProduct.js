@@ -8,7 +8,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 const initialState = {
     title: '',
     description:
-        'Stock up on the perfect afternoon snack, lunchtime side or baking choice with a Three-Pound Bag of Honeycrisp Apples from Good & Gather™. Boasting the perfect blend of sweet and crisp flavors, these delicious Honeycrisp apples promise to hit the spot when you’re craving something fresh and tasty, and the crisp, juicy texture is sure to satisfy.',
+        '',
     category: '',
     _id: '',
 };
@@ -41,7 +41,7 @@ function CreateProduct() {
     const [edit, setEdit] = useState({
         title: '',
         description:
-            'Stock up on the perfect afternoon snack, lunchtime side or baking choice with a Three-Pound Bag of Honeycrisp Apples from Good & Gather™. Boasting the perfect blend of sweet and crisp flavors, these delicious Honeycrisp apples promise to hit the spot when you’re craving something fresh and tasty, and the crisp, juicy texture is sure to satisfy.',
+            '',
         category: '',
         _id: '',
         types: [
@@ -206,6 +206,17 @@ function CreateProduct() {
             {onEdit ? (
                 <form onSubmit={handleSubmit}>
                     <div className="row">
+                        <label htmlFor="categories">Categories: </label>
+                        <select name="category" value={edit.category || ''} onChange={handleChangeInputEdit}>
+                            <option>Danh mục tin đăng</option>
+                            {categories.map((category) => (
+                                <option value={category._id || ''} key={category._id}>
+                                    {category.name || ''}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="row">
                         <label htmlFor="title">Edit product</label>
                         <input
                             type="text"
@@ -223,7 +234,7 @@ function CreateProduct() {
                         return (
                             <div className="row-type" key={index}>
                                 <div>
-                                    <label>Name</label>
+                                    <label>Tiêu đề của sản phẩm</label>
                                     <input
                                         type="text"
                                         name="name"
@@ -266,23 +277,24 @@ function CreateProduct() {
                         />
                     </div>
 
-                    <div className="row">
-                        <label htmlFor="categories">Categories: </label>
-                        <select name="category" value={edit.category || ''} onChange={handleChangeInputEdit}>
-                            <option>Please select category</option>
-                            {categories.map((category) => (
-                                <option value={category._id || ''} key={category._id}>
-                                    {category.name || ''}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    
                     <button type="submit">{onEdit ? 'Edit' : 'Create'}</button>
                 </form>
             ) : (
                 <form onSubmit={handleSubmit}>
                     <div className="row">
-                        <label htmlFor="title">Name</label>
+                        <label htmlFor="categories">Danh mục: </label>
+                        <select className='category' name="category" value={product.category} onChange={handleChangeInput}>
+                            <option value="">Danh mục tin đăng</option>
+                            {categories.map((category) => (
+                                <option value={category._id} key={category._id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="row">
+                        <label htmlFor="title">Tiêu đề của sản phẩm</label>
                         <input
                             type="text"
                             name="title"
@@ -293,14 +305,13 @@ function CreateProduct() {
                             disabled={onEdit}
                         />
                     </div>
-                    <label htmlFor="title">Types</label>
                     <div className="row-type">
                         <div>
                             <input
                                 type="text"
                                 name="types"
                                 id="types"
-                                // required
+                                placeholder="Loại"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
@@ -310,7 +321,7 @@ function CreateProduct() {
                                 type="text"
                                 name="price"
                                 id="price"
-                                placeholder="Price"
+                                placeholder="Giá"
                                 // required
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
@@ -321,7 +332,7 @@ function CreateProduct() {
                                 type="text"
                                 name="amount"
                                 id="amount"
-                                placeholder="Amount"
+                                placeholder="Số lượng"
                                 // required
                                 value={amount}
                                 onChange={(e) => setMount(e.target.value)}
@@ -365,29 +376,25 @@ function CreateProduct() {
                         </ul>
                     </div>
                     <div className="row">
-                        <label htmlFor="description">Description</label>
+                        <label htmlFor="description">Mô tả chi tiết</label>
                         <textarea
                             type="text"
                             name="description"
                             id="description"
+                            placeholder='Thông tin chi tiết của sản phẩm:
+                            - Nhã hiệu, xuất xứ
+                            - Tình trạng sản phẩm
+                            - Kích thước
+                            - Địa chỉ, thông tin liên hệ
+                            - Chính sách bảo hành'
                             required
                             value={product.description}
-                            rows="5"
+                            rows="10"
                             onChange={handleChangeInput}
                         />
                     </div>
 
-                    <div className="row">
-                        <label htmlFor="categories">Categories: </label>
-                        <select name="category" value={product.category} onChange={handleChangeInput}>
-                            <option value="">Please select category</option>
-                            {categories.map((category) => (
-                                <option value={category._id} key={category._id}>
-                                    {category.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    
                     <button type="submit">{onEdit ? 'Edit' : 'Create'}</button>
                 </form>
             )}

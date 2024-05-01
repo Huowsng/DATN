@@ -22,7 +22,7 @@ function CreateProduct() {
     const [images, setImages] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const [isAdmin] = state.userAPI.isAdmin;
+    // const [isAdmin] = state.userAPI.isAdmin;
     const [token] = state.token;
     console.log(token);
 
@@ -73,7 +73,7 @@ function CreateProduct() {
     const handleUpload = async (e) => {
         e.preventDefault();
         try {
-            if (!isAdmin) return alert('You are not admin');
+            // if (!isAdmin) return alert('You are not admin');
             const file = e.target.files[0];
 
             if (!file) return alert('The file is not correct.');
@@ -91,10 +91,10 @@ function CreateProduct() {
 
             setLoading(true);
             const res = await axios.post('/api/upload', formData, {
-                headers: {
-                    'content-type': 'multipart/form-data',
-                    Authorization: token,
-                },
+                // headers: {
+                //     'content-type': 'multipart/form-data',
+                //     Authorization: token,
+                // },
             });
             setLoading(false);
             setImages(res.data);
@@ -105,14 +105,14 @@ function CreateProduct() {
 
     const handleDestroy = async () => {
         try {
-            if (!isAdmin) return alert('you not admin');
+            // if (!isAdmin) return alert('you not admin');
             setLoading(true);
             await axios.post(
                 '/api/destroy',
                 { public_id: images.public_id },
-                {
-                    headers: { Authorization: token },
-                },
+                // {
+                //     headers: { Authorization: token },
+                // },
             );
             setLoading(false);
             setImages(false);
@@ -154,7 +154,7 @@ function CreateProduct() {
                 types: re,
             };
 
-            if (!isAdmin) return alert('you not admin');
+            // if (!isAdmin) return alert('you not admin');
             if (!images) return alert('image not upload');
 
             if (onEdit) {
@@ -162,18 +162,18 @@ function CreateProduct() {
                 await axios.put(
                     `/api/products/${product._id}`,
                     { ...edit, images },
-                    {
-                        headers: { Authorization: token },
-                    },
+                    // {
+                    //     headers: { Authorization: token },
+                    // },
                 );
             } else {
                 console.log(rs);
                 await axios.post(
                     '/api/products',
                     { ...rs, images },
-                    {
-                        headers: { Authorization: token },
-                    },
+                    // {
+                    //     headers: { Authorization: token },
+                    // },
                 );
             }
 

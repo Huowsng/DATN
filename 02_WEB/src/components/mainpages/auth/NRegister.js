@@ -42,10 +42,10 @@ function NRegister() {
     return (
         <div className={cx('login-page')}>
             <form onSubmit={registerSubmit} className={cx('register-form')}>
-                <h2>登録する</h2>
+                <h2>Đăng kí</h2>
                 <div className={cx('input-info')}>
                     <div className={cx('info-name')}>
-                        <p className={cx('info-label')}>Tên</p>
+                        <p className={cx('info-label')}>UserName</p>
                         <TiStarburst color="red" fontSize="7pt" />
                     </div>
                     <input type="text" name="name" required value={user.name} onChange={onChangeInput} />
@@ -66,22 +66,22 @@ function NRegister() {
                 </div>
                 <div className={cx('input-info')}>
                     <div className={cx('info-name')}>
-                        <p className={cx('info-label')}>Email</p>
+                        <p className={cx('info-label')}>Tên đăng nhập</p>
                         <TiStarburst color="red" fontSize="7pt" />
                     </div>
                     <input type="email" name="email" required value={user.email} onChange={onChangeInput} />
                 </div>
                 <div className={cx('input-info')}>
                     <div className={cx('info-name')}>
-                        <p className={cx('info-label')}>パスワード</p>
+                        <p className={cx('info-label')}>Mật khẩu</p>
                         <TiStarburst color="red" fontSize="7pt" />
                     </div>
                     <input type="password" name="password" required value={user.password} onChange={onChangeInput} />
                 </div>
                 <div className={cx('row')}>
-                    <button type="submit">登録する</button>
+                    <button type="submit">Đăng kí</button>
                     <Link to="/nlogin" className={cx('login-btn')}>
-                        ログイン
+                        Đăng nhập
                     </Link>
                 </div>
                 <hr />

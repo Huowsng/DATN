@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GlobalState } from '../../../GlobalState';
 import axios from 'axios';
-import 'font-awesome/css/font-awesome.min.css';
+// import 'font-awesome/css/font-awesome.min.css';
 import Loading from '../utils/loading/Loading';
 
 const initialState = {

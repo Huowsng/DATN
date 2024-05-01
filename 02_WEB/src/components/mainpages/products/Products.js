@@ -70,18 +70,18 @@ function Products() {
         <>
             <Filters />
             <div className="header-information">
-                <p className="header-label">店</p>
+                <p className="header-label">Cửa hàng</p>
                 <div className="header-direction">
                     <Link to="/">Trang chủ /</Link>
-                    <Link to="/products">店</Link>
+                    <Link to="/products">Cửa hàng</Link>
                 </div>
             </div>
 
             {isAdmin && (
                 <div className="delete-all">
-                    <span>すべて選択する</span>
+                    <span>Chọn Tất cả </span>
                     <input type="checkbox" checked={isCheck} onChange={checkAll} />
-                    <button onClick={deleteAll}>すべて削除する</button>
+                    <button onClick={deleteAll}>Xoá hết</button>
                 </div>
             )}
 

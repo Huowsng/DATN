@@ -5,7 +5,6 @@ import { TiStarburst } from 'react-icons/ti';
 import classNames from 'classnames/bind';
 import { MdLogin } from 'react-icons/md';
 import { BsFacebook } from 'react-icons/bs';
-import Logo from '../../headers/icon/logo-white-1.svg';
 import styles from './NLogin.module.scss';
 
 const cx = classNames.bind(styles);
@@ -44,25 +43,25 @@ function NLogin() {
     return (
         <div className={cx('login-page')}>
             <form onSubmit={loginSubmit} className={cx('register-form')}>
-                <h2>ログイン</h2>
+                <h2>Đăng nhập</h2>
                 <div className={cx('input-info')}>
                     <div className={cx('info-name')}>
-                        <p className={cx('info-label')}>Email</p>
+                        <p className={cx('info-label')}>Tài khoản</p>
                         <TiStarburst color="red" fontSize="7pt" />
                     </div>
                     <input type="email" name="email" required value={user.email} onChange={onChangeInput} />
                 </div>
                 <div className={cx('input-info')}>
                     <div className={cx('info-name')}>
-                        <p className={cx('info-label')}>パスワード</p>
+                        <p className={cx('info-label')}>Mật khẩu</p>
                         <TiStarburst color="red" fontSize="7pt" />
                     </div>
                     <input type="password" name="password" required value={user.password} onChange={onChangeInput} />
                 </div>
                 <div className={cx('row')}>
-                    <button type="submit">ログイン</button>
+                    <button type="submit">Đăng nhập</button>
                     <Link to="/nregister" className={cx('login-btn')}>
-                        登録する
+                        Đăng kí
                     </Link>
                 </div>
                 <hr />

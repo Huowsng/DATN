@@ -9,5 +9,8 @@ yarn.lock
 /.env
 .env
 .env
-.package-lock.json
+/package-lock.json
+package-lock.json
+/package.json
+package.json
 docker-compose.yml

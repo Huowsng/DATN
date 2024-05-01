@@ -51,7 +51,7 @@ const Profile = () => {
                         //<label className="label-information">Address*</label>
                         //<input type="text" id="address" name="address" value={address} onChange={handleAddressChange} />
                     }
-                    <label className="label-information">=Email</label>
+                    <label className="label-information">Email</label>
                     <input type="text" id="email" name="email" value={email} onChange={handleEmailChange} />
                     <button
                         type="submit"

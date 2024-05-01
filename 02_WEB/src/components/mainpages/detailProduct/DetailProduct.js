@@ -120,7 +120,7 @@ function DetailProduct() {
                     </p>
                     <div className="underline"></div>
                     <br />
-                    <span>{type?.price} VND</span>&nbsp;&nbsp;&nbsp;&nbsp;Số lượng: <span>{type?.amount}</span>
+                    <span>{type?.price}VND</span>&nbsp;&nbsp;&nbsp;&nbsp;Số lượng: <span>{type?.amount}</span>
                     <p>{detailProduct.description}</p>
                     <b />
                     <label htmlFor="types">Loại:</label>
@@ -138,7 +138,7 @@ function DetailProduct() {
             </div>
             <br />
             <div className="description-detail">
-                <h1>Đánh giá</h1>
+                <h1>説明</h1>
                 <hr />
                 <p>{detailProduct.description}</p>
             </div>

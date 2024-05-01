@@ -85,41 +85,39 @@ const productCtrl = {
   },
   createProduct: async (req, res) => {
     try {
-        const { types, title, description, images, category } = req.body;
-        var listType = [];
-        for (var i = 0; i < types.length; i++) {
-            const typeItem = new Type({
-                name: types[i].name,
-                price: types[i]?.price,
-                amount: types[i].amount,
-            });
-            listType.push(typeItem);
-        }
-        const price = types[0]?.price;
-
-        if (!images)
-            return res.status(400).json({ msg: "Không có hình ảnh tải lên" });
-        
-        const product = await Products.findOne({ title: title });
-        if (product)
-            return res.status(400).json({ msg: "Sản phẩm này đã tồn tại." });
-
-        const newProduct = new Products({
-            types: listType,
-            title: title,
-            description: description,
-            images: images,
-            category: category,
-            price: price,
+      const { types, title, description, images, category } = req.body;
+      var listType = [];
+      for (var i = 0; i < types.length; i++) {
+        const typeItem = new Type({
+          name: types[i].name,
+          price: types[i]?.price,
+          amount: types[i].amount,
         });
-        await newProduct.save();
-        res.json({ msg: "Product create!", newProduct });
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json({ msg: "Internal Server" });
-    }
-},
+        listType.push(typeItem);
+      }
+      const price = types[0]?.price;
 
+      if (!images)
+        return res.status(400).json({ msg: "Không có hình ảnh tải lên" });
+      const product = await Products.findOne({ title: title });
+      console.log(title);
+      if (product)
+        return res.status(400).json({ msg: "Sản phẩm này đã tồn tại." });
+      const newProduct = new Products({
+        types: listType,
+        title: title,
+        description: description,
+        images: images,
+        category: category,
+        price: price,
+      });
+      await newProduct.save();
+      res.json({ msg: "Product create!", newProduct });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal Server" });
+    }
+  },
   deleteProduct: async (req, res) => {
     try {
       await Products.findByIdAndDelete(req.params.id);
@@ -190,13 +188,16 @@ const productCtrl = {
   searchProduct: async (req, res) => {
     try {
         const { searchToken } = req.body;
-        console.log("lol:",searchToken);
+
         if (!searchToken) {
             return res.status(400).json({ msg: "Search token is required." });
         }
 
         const products = await Products.find({
-            title: { $regex: searchToken, $options: "i" },
+            $or: [
+                { title: { $regex: searchToken, $options: "i" } },
+                { description: { $regex: searchToken, $options: "i" } },
+            ],
         });
 
         res.json({
@@ -208,7 +209,6 @@ const productCtrl = {
         res.status(500).json({ msg: error.message });
     }
 },
-
   getDetailProduct: async (req, res) => {
     try {
       const productId = req.params.id;

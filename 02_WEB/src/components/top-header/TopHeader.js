@@ -1,3 +1,5 @@
+// import { FaDove } from 'react-icons/fa';
+// import { BsFacebook, BsYoutube } from 'react-icons/bs';
 import './topheader.css';
 import { Link } from 'react-router-dom';
 import React, { useContext } from 'react';
@@ -8,11 +10,16 @@ import styles from './Topheader.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { BsCart3 } from 'react-icons/bs';
+
+// import Button from '../Button';
+
+import { gsap } from 'gsap';
 import { AiOutlineHistory } from 'react-icons/ai';
 import { BiUser } from 'react-icons/bi';
 import { HiOutlineLogout } from 'react-icons/hi';
 import axios from 'axios';
-import { gsap } from 'gsap';
+
+///
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +28,13 @@ export const TopHeader = () => {
     const [isLogged] = state.userAPI.isLogged;
     const [isAdmin] = state.userAPI.isAdmin;
     const [cart] = state.userAPI.cart;
+
+    //
+    //const token = state.token;
+    // console.log(`token:`,token);
     const [user] = state.userAPI.detail;
+    // console.log(`user`,user);
+    //
 
     const onEnter = ({ currentTarget }) => {
         gsap.to(currentTarget, {
@@ -30,7 +43,6 @@ export const TopHeader = () => {
             scale: 1.3,
         });
     };
-
     const onLeave = ({ currentTarget }) => {
         gsap.to(currentTarget, { scale: 1 });
     };
@@ -40,11 +52,11 @@ export const TopHeader = () => {
         localStorage.removeItem('firstLogin');
         window.location.href = '/';
     };
-
+    //
     const loggedRouter = () => {
         return (
             <div className={cx('row2-topheader')}>
-                <p className={cx('userName_label')}>{user?.name} </p>
+                <p className={cx('userName_label')}>{user.name} </p>
                 <ul className={cx('list-topheader')}>
                     <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
                         <Link to="/history">
@@ -66,14 +78,29 @@ export const TopHeader = () => {
             </div>
         );
     };
-
+    //
     return (
         <>
             <div className="header-container-top">
+                {/* <div className="logo">
+                    <h1>
+                        <Link to="/">
+                            {isAdmin ? (
+                                //
+                                'Admin'
+                            ) : (
+                                <img src={Logo} alt="PetFirst" />
+                            )}
+                        </Link>
+                    </h1>
+                </div> */}
                 <div className="logo">
                     <img src={Logo} alt="PetFirst" />
                 </div>
                 <div className="top-header-right">
+                    {/* <div className="search">
+                        <input type="text" placeholder="Bạn muốn tìm kiếm ?" spellCheck="true"></input>
+                    </div> */}
                     <button className={cx('login-btn')}>
                         {isLogged ? (
                             loggedRouter()
@@ -81,7 +108,7 @@ export const TopHeader = () => {
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
                                 <Link to="/nlogin">
                                     <FontAwesomeIcon icon={faSignOut} />
-                                    <span className={cx('label')}>Đăng nhập</span>
+                                    <span className={cx('label')}>ログイン</span>
                                 </Link>
                             </p>
                         )}
@@ -92,6 +119,7 @@ export const TopHeader = () => {
                         <div className="cart-icon">
                             <span>{cart.length}</span>
                             <Link to="/cart">
+                                {/* <img src={Cart} alt="" width="30" /> */}
                                 <BsCart3 />
                             </Link>
                         </div>

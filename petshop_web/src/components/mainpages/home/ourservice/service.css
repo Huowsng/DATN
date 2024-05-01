@@ -1,0 +1,11 @@
+.service-main{
+    background-color: #f766310a;
+    width: 100%;
+    margin-top: 12px;
+}
+.service-p{
+    padding: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 1.41;
+}

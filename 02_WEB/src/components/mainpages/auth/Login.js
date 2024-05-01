@@ -4,6 +4,7 @@ import axios from 'axios';
 import { MdLogin } from 'react-icons/md';
 import { TiStarburst } from 'react-icons/ti';
 import { BsFacebook } from 'react-icons/bs';
+import Logo from '../../headers/icon/logo-white-1.svg';
 
 function Login() {
     const [user, setUser] = useState({

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { GlobalState } from '../../GlobalState';
-import Menu from './icon/menu.svg';
+import Menu from '../Header/icon/icons8-menu.svg';
 import Close from './icon/close.svg';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -12,13 +12,16 @@ import { AiOutlineHistory, AiOutlineHeart } from 'react-icons/ai';
 import { gsap } from 'gsap';
 // import { Route, Router } from 'react-router-dom';
 
-function Header() {
+function Header({hideFooter}) {
     const state = useContext(GlobalState);
     const [isLogged] = state.userAPI.isLogged;
     const [isAdmin] = state.userAPI.isAdmin;
     const [cart] = state.userAPI.cart;
     const [menu, setMenu] = useState(false);
-
+    
+    const hideFooterOnClick = () => {
+        hideFooter(); // Gọi hàm hideFooter từ prop khi click vào phần tử muốn ẩn footer
+    };
     const onEnter = ({ currentTarget }) => {
         gsap.to(currentTarget, {
             repeatDelay: 1,
@@ -43,15 +46,15 @@ function Header() {
         return (
             <>
                 <div className="btn btn-primary" onClick={ToggleSidebar}>
-                    <i className="fa fa-bars"></i>
+                    <img src={Menu} alt="" width="30" />
                     <div className={`sidebar ${isOpen === true ? 'active' : ''}`}>
                         <div className="sd-body">
                             <ul>
                                 <li>
-                                    <Link to="/create_product">Thêm sản phẩm</Link>
+                                    <Link to="/create_product">Add Product</Link>
                                 </li>
                                 <li>
-                                    <Link to="/category">クリエート カテゴリー</Link>
+                                    <Link to="/category">Add Category</Link>
                                 </li>
                                 {/* <li>
                                     <Link to="/revenue">Revenue</Link>
@@ -96,56 +99,33 @@ function Header() {
     };
 
     const styleMenu = {
-        left: menu ? 0 : '-60%',
+        left: menu ? 0 : '-50%',
     };
 
     return (
         <header>
-            <div className="menu" onClick={() => setMenu(!menu)}>
-                <img src={Menu} alt="" width="30" />
-            </div>
-
-            {/* logo */}
-            {/* <div className="logo">
-        <h1>
-          <Link to="/">
-            {isAdmin ? (
-              //
-              'Admin'
-            ) : (
-              <img src={Logo} alt="PetFirst" />
-            )}
-          </Link>
-        </h1>
-      </div> */}
-
-            <ul style={styleMenu}>
-                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                    <Link to="/">{'Trang chủ'}</Link>
-                </li>
-                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                    <Link to="/products">{isAdmin ? 'アイテム' : 'アイテム'}</Link>
-                </li>
-                {/* {isAdmin ? (
+            <ul style={styleMenu} className="menu-container">
+                <div className="left-section">
+                    {isAdmin && adminRouter(
+                        <div onClick={() => setMenu(!menu)}>
+                            <img src={menu} alt="" width="500" className="menu" />
+                        </div>
+                    )}
+                </div>
+                <ul style={styleMenu} className="middle-section">
                     <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                        <Link to="/revenue">{'Revenue'}</Link>
+                        <Link to="/">{'Trang chủ'}</Link>
                     </li>
-                ) : (
                     <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                        <Link to="/ranking">{'Ranking'}</Link>
+                        <Link to="/products">{isAdmin ? 'Cửa hàng' : 'Cửa hàng'}</Link>
                     </li>
-                )} */}
-                {/* <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                    <Link to="/ranking">{isAdmin ? 'Revenue' : 'Ranking'}</Link>
-                </li> */}
-                <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                    <Link to="/testchat">{'コンタック'}</Link>
-                </li>
-
-                {isAdmin && adminRouter()}
-                <li onClick={() => setMenu(!menu)}>
-                    <img src={Close} alt="" width="300" className="menu" />
-                </li>
+                    <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                        <Link to="/testchat">{'Liên hệ'}</Link>
+                    </li>
+                </ul>
+                <div onMouseEnter={onEnter} onMouseLeave={onLeave} className="right-section ">
+                <Link to="/dang-tin" >{isAdmin ? 'Postnews' : 'Đăng tin'}</Link>
+                </div>
             </ul>
         </header>
     );

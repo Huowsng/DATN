@@ -1,5 +1,0 @@
-{
-    "routes": [
-      { "src": "/user/login", "methods": ["POST"] }
-    ]
-  }

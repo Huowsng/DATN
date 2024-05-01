@@ -68,7 +68,7 @@ function Header({hideFooter}) {
         );
     };
 
-    const userRouter = () => {
+    const adminRouter = () => {
         return (
             <>
                 <ToggleSidebar />
@@ -106,7 +106,7 @@ function Header({hideFooter}) {
         <header>
             <ul style={styleMenu} className="menu-container">
                 <div className="left-section">
-                    {isLogged && userRouter(
+                    {isAdmin && adminRouter(
                         <div onClick={() => setMenu(!menu)}>
                             <img src={menu} alt="" width="500" className="menu" />
                         </div>

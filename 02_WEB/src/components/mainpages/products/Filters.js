@@ -45,6 +45,8 @@ function Filters() {
                     <option value="sort=-sold"> Sản phẩm</option>
                     <option value="sort=-price">Giá : cao-thấp</option>
                     <option value="sort=price">Giá: thấp-cao</option>
+                    <option value="sort=createdAt">Ngày: Tăng dần</option>
+                    <option value="sort=-createdAt">Ngày: Giảm dần</option>
                 </select>
             </div>
         </div>

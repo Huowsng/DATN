@@ -85,7 +85,7 @@ function Pages() {
 
             <Route path="category" element={isAdmin ? <Categories /> : <Loading />} />
             <Route path="type" element={<Type />} />
-            <Route path="create_product" element={isAdmin ? <CreateProduct /> : <Loading />} />
+            <Route path="create_product" element={isLogged ? <CreateProduct /> : <Loading />} />
             <Route path="edit_product/:id" element={isAdmin ? <CreateProduct /> : <Loading />} />
 
             <Route path="history" element={isLogged ? <OrderHistory /> : <Loading />} />

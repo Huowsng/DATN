@@ -40,7 +40,7 @@
       "react-app/jest"
     ]
   },
-  "proxy": "https://backendchocu1.onrender.com/",
+  "proxy": "http://localhost:5000",
   "browserslist": {
     "production": [
       ">0.2%",

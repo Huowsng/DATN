@@ -73,7 +73,7 @@ function CreateProduct() {
     const handleUpload = async (e) => {
         e.preventDefault();
         try {
-            if (!isAdmin) return alert('You are not admin');
+            // if (!isAdmin) return alert('You are not admin');
             const file = e.target.files[0];
 
             if (!file) return alert('The file is not correct.');
@@ -105,7 +105,7 @@ function CreateProduct() {
 
     const handleDestroy = async () => {
         try {
-            if (!isAdmin) return alert('you not admin');
+            // if (!isAdmin) return alert('you not admin');
             setLoading(true);
             await axios.post(
                 '/api/destroy',
@@ -154,7 +154,7 @@ function CreateProduct() {
                 types: re,
             };
 
-            if (!isAdmin) return alert('you not admin');
+            // if (!isAdmin) return alert('you not admin');
             if (!images) return alert('image not upload');
 
             if (onEdit) {

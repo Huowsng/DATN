@@ -10,7 +10,7 @@ import LoadMore from '../../products/LoadMore';
 import { Link } from 'react-router-dom';
 export const Service = () => {
     const state = useContext(GlobalState);
-    const [products, setProducts] = state.productsAPI.products;
+    const [products, setProducts] = state.productsAPI.products??[];
     console.log(products);
     const [isAdmin] = state.userAPI.isAdmin;
     const [token] = state.token;
@@ -91,7 +91,7 @@ export const Service = () => {
             )}
 
             <div className="products">
-                {products.map((product) => {
+                {products?.map((product) => {
                     return (
                         <ProductItem
                             key={product._id}

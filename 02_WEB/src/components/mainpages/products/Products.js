@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 function Products() {
     const state = useContext(GlobalState);
-    const [products, setProducts] = state.productsAPI.products;
+    const [products, setProducts] = useState(state.productsAPI.products??[]);
     console.log(products);
     const [isAdmin] = state.userAPI.isAdmin;
     const [token] = state.token;
@@ -47,7 +47,7 @@ function Products() {
     };
 
     const checkAll = () => {
-        products.forEach((product) => {
+        products?.forEach((product) => {
             product.checked = !isCheck;
         });
         setProducts([...products]);
@@ -86,7 +86,7 @@ function Products() {
             )}
 
             <div className="products">
-                {products.map((product) => {
+                {products?.map((product) => {
                     return (
                         <ProductItem
                             key={product._id}

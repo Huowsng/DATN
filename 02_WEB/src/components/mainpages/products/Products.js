@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 function Products() {
     const state = useContext(GlobalState);
-    const [products, setProducts] = useState(state.productsAPI.products??[]);
+    const [products, setProducts] = state.productsAPI.products??[];
     console.log(products);
     const [isAdmin] = state.userAPI.isAdmin;
     const [token] = state.token;
@@ -99,7 +99,7 @@ function Products() {
                 })}
             </div>
             <LoadMore />
-            {products.length === 0 && <Loading />}
+            {products?.length === 0 && <Loading />}
         </>
     );
 }

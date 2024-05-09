@@ -14,7 +14,7 @@ function OrderAPI(token) {
     useEffect(() => {
         const getOrder = async () => {
             try {
-                const res = await axios.get('/api/orders');
+                const res = await axios.get('https://backendchocu1.onrender.com/api/orders');
                 setOrder(res.data);
             } catch (err) {
                 alert(err.response.data.msg);

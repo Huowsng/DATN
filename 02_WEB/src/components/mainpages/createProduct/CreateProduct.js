@@ -4,6 +4,7 @@ import { GlobalState } from '../../../GlobalState';
 import Loading from '../utils/loading/Loading';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
+import API_URL from '../../../api/baseAPI';
 
 const initialState = {
     title: '',
@@ -90,7 +91,7 @@ function CreateProduct() {
             formData.append('file', file);
 
             setLoading(true);
-            const res = await axios.post('/api/upload', formData, {
+            const res = await axios.post(`${API_URL}/api/upload`, formData, {
                 headers: {
                     'content-type': 'multipart/form-data',
                     Authorization: token,
@@ -108,7 +109,7 @@ function CreateProduct() {
             // if (!isAdmin) return alert('you not admin');
             setLoading(true);
             await axios.post(
-                '/api/destroy',
+                `${API_URL}/api/destroy`,
                 { public_id: images.public_id },
                 {
                     headers: { Authorization: token },
@@ -160,7 +161,7 @@ function CreateProduct() {
             if (onEdit) {
                 console.log(edit);
                 await axios.put(
-                    `/api/products/${product._id}`,
+                    `${API_URL}/api/products/${product._id}`,
                     { ...edit, images },
                     {
                         headers: { Authorization: token },
@@ -169,7 +170,7 @@ function CreateProduct() {
             } else {
                 console.log(rs);
                 await axios.post(
-                    '/api/products',
+                    `${API_URL}/api/products`,
                     { ...rs, images },
                     {
                         headers: { Authorization: token },

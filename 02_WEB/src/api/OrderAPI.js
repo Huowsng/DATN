@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_URL from './baseAPI';
 
 function OrderAPI(token) {
     const [order, setOrder] = useState([]);
@@ -14,7 +15,7 @@ function OrderAPI(token) {
     useEffect(() => {
         const getOrder = async () => {
             try {
-                const res = await axios.get('https://backendchocu1.onrender.com/api/orders');
+                const res = await axios.get(`${API_URL}/api/orders`);
                 setOrder(res.data);
             } catch (err) {
                 alert(err.response.data.msg);

@@ -13,6 +13,7 @@ import { BiUser } from 'react-icons/bi';
 import { HiOutlineLogout } from 'react-icons/hi';
 import axios from 'axios';
 import { gsap } from 'gsap';
+import API_URL from '../../api/baseAPI';
 
 const cx = classNames.bind(styles);
 
@@ -36,7 +37,7 @@ export const TopHeader = () => {
     };
 
     const logoutUser = async () => {
-        await axios.get('/user/logout');
+        await axios.get(`${API_URL}/user/logout`);
         localStorage.removeItem('firstLogin');
         window.location.href = '/';
     };

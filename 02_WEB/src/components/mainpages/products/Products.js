@@ -6,6 +6,7 @@ import axios from 'axios';
 import Filters from './Filters';
 import LoadMore from './LoadMore';
 import { Link } from 'react-router-dom';
+import API_URL from '../../../api/baseAPI';
 
 function Products() {
     const state = useContext(GlobalState);
@@ -27,13 +28,13 @@ function Products() {
         try {
             setLoading(true);
             const destroyImg = axios.post(
-                'https://backendchocu.onrender.com/api/destroy',
+                `${API_URL}/api/destroy`,
                 { public_id },
                 {
                     headers: { Authorization: token },
                 },
             );
-            const deleteProduct = axios.delete(`/api/products/${id}`, {
+            const deleteProduct = axios.delete(`${API_URL}/api/products/${id}`, {
                 headers: { Authorization: token },
             });
             await destroyImg;

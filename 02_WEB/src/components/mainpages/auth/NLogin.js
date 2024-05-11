@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { TiStarburst } from 'react-icons/ti';
 import classNames from 'classnames/bind';
-import { MdLogin } from 'react-icons/md';
-import { BsFacebook } from 'react-icons/bs';
 import styles from './NLogin.module.scss';
+import API_URL from '../../../api/baseAPI';
 
 const cx = classNames.bind(styles);
 
@@ -23,7 +22,7 @@ function NLogin() {
     const loginSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/user/login', { ...user });
+            await axios.post(`${API_URL}/user/login`, { ...user });
 
             localStorage.setItem('firstLogin', true);
 

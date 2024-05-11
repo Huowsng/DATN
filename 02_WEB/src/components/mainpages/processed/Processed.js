@@ -4,6 +4,8 @@ import { GlobalState } from '../../../GlobalState';
 import './processed.css';
 import axios from 'axios';
 import Loading from '../utils/loading/Loading';
+import API_URL from '../../../api/baseAPI';
+
 const Processed = () => {
     const state = useContext(GlobalState);
     //console.log(state)
@@ -30,7 +32,7 @@ const Processed = () => {
         if (token) {
             setLoading(true);
             const res = await axios.post(
-                '/api/cart/checkout',
+                `${API_URL}/api/cart/checkout`,
                 { order_id },
                 {
                     headers: { Authorization: token },

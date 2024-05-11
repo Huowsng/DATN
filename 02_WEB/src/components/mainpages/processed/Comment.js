@@ -7,6 +7,7 @@ import Loading from '../utils/loading/Loading';
 import Star from '../detailProduct/Star';
 import { useNavigate } from 'react-router-dom';
 import Rating from 'react-rating';
+import API_URL from '../../../api/baseAPI';
 
 const Comment = () => {
     const state = useContext(GlobalState);
@@ -41,7 +42,7 @@ const Comment = () => {
             formData.append('file', file);
 
             setLoading(true);
-            const res = await axios.post('/api/upload', formData, {
+            const res = await axios.post(`${API_URL}/api/upload`, formData, {
                 headers: {
                     'content-type': 'multipart/form-data',
                     Authorization: token,
@@ -61,7 +62,7 @@ const Comment = () => {
         try {
             setLoading(true);
             await axios.post(
-                '/api/destroy',
+                `${API_URL}/api/destroy`,
                 { public_id: images.public_id },
                 {
                     headers: { Authorization: token },
@@ -86,7 +87,7 @@ const Comment = () => {
         };
         console.log(result);
         await axios.post(
-            '/api/feedback/create',
+            `${API_URL}/api/feedback/create`,
             { ...result },
             {
                 headers: { Authorization: token },

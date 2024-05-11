@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { TiStarburst } from 'react-icons/ti';
-import { MdLogin } from 'react-icons/md';
+import { ImOffice } from 'react-icons/im';
+import API_URL from '../../../api/baseAPI';
 
 function Register() {
     const [user, setUser] = useState({
@@ -20,7 +21,7 @@ function Register() {
     const registerSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/user/register', { ...user });
+            await axios.post(`${API_URL}/user/register`, { ...user });
 
             localStorage.setItem('firstLogin', true);
 

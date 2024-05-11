@@ -4,6 +4,7 @@ import axios from 'axios';
 import PaypalButton from './PaypalButton';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { Link } from 'react-router-dom';
+import API_URL from '../../../api/baseAPI';
 
 function Cart() {
     const state = useContext(GlobalState);
@@ -30,7 +31,7 @@ function Cart() {
     const addToCart = async (cart) => {
         try {
             await axios.patch(
-                '/user/addcart',
+                `${API_URL}/user/addcart`,
                 { cart },
                 {
                     headers: { Authorization: `Bearer ${token}` },
@@ -83,7 +84,7 @@ function Cart() {
 
         //paypal
         await axios.post(
-            '/api/payment',
+            `${API_URL}/api/payment`,
             { cart, paymentID, address },
             {
                 headers: { Authorization: token },
@@ -100,7 +101,7 @@ function Cart() {
     
         try {
             await axios.post(
-                '/api/orders/checkout',
+                `${API_URL}/api/orders/checkout`,
                 { cart },
                 {
                     headers: { Authorization: token },

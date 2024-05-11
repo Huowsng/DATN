@@ -1,16 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { GlobalState } from '../../GlobalState';
 import Menu from '../Header/icon/icons8-menu.svg';
-import Close from './icon/close.svg';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { BiUser } from 'react-icons/bi';
-// import { BsCart3 } from 'react-icons/bs';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { AiOutlineHistory, AiOutlineHeart } from 'react-icons/ai';
-// import Logo from './icon/logochocu.jpg';
 import { gsap } from 'gsap';
-// import { Route, Router } from 'react-router-dom';
+import API_URL from '../../api/baseAPI';
 
 function Header({hideFooter}) {
     const state = useContext(GlobalState);
@@ -34,7 +31,7 @@ function Header({hideFooter}) {
     };
 
     const logoutUser = async () => {
-        await axios.get('/user/logout');
+        await axios.get(`${API_URL}/user/logout`);
         localStorage.removeItem('firstLogin');
         window.location.href = '/';
     };

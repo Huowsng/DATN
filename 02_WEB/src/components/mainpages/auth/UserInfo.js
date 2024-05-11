@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { GlobalState } from '../../../GlobalState';
 import { gsap } from 'gsap';
 import axios from 'axios';
+import API_URL from '../../../api/baseAPI';
 
 function UserInfo() {
     const state = useContext(GlobalState);
@@ -20,7 +21,7 @@ function UserInfo() {
     };
 
     const logoutUser = async () => {
-        await axios.get('/user/logout');
+        await axios.get(`${API_URL}/user/logout`);
         localStorage.removeItem('firstLogin');
         window.location.href = '/';
     };

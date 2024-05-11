@@ -4,6 +4,7 @@ import { GlobalState } from '../../../GlobalState';
 import axios from 'axios';
 // import 'font-awesome/css/font-awesome.min.css';
 import Loading from '../utils/loading/Loading';
+import API_URL from '../../../api/baseAPI';
 
 const initialState = {
     // orderItems: [
@@ -37,7 +38,7 @@ const Checkout = () => {
     };
     const addToCart = async (cart) => {
         await axios.patch(
-            '/user/addcart',
+            `${API_URL}/user/addcart`,
             { cart },
             {
                 headers: { Authorization: token },
@@ -67,7 +68,7 @@ const Checkout = () => {
         };
         console.log(re);
         const orders = await axios.post(
-            '/api/orders',
+            `${API_URL}/api/orders`,
             { ...re },
             {
                 headers: { Authorization: token },

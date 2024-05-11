@@ -42,7 +42,6 @@
       "react-app/jest"
     ]
   },
-  "proxy": "https://backendchocu1.onrender.com/",
   "browserslist": {
     "production": [
       ">0.2%",

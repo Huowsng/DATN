@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { MdLogin } from 'react-icons/md';
 import { TiStarburst } from 'react-icons/ti';
-import { BsFacebook } from 'react-icons/bs';
+import API_URL from '../../../api/baseAPI';
 
 function Login() {
     const [user, setUser] = useState({
@@ -19,7 +18,7 @@ function Login() {
     const loginSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/user/nlogin', { ...user });
+            await axios.post(`${API_URL}/user/nlogin`, { ...user });
 
             localStorage.setItem('firstLogin', true);
 

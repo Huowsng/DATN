@@ -4,7 +4,7 @@ import UserAPI from './api/UserAPI';
 import CategoriesAPI from './api/CategoriesAPI';
 import TypeApi from './api/TypeAPI';
 import OrderApi from './api/OrderAPI';
-
+import API_URL from './api/baseAPI';
 import axios from 'axios';
 
 export const GlobalState = createContext();
@@ -16,10 +16,10 @@ export const DataProvider = ({ children }) => {
         const firstLogin = localStorage.getItem('firstLogin');
         if (firstLogin) {
             const refreshToken = async () => {
-                const res = await axios.get('/user/refresh_token');
+                const res = await axios.get(`${API_URL}/user/refresh_token`);
 
                 setToken(res?.data?.accesstoken);
-                // console.log(res);
+                console.log(res);
 
                 setTimeout(() => {
                     refreshToken();

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { TiStarburst } from 'react-icons/ti';
 import classNames from 'classnames/bind';
 import styles from './NRegister.module.scss';
+import API_URL from '../../../api/baseAPI';
 
 const cx = classNames.bind(styles);
 
@@ -24,7 +25,7 @@ function NRegister() {
     const registerSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/user/register', { ...user });
+            await axios.post(`${API_URL}/user/register`, { ...user });
 
             localStorage.setItem('firstLogin', true);
 

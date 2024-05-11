@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { GlobalState } from '../../../GlobalState';
 import axios from 'axios';
+import API_URL from '../../../api/baseAPI';
 
 const ItemCorrect = (items) => {
     const state = useContext(GlobalState);
@@ -32,7 +33,7 @@ const ItemCorrect = (items) => {
             setcheckdelivery(false);
             console.log(rs);
             await axios.put(
-                '/api/delivery',
+                `${API_URL}/api/delivery`,
                 { ...rs },
                 {
                     headers: { Authorization: token },

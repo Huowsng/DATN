@@ -15,7 +15,7 @@ function OrderAPI(token) {
     useEffect(() => {
         const getOrder = async () => {
             try {
-                const res = await axios.get(`${API_URL}/api/orders`);
+                const res = await axios.get('https://petshop-rmzp.onrender.com/api/orders');
                 setOrder(res.data);
             } catch (err) {
                 alert(err.response.data.msg);

@@ -42,7 +42,7 @@
       "react-app/jest"
     ]
   },
-  "proxy": "https://backendchocu1.onrender.com/",
+  "proxy": "https://petshop-rmzp.onrender.com/",
   "browserslist": {
     "production": [
       ">0.2%",

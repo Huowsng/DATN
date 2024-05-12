@@ -22,9 +22,10 @@ function NLogin() {
     const loginSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`/user/login`, { ...user });
-
+           const users = await axios.post(`${API_URL}/user/login`, { ...user });
+            console.log(users.data.accesstoken)
             localStorage.setItem('firstLogin', true);
+            localStorage.setItem('accesstoken', users?.data?.accesstoken );
 
             window.location.href = '/';
         } catch (err) {

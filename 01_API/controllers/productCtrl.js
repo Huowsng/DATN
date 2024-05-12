@@ -100,7 +100,7 @@ const productCtrl = {
       if (!images)
         return res.status(400).json({ msg: "Không có hình ảnh tải lên" });
       const product = await Products.findOne({ title: title });
-      console.log(title);
+      console.log(title, "333");
       if (product)
         return res.status(400).json({ msg: "Sản phẩm này đã tồn tại." });
       const newProduct = new Products({
@@ -114,7 +114,7 @@ const productCtrl = {
       await newProduct.save();
       res.json({ msg: "Product create!", newProduct });
     } catch (err) {
-      console.log(err);
+      console.log(err, "44444");
       return res.status(500).json({ msg: "Internal Server" });
     }
   },
@@ -157,7 +157,7 @@ const productCtrl = {
         });
       }
       const id = req.params;
-      console.log(id);
+      console.log(id, '5555');
       await Products.findOneAndUpdate(
         { _id: req.params._id },
         {
@@ -170,7 +170,7 @@ const productCtrl = {
       );
       res.json({ message: "Update successful" });
     } catch (err) {
-      console.log(err);
+      console.log(err, '66666');
       return res.status(500).json({ msg: err.message });
     }
   },
@@ -236,7 +236,7 @@ const productCtrl = {
         type.amount = type.amount - amount;
       }
     });
-    console.log(types);
+    console.log(types, "8888");
     // if (type.amount < amount) {
     //     return false;
     // } else {

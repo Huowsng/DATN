@@ -78,7 +78,7 @@ const userCtrl = {
       });
       res.json({ accesstoken });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message,"12222");
       return res.status(500).json({ msg: err.message });
     }
   },
@@ -119,7 +119,7 @@ const userCtrl = {
       const user = await Users.findOne({ email });
 
       if (!user) {
-        return res.status(400).json({ msg: 'User does not exist.' });
+        return res.status(400).json({ msg: 'User does not existtt.' });
       }
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) return res.status(400).json({ msg: 'Incorrect password.' });
@@ -152,13 +152,13 @@ const userCtrl = {
   refreshToken: (req, res) => {
     try {
       const rf_token = req.cookies.refreshtoken;
-      console.log(req.cookies.refreshtoken)
+      // console.log(req.cookies.refreshtoken,'rể')
       if (!rf_token)
-        return res.status(400).json({ msg: 'Please Login or Register' });
+        return res.status(400).json({ msg: 'Please Login or Registeraaaaa' });
 
       jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
         if (err)
-          return res.status(400).json({ msg: 'Please Login or Register' });
+          return res.status(400).json({ msg: 'Please Login or Registerbbbbb' });
 
         const accesstoken = createAccessToken({ id: user.id });
 
@@ -174,7 +174,7 @@ const userCtrl = {
     try {
       const userID = await authMe(req);
       const user = await Users.findById(userID).select('-password');
-      if (!user) return res.status(400).json({ msg: 'User does not exist.' });
+      if (!user) return res.status(400).json({ msg: 'User does not existttt.' });
       res.json(user);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -225,7 +225,7 @@ const userCtrl = {
       res.json(user);
     }
     catch (err) {
-      console.log(err)
+      console.log(err,'user 228')
       res.status(500).json({ error: "Internal Server Error" })
     }
   },

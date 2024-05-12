@@ -14,17 +14,23 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         const firstLogin = localStorage.getItem('firstLogin');
-        if (firstLogin) {
+        const accesstoken = localStorage.getItem('accesstoken');
+        console.log({firstLogin})
+        if (firstLogin ) {
             const refreshToken = async () => {
-                const res = await axios.get(`/user/refresh_token`);
-
-                setToken(res?.data?.accesstoken);
-                console.log(res);
-
-                setTimeout(() => {
-                    refreshToken();
-                }, 10 * 60 * 1000);
-            };
+                try {
+                    // const res = await axios.get(`${API_URL}/user/refresh_token`);
+                    // console.log(res.data.accesstoken);
+                    setToken(accesstoken);
+                    setTimeout(() => {
+                        refreshToken();
+                    }, 10 * 60 * 1000);
+                
+                } catch (error) {
+                  console.log(error)  
+                }
+            }
+               
             refreshToken();
         }
     }, []);

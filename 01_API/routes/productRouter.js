@@ -14,7 +14,8 @@ router.route('/products/search')
 
 router.route('/products/:id')
     .delete(auth, authAdmin, productCtrl.deleteProduct)
-    .put(auth, authAdmin, productCtrl.updateProduct)
+    // .put(auth, authAdmin, productCtrl.updateProduct)
+    .put(auth, authAdmin, productCtrl.updateProductRole)
     .get(productCtrl.getDetailProduct)
 
 router.route('/product')

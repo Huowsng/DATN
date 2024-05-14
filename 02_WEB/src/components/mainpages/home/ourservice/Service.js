@@ -54,6 +54,27 @@ export const Service = () => {
             console.log(err);
         }
     };
+    const browserProduct = async (id) => {
+      try {
+        setLoading(true);
+        await axios.put(
+          `${API_URL}/api/products/${id}`,
+          { role: 1},
+          {
+            headers: { Authorization: token },
+          }
+        );
+        // products.forEach((product) => {
+        //   if (product._id === id) {
+        //     product.role = 1;
+        //   }
+        // });
+        setCallback(!callback);
+        alert('Product role updated successfully');
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
     const checkAll = () => {
         products.forEach((product) => {
@@ -68,6 +89,15 @@ export const Service = () => {
             if (product.checked) deleteProduct(product._id, product.images.public_id);
         });
     };
+
+    const BrowserAll = () => {
+      products.forEach((product) => {
+        if (product.checked) {
+          if (product.checked) browserProduct(product._id, product.images.public_id);
+        }
+      });
+    };
+
 
     if (loading)
         return (
@@ -88,6 +118,7 @@ export const Service = () => {
                 <div className="delete-all">
                     <span>Chọn Tất cả </span>
                     <input type="checkbox" checked={isCheck} onChange={checkAll} />
+                    <button onClick={BrowserAll}>Duyệt tất cả</button>
                     <button onClick={deleteAll}>Xoá hết</button>
                 </div>
             )}

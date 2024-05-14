@@ -128,8 +128,9 @@ const productCtrl = {
   },
   updateProduct: async (req, res) => {
     try {
-      const { types, title, description, images, category } = req.body;
-      if (!images) return res.status(400).json({ Error: "Dont have image" });
+      const { types, title, description, images, category ,role} = req.body;
+      console.log("dung tester",req.body);
+      // if (!images) return res.status(400).json({ Error: "Dont have image" });
       var listType = [];
       for (var i = 0; i < types.length; i++) {
         var type;
@@ -146,14 +147,14 @@ const productCtrl = {
           type = new Type({
             name: types[i].name,
             price: types[i]?.price,
-            amount: types[i].amount,
+              amount: types[i].amount,
           });
         }
         listType.push({
           _id: type._id,
           name: type.name,
           price: type?.price,
-          amount: type.amount,
+          amount: types[i].amount,
         });
       }
       const id = req.params;
@@ -166,6 +167,25 @@ const productCtrl = {
           description: description,
           images: images,
           category: category,
+        }
+      );
+      res.json({ message: "Update successful" });
+    } catch (err) {
+      console.log(err, '66666');
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  updateProductRole: async (req, res) => {
+    try {
+      const { role } = req.body;
+  
+      const id = req.params;
+      console.log(id, 'ssss');
+      await Products.findOneAndUpdate(
+        { _id: req.params._id },
+        {
+          role: role,
         }
       );
       res.json({ message: "Update successful" });

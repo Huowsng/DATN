@@ -10,18 +10,18 @@ import API_URL from "../../../api/baseAPI";
 
 function Products() {
   const state = useContext(GlobalState);
-  const [products, setProducts] = state.productsAPI.products ?? [];
-  console.log(products);
+  const [productRole1, setProductRole1] = state.productsAPI.productRole1 ?? [];
+  console.log(productRole1);
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
   const [callback, setCallback] = state.productsAPI.callback;
   const [loading, setLoading] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const handleCheck = (id) => {
-    products.forEach((product) => {
+    productRole1.forEach((product) => {
       if (product._id === id) product.checked = !product.checked;
     });
-    setProducts([...products]);
+    setProductRole1([...productRole1]);
   };
 
   const deleteProduct = async (id, public_id) => {
@@ -48,15 +48,15 @@ function Products() {
   };
 
   const checkAll = () => {
-    products?.forEach((product) => {
+    productRole1?.forEach((product) => {
       product.checked = !isCheck;
     });
-    setProducts([...products]);
+    setProductRole1([...productRole1]);
     setIsCheck(!isCheck);
   };
 
   const deleteAll = () => {
-    products.forEach((product) => {
+    productRole1.forEach((product) => {
       if (product.checked) deleteProduct(product._id, product.images.public_id);
     });
   };
@@ -87,7 +87,7 @@ function Products() {
       )}
 
       <div className="products">
-        {products?.map((product) => {
+        {productRole1?.map((product) => {
           return (
             <ProductItem
               key={product._id}
@@ -100,7 +100,7 @@ function Products() {
         })}
       </div>
       <LoadMore />
-      {products?.length === 0 && <Loading />}
+      {productRole1?.length === 0 && <Loading />}
     </>
   );
 }

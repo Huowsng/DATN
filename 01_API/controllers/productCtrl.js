@@ -85,7 +85,9 @@ const productCtrl = {
   },
   createProduct: async (req, res) => {
     try {
-      const { types, title, description, images, category } = req.body;
+      const { types, title, description, images, category, user_cre } =
+        req.body;
+      console.log("dasdasd", req.body);
       var listType = [];
       for (var i = 0; i < types.length; i++) {
         const typeItem = new Type({
@@ -110,6 +112,7 @@ const productCtrl = {
         images: images,
         category: category,
         price: price,
+        user_cre: user_cre,
       });
       await newProduct.save();
       res.json({ msg: "Product create!", newProduct });
@@ -128,8 +131,8 @@ const productCtrl = {
   },
   updateProduct: async (req, res) => {
     try {
-      const { types, title, description, images, category ,role} = req.body;
-      console.log("dung tester",req.body);
+      const { types, title, description, images, category, role } = req.body;
+      console.log("dung tester", req.body);
       // if (!images) return res.status(400).json({ Error: "Dont have image" });
       var listType = [];
       for (var i = 0; i < types.length; i++) {
@@ -147,7 +150,7 @@ const productCtrl = {
           type = new Type({
             name: types[i].name,
             price: types[i]?.price,
-              amount: types[i].amount,
+            amount: types[i].amount,
           });
         }
         listType.push({
@@ -158,7 +161,7 @@ const productCtrl = {
         });
       }
       const id = req.params;
-      console.log(id, '5555');
+      console.log(id, "5555");
       await Products.findOneAndUpdate(
         { _id: req.params._id },
         {
@@ -171,7 +174,7 @@ const productCtrl = {
       );
       res.json({ message: "Update successful" });
     } catch (err) {
-      console.log(err, '66666');
+      console.log(err, "66666");
       return res.status(500).json({ msg: err.message });
     }
   },
@@ -179,18 +182,18 @@ const productCtrl = {
   updateProductRole: async (req, res) => {
     try {
       const { role } = req.body;
-  
+
       const id = req.params.id;
-      console.log(id, 'ssss');
+      console.log(id, "ssss");
       await Products.findOneAndUpdate(
-        { _id: id},
+        { _id: id },
         {
           role: role,
         }
       );
       res.json({ message: "Update successful" });
     } catch (err) {
-      console.log(err, '66666');
+      console.log(err, "66666");
       return res.status(500).json({ msg: err.message });
     }
   },
@@ -207,28 +210,28 @@ const productCtrl = {
   // },
   searchProduct: async (req, res) => {
     try {
-        const { searchToken } = req.body;
+      const { searchToken } = req.body;
 
-        if (!searchToken) {
-            return res.status(400).json({ msg: "Search token is required." });
-        }
+      if (!searchToken) {
+        return res.status(400).json({ msg: "Search token is required." });
+      }
 
-        const products = await Products.find({
-            $or: [
-                { title: { $regex: searchToken, $options: "i" } },
-                { description: { $regex: searchToken, $options: "i" } },
-            ],
-        });
+      const products = await Products.find({
+        $or: [
+          { title: { $regex: searchToken, $options: "i" } },
+          { description: { $regex: searchToken, $options: "i" } },
+        ],
+      });
 
-        res.json({
-            status: "success",
-            result: products.length,
-            products: products,
-        });
+      res.json({
+        status: "success",
+        result: products.length,
+        products: products,
+      });
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+      res.status(500).json({ msg: error.message });
     }
-},
+  },
   getDetailProduct: async (req, res) => {
     try {
       const productId = req.params.id;

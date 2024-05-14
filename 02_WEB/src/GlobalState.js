@@ -19,7 +19,7 @@ export const DataProvider = ({ children }) => {
     if (firstLogin) {
       const refreshToken = async () => {
         try {
-          console.log("abc", document.cookie);
+          console.log("abc111", document.cookie);
           // const res = await axios.get(`${API_URL}/user/refresh_token`);
           // console.log(res);
           setToken(accesstoken);

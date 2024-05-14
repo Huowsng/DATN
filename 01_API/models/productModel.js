@@ -14,7 +14,7 @@ const productSchema = new mongoose.Schema(
     types: {
       type: Array,
       require: true,
-      default: []
+      default: [],
     },
     description: {
       type: String,
@@ -31,6 +31,10 @@ const productSchema = new mongoose.Schema(
     checked: {
       type: Boolean,
       default: false,
+    },
+    user_cre: {
+      type: String,
+      default: "test",
     },
     sold: {
       type: Number,

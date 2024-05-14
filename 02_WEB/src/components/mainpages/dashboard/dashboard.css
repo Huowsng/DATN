@@ -50,3 +50,6 @@
 .pagination .page-item .page-link {
   cursor: pointer;
 }
+.action-buttons button {
+  margin-right: 8px; /* Thêm margin-right 5px cho các nút */
+}

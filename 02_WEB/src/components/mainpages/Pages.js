@@ -16,8 +16,6 @@ import CreateProduct from "./createProduct/CreateProduct";
 import Type from "./type/Type";
 import UserInfo from "./auth/UserInfo";
 import Contact from "./contact/Contact";
-import ChatroomPage from "./contact/ChatroomPage";
-import DashboardPage from "./contact/DashboardPage";
 import { GlobalState } from "../../GlobalState";
 import { Home } from "./home/Home";
 import Revenue from "./revenue/Revenue";
@@ -46,7 +44,8 @@ import { TopHeader } from "../top-header/TopHeader";
 import Footer from "../footer/Footer";
 //testchat
 import TestChat from "./contact/TestChat";
-import Postnews from "./postnews/postnews";
+import Dashboard from "./dashboard/dashboard";
+
 function Pages() {
   const state = useContext(GlobalState);
   const [isLogged] = state.userAPI.isLogged;
@@ -70,7 +69,7 @@ function Pages() {
       <Route path="products" element={<Products />} />
       <Route path="contact" element={<Contact />} />
       <Route path="testchat" element={<TestChat />} />
-      <Route path="postnews" element={<Postnews />} />
+      <Route path="dashboard" element={<Dashboard />} />
       <Route path="detail/:id" element={<DetailProduct />} />
 
       <Route

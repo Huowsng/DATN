@@ -33,6 +33,7 @@ button {
   background: transparent;
   cursor: pointer;
 }
+@import "bootstrap/dist/css/bootstrap.min.css";
 
 /* ---------------- Header ------------ */
 @import url("./components/Header/Header.css");
@@ -65,6 +66,7 @@ button {
 @import url("./components/footer/footer.css");
 @import url("./components/mainpages/home/banner/banner.css");
 @import url("./components/mainpages/checkout/checkout.css");
+@import url("./components/mainpages/dashboard/dashboard.css");
 
 /* ----------------- Responsive ------------------ */
 @media (max-width: 450px) {
@@ -145,4 +147,7 @@ button {
   .create_product .upload {
     margin: 20px 0;
   }
+}
+a {
+  text-decoration: none;
 }

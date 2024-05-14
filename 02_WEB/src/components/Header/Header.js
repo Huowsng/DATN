@@ -53,9 +53,9 @@ function Header({ hideFooter }) {
                 <li>
                   <Link to="/category">Add Category</Link>
                 </li>
-                {/* <li>
-                                    <Link to="/revenue">Revenue</Link>
-                                </li> */}
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -130,7 +130,7 @@ function Header({ hideFooter }) {
           onMouseLeave={onLeave}
           className="right-section "
         >
-          <Link to={isAdmin ? "/postnews" : "/create_product"}>
+          <Link to={isAdmin ? "/dasboard" : "/create_product"}>
             {isAdmin ? "Postnews" : "Đăng tin"}
           </Link>
         </div>

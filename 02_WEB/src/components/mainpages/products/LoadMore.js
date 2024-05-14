@@ -1,16 +1,20 @@
-import React, { useContext } from 'react';
-import { GlobalState } from '../../../GlobalState';
+import React, { useContext } from "react";
+import { GlobalState } from "../../../GlobalState";
 
 function LoadMore() {
-    const state = useContext(GlobalState);
-    const [page, setPage] = state.productsAPI.page;
-    const [result] = state.productsAPI.result;
+  const state = useContext(GlobalState);
+  const [page, setPage] = state.productsAPI.page;
+  const [result] = state.productsAPI.result;
 
-    return (
-        <div className="load_more">
-            {result < page * 9 ? '' : <button onClick={() => setPage(page + 1)}>すべてXem</button>}
-        </div>
-    );
+  return (
+    <div className="load_more">
+      {result < page * 9 ? (
+        ""
+      ) : (
+        <button onClick={() => setPage(page + 1)}>Xem tất cả</button>
+      )}
+    </div>
+  );
 }
 
 export default LoadMore;

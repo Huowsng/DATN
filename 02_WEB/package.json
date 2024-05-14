@@ -42,7 +42,6 @@
       "react-app/jest"
     ]
   },
-  "proxy": "https://petshop-rmzp.onrender.com/",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -57,7 +56,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "eslint": "^8.0.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.28.0"
   }
 }

@@ -2,16 +2,15 @@
   padding: 0;
   box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 .App {
@@ -19,9 +18,8 @@ code {
   min-height: 100vh;
   margin: 0 auto;
   /* padding: 0 20px; */
-  box-shadow: 0 0 35px #eee; 
+  box-shadow: 0 0 35px #eee;
   background-color: rgba(247, 102, 49, 0.039);
-
 }
 a {
   text-decoration: none;
@@ -37,36 +35,36 @@ button {
 }
 
 /* ---------------- Header ------------ */
-@import url('./components/Header/Header.css');
+@import url("./components/Header/Header.css");
 
 /* ------------- Products -------------- */
 
-@import url('./components/mainpages/products/products.css');
+@import url("./components/mainpages/products/products.css");
 
 /* ---------------- Detail Product --------------- */
-@import url('./components/mainpages/detailProduct/detailProduct.css');
+@import url("./components/mainpages/detailProduct/detailProduct.css");
 
 /* ------------- Login/Register ----------------- */
-@import url('./components/mainpages/auth/login.css');
+@import url("./components/mainpages/auth/login.css");
 
 /* ------------ Cart ------------------- */
-@import url('./components/mainpages/cart/cart.css');
+@import url("./components/mainpages/cart/cart.css");
 
 /* --------------- History ------------------- */
-@import url('./components/mainpages/history/history.css');
+@import url("./components/mainpages/history/history.css");
 
 /* ------------------ Categories ------------------ */
-@import url('./components/mainpages/categories/categories.css');
+@import url("./components/mainpages/categories/categories.css");
 
 /* ------------------- Thêm sản phẩm -------------- */
-@import url('./components/mainpages/createProduct/createProduct.css');
+@import url("./components/mainpages/createProduct/createProduct.css");
 
-@import url('./components/mainpages/type/type.css');
-@import url('./components/mainpages/auth/userinfo.css');
+@import url("./components/mainpages/type/type.css");
+@import url("./components/mainpages/auth/userinfo.css");
 /* @import url('./components/mainpages/home/home.css'); */
-@import url('./components/footer/footer.css');
-@import url('./components/mainpages/home/banner/banner.css');
-@import url('./components/mainpages/checkout/checkout.css');
+@import url("./components/footer/footer.css");
+@import url("./components/mainpages/home/banner/banner.css");
+@import url("./components/mainpages/checkout/checkout.css");
 
 /* ----------------- Responsive ------------------ */
 @media (max-width: 450px) {

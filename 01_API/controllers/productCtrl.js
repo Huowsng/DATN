@@ -180,10 +180,10 @@ const productCtrl = {
     try {
       const { role } = req.body;
   
-      const id = req.params;
+      const id = req.params.id;
       console.log(id, 'ssss');
       await Products.findOneAndUpdate(
-        { _id: req.params._id },
+        { _id: id},
         {
           role: role,
         }

@@ -122,6 +122,23 @@ const Dashboard = () => {
     }
   };
 
+  const getInfor = async (id) => {
+    try {
+      setLoading(true);
+      await axios.get(
+        `${API_URL}/api/user/${id}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      window.location.reload();
+      // setCallback(!callback);
+      alert("Product role updated successfully");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="dashboard">
       <div className="container-fluid mt-3">

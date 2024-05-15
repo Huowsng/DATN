@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { BrowserRouter } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, useLocation } from "react-router-dom";
 import { DataProvider } from "./GlobalState";
 import Header from "./components/Header/Header";
 import Footer from "./components/footer/Footer";
@@ -7,20 +7,28 @@ import MainPages from "./components/mainpages/Pages";
 import { TopHeader } from "./components/top-header/TopHeader";
 
 function App() {
-  const [showFooter, setShowFooter] = useState(true);
-  const hideFooter = () => {
-    setShowFooter(false);
-  };
+  const location = useLocation();
+  const noHeaderPaths = ["/login"];
+  const noFooterPaths = ["/dashboard", "/login", "/register"];
+  const showHeader = !noHeaderPaths.includes(location.pathname);
+  const showFooter = !noFooterPaths.includes(location.pathname);
+
+  return (
+    <DataProvider>
+      <TopHeader />
+      {showHeader && <Header />}
+      <MainPages />
+      {showFooter && <Footer />}
+    </DataProvider>
+  );
+}
+
+function AppWrapper() {
   return (
     <BrowserRouter>
-      <DataProvider>
-        <TopHeader />
-        <Header />
-        <MainPages />
-        {showFooter && <Footer />}
-      </DataProvider>
+      <App />
     </BrowserRouter>
   );
 }
 
-export default App;
+export default AppWrapper;

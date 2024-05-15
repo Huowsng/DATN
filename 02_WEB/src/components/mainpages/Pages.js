@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Products from "./products/Products";
 import DetailProduct from "./detailProduct/DetailProduct";
-import Login from "./auth/Login";
-import NRegister from "./auth/NRegister";
 import Register from "./auth/Register";
 
 import OrderHistory from "./history/OrderHistory";
@@ -35,7 +33,7 @@ import Grooming from "./CService/Grooming/Grooming";
 //Adv
 import AdvSafety from "./Adv/AdvSafety";
 //login
-import NLogin from "./auth/NLogin";
+import Login from "./auth/Login";
 //newpage
 import News from "./Adv/News";
 ///
@@ -78,17 +76,12 @@ function Pages() {
       />
 
       <Route path="login" element={isLogged ? <Loading /> : <Login />} />
-      <Route path="nlogin" element={isLogged ? <Loading /> : <NLogin />} />
       <Route path="profile" element={isLogged ? <Profile /> : <Loading />} />
       <Route
         path="myfeedback"
         element={isLogged ? <MyFeedback /> : <Loading />}
       />
       <Route path="register" element={isLogged ? <Loading /> : <Register />} />
-      <Route
-        path="nregister"
-        element={isLogged ? <Loading /> : <NRegister />}
-      />
       <Route path="infor" element={isLogged ? <UserInfo /> : <Loading />} />
 
       <Route path="category" element={isAdmin ? <Categories /> : <Loading />} />

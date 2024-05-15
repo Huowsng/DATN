@@ -67,7 +67,7 @@ button {
 @import url("./components/mainpages/home/banner/banner.css");
 @import url("./components/mainpages/checkout/checkout.css");
 @import url("./components/mainpages/dashboard/dashboard.css");
-
+@import url("./components/mainpages/home/ourservice/service.css");
 /* ----------------- Responsive ------------------ */
 @media (max-width: 450px) {
   header ul {

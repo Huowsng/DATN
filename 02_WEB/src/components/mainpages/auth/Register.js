@@ -1,108 +1,166 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { TiStarburst } from 'react-icons/ti';
-import { ImOffice } from 'react-icons/im';
-import API_URL from '../../../api/baseAPI';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { TiStarburst } from "react-icons/ti";
+import classNames from "classnames/bind";
+import styles from "./Register.module.scss";
+import API_URL from "../../../api/baseAPI";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
+const cx = classNames.bind(styles);
 
 function Register() {
-    const [user, setUser] = useState({
-        name: '',
-        email: '',
-        password: '',
-    });
-    console.log(user);
+  const [user, setUser] = useState({
+    name: "",
+    lname: "",
+    phone: "",
+    email: "",
+    password: "",
+  });
 
-    const onChangeInput = (e) => {
-        const { name, value } = e.target;
-        setUser({ ...user, [name]: value });
-    };
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+  };
 
-    const registerSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.post(`/user/register`, { ...user });
+  const registerSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API_URL}/user/register`, { ...user });
 
-            localStorage.setItem('firstLogin', true);
+      localStorage.setItem("firstLogin", true);
 
-            window.location.href = '/';
-        } catch (err) {
-            alert(err.response.data.msg);
-        }
-    };
-    const style = {
-        marginRight: '10px',
-        color: {
-            color: 'rgba(255,255,255)',
-        },
-    };
-    return (
-        <div className="login-page">
-            <form onSubmit={registerSubmit}>
-                <h2>Register</h2>
-                <br />
-                <br />
-                <p className="text-email">
-                    First name & Last name
-                    <TiStarburst color="red" fontSize="7pt" />
-                </p>
-                <input type="text" name="name" required value={user.name} onChange={onChangeInput} />
-                <br />
-                <p className="text-email">
-                    E-mail
-                    <TiStarburst color="red" fontSize="7pt" />
-                </p>
-                <input type="email" name="email" required value={user.email} onChange={onChangeInput} />
-                <br />
-                <p className="text-email">
-                    Password
-                    <TiStarburst color="red" fontSize="7pt" />
-                </p>
-                <input
+      window.location.href = "/";
+    } catch (err) {
+      alert(err.response.data.msg);
+    }
+  };
+  const style = {
+    marginRight: "10px",
+    color: {
+      color: "rgba(255,255,255)",
+    },
+  };
+  return (
+    <section
+      className="vh-150 main-login"
+      style={{ backgroundColor: "#508bfc" }}
+    >
+      <div className="container py-5 h-100">
+        <div className="row d-flex justify-content-center align-items-center h-100">
+          <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div
+              className="card shadow-2-strong"
+              style={{
+                border: "solid 3px #ffffff",
+                borderRadius: "1rem",
+                backgroundColor: "rgba(255, 255, 255,0.1)",
+              }}
+            >
+              <div className="card-body p-5 text-center">
+                <h3 className="mb-5 text-white" style={{ color: "#ffffff" }}>
+                  Đăng kí
+                </h3>
+
+                <div
+                  className="form-outline mb-4"
+                  style={{ backgroundColor: "#ffffff" }}
+                >
+                  <input
+                    type="text"
+                    name="name"
+                    id="typeTextX-2"
+                    placeholder="Tên người dùng"
+                    className="form-control form-control-lg"
+                    value={user.name}
+                    onChange={onChangeInput}
+                  />
+                </div>
+
+                <div
+                  className="form-outline mb-4"
+                  style={{ backgroundColor: "#ffffff" }}
+                >
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Số điện thoại"
+                    id="typePhoneX-2"
+                    className="form-control form-control-lg"
+                    value={user.phone}
+                    onChange={onChangeInput}
+                    pattern="[0-9]{10}"
+                  />
+                </div>
+
+                <div
+                  className="form-outline mb-4"
+                  style={{ backgroundColor: "#ffffff" }}
+                >
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    className="form-control form-control-lg"
+                    value={user.email}
+                    onChange={onChangeInput}
+                  />
+                </div>
+
+                <div
+                  className="form-outline mb-4"
+                  style={{ backgroundColor: "#ffffff" }}
+                >
+                  <input
                     type="password"
                     name="password"
-                    required
-                    autoComplete="on"
+                    placeholder="Password"
+                    id="typePasswordX-2"
+                    className="form-control form-control-lg"
                     value={user.password}
                     onChange={onChangeInput}
-                />
-
-                <div className="row">
-                    <button type="submit">Register</button>
-                    <Link to="/nlogin">Login</Link>
+                  />
                 </div>
-                <hr />
-                <img
-                    style={style}
-                    src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
-                    alt="ig"
-                    width="30"
-                    height="30"
-                />
-                <img
-                    style={style}
-                    src="https://cdn-icons-png.flaticon.com/512/3670/3670032.png"
-                    alt="ig"
-                    width="30"
-                    height="30"
-                />
-                <img
-                    style={style}
-                    src="https://cdn-icons-png.flaticon.com/512/888/888853.png"
-                    alt="ig"
-                    width="30"
-                    height="30"
-                />
-                <img
-                    style={style}
-                    src="https://cdn-icons-png.flaticon.com/512/2504/2504839.png"
-                    alt="ig"
-                    width="30"
-                    height="30"
-                />
-            </form>
+
+                <button
+                  className="btn btn-primary btn-lg btn-block"
+                  type="submit"
+                  onClick={registerSubmit}
+                >
+                  Đăng kí
+                </button>
+
+                <hr className="my-4" />
+
+                <button
+                  className="btn btn-lg btn-block btn-primary"
+                  style={{ backgroundColor: "#dd4b39" }}
+                  type="submit"
+                >
+                  <FaGoogle className="me-2" /> Sign in with google
+                </button>
+                <button
+                  className="btn btn-lg btn-block btn-primary mb-2"
+                  style={{ backgroundColor: "#3b5998" }}
+                  type="submit"
+                >
+                  <FaFacebook className="me-2" />
+                  Sign in with facebook
+                </button>
+                <div className="mt-3">
+                  <p className="text-white mb-0">
+                    Have an account?{" "}
+                    <Link to="/login" className="text-white fw-bold">
+                      Sign in now
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    );
+      </div>
+    </section>
+  );
 }
 // register
 export default Register;

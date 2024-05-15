@@ -69,12 +69,12 @@ header ul li:hover {
 
 /* sidebar */
 .text-primary {
-  color: #5a8dee !important;
+  color: #5a8dee;
 }
 
 .btn-primary {
-  border-color: #5a8dee !important;
-  background-color: #ff3d00 !important;
+  border-color: #5a8dee;
+  background-color: #ff3d00;
   color: #fff;
 }
 
@@ -144,11 +144,11 @@ header ul li:hover {
 .right-section a {
   margin-right: 60px;
   text-decoration: none;
-  color: #000;  
+  color: #000;
   padding: 8px 16px;
   border: 1px solid #fff;
   border-radius: 5px;
-  background-color: #ff3d00
+  background-color: #ff3d00;
 }
 
 /* Hover effect */
@@ -161,11 +161,3 @@ header ul li:hover {
 .right-section div {
   cursor: pointer;
 }
-
-
-
-
-
-
-
-

@@ -1,24 +1,24 @@
 import "./service.css";
 import { BsPlusCircle } from "react-icons/bs";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { GlobalState } from "../../../../GlobalState";
-import ProductItem from "../../utils//productItem/ProductItem";
+import ProductItem from "../../utils/productItem/ProductItem";
 import Loading from "../../utils/loading/Loading";
 import axios from "axios";
-import Filters from "../../products/Filters";
 import LoadMore from "../../products/LoadMore";
-import { Link } from "react-router-dom";
 import API_URL from "../../../../api/baseAPI";
+
+const PRODUCTS_PER_PAGE = 20; // 5 rows * 4 columns
 
 export const Service = () => {
   const state = useContext(GlobalState);
   const [products, setProducts] = state.productsAPI.products ?? [];
-  console.log(products);
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
   const [callback, setCallback] = state.productsAPI.callback;
   const [loading, setLoading] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleCheck = (id) => {
     products.forEach((product) => {
@@ -27,10 +27,6 @@ export const Service = () => {
     setProducts([...products]);
   };
 
-  // useEffect(() => {
-  //     // Thiết lập sắp xếp mặc định khi trang được tải
-  //     state.productsAPI.setSort('-createdAt');
-  // }, [state.productsAPI]);
   const deleteProduct = async (id, public_id) => {
     try {
       setLoading(true);
@@ -47,12 +43,12 @@ export const Service = () => {
       await destroyImg;
       await deleteProduct;
       setCallback(!callback);
-      alert("Product deleted successfully2");
+      alert("Product deleted successfully");
     } catch (err) {
-      // alert(err.response.data.msg);
       console.log(err);
     }
   };
+
   const browserProduct = async (id) => {
     try {
       setLoading(true);
@@ -63,11 +59,6 @@ export const Service = () => {
           headers: { Authorization: token },
         }
       );
-      // products.forEach((product) => {
-      //   if (product._id === id) {
-      //     product.role = 1;
-      //   }
-      // });
       setCallback(!callback);
       alert("Product role updated successfully");
     } catch (err) {
@@ -92,18 +83,22 @@ export const Service = () => {
   const BrowserAll = () => {
     products.forEach((product) => {
       if (product.checked) {
-        if (product.checked)
-          browserProduct(product._id, product.images.public_id);
+        browserProduct(product._id);
       }
     });
   };
 
-  if (loading)
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
+  const indexOfLastProduct = currentPage * PRODUCTS_PER_PAGE;
+  const indexOfFirstProduct = indexOfLastProduct - PRODUCTS_PER_PAGE;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+
+  if (loading) return <Loading />;
+
   return (
     <>
       <div className="service-main">
@@ -121,21 +116,32 @@ export const Service = () => {
         </div>
       )}
 
-      <div className="products">
-        {products?.map((product) => {
-          return (
-            <ProductItem
-              key={product._id}
-              product={product}
-              isAdmin={isAdmin}
-              deleteProduct={deleteProduct}
-              handleCheck={handleCheck}
-            />
-          );
-        })}
+      <div className="services">
+        {currentProducts.map((product) => (
+          <ProductItem
+            key={product._id}
+            product={product}
+            isAdmin={isAdmin}
+            deleteProduct={deleteProduct}
+            handleCheck={handleCheck}
+            className="service-product-item" // Add this line
+          />
+        ))}
+      </div>
+
+      <div className="pagination">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => setCurrentPage(index + 1)}
+            className={currentPage === index + 1 ? "active" : ""}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
       <LoadMore />
-      {products?.length === 0 && <Loading />}
+      {products.length === 0 && <Loading />}
     </>
   );
 };

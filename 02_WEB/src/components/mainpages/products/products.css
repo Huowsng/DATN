@@ -8,7 +8,7 @@
 }
 
 /* ----------- Product Item ----------------- */
-@import url('../utils/productItem/productItem.css');
+@import url("../utils/productItem/productItem.css");
 
 .delete-all {
   text-align: right;

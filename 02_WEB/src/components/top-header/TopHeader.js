@@ -80,7 +80,7 @@ export const TopHeader = () => {
               loggedRouter()
             ) : (
               <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                <Link to="/nlogin">
+                <Link to="/login">
                   <FontAwesomeIcon icon={faSignOut} />
                   <span className={cx("label")}>Đăng nhập</span>
                 </Link>

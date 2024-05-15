@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [callback, setCallback] = state.productsAPI.callback;
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -27,55 +28,41 @@ const Dashboard = () => {
       }
     };
     fetchCategories();
-
     const fetchUsers = async () => {
       try {
-        const res = await axios.get(`${API_URL}/api/user`);
+        const res = await axios.get(`${API_URL}/user/username`, {
+          headers: { Authorization: token },
+        });
         setUsers(res.data);
+        console.log(res.data);
       } catch (err) {
         console.log(err);
       }
     };
-
     fetchUsers();
-  }, [state.token]);
+  }, [state.token, productRole0, token]);
 
-  // Tính toán tổng số trang
   const totalPages = Math.ceil(productRole0.length / itemsPerPage);
-
-  // Lấy dữ liệu của trang hiện tại
   const currentItems = productRole0.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // Hàm thay đổi trang
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  // Xóa sản phẩm
   const deleteProduct = async (id, public_id) => {
     try {
       setLoading(true);
-      const destroyImg = axios.post(
-        `${API_URL}/api/destroy`,
-        { public_id },
-        {
-          headers: { Authorization: state.token },
-        }
-      );
-      const deleteProduct = axios.delete(`${API_URL}/api/products/${id}`, {
-        headers: { Authorization: state.token },
+      await axios.delete(`${API_URL}/api/products/${id}`, {
+        headers: { Authorization: token },
       });
-      await destroyImg;
-      await deleteProduct;
       setCallback(!callback);
+      window.location.reload();
       alert("Product deleted successfully");
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -86,19 +73,20 @@ const Dashboard = () => {
       </div>
     );
 
-  // Lấy tên danh mục từ id danh mục
   const getCategoryName = (categoryId) => {
     const category = categories.find((cat) => cat._id === categoryId);
     return category ? category.name : "Unknown";
   };
 
-  // Lấy tên người bán từ id người bán
   const getSellerName = (userId) => {
-    const user = users.find((user) => user._id === userId);
-    return user ? user.name : "Unknown";
+    const userMap = {};
+    users.forEach((user) => {
+      userMap[user._id] = user.name;
+    });
+    const name = userMap[userId];
+    return name ? name : "Unknown";
   };
 
-  // Định dạng ngày tháng
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -115,74 +103,41 @@ const Dashboard = () => {
         }
       );
       window.location.reload();
-      // setCallback(!callback);
       alert("Product role updated successfully");
     } catch (err) {
       console.log(err);
     }
   };
 
-  const getInfor = async (id) => {
-    try {
-      setLoading(true);
-      await axios.get(
-        `${API_URL}/api/user/${id}`,
-        {
-          headers: { Authorization: token },
-        }
-      );
-      window.location.reload();
-      // setCallback(!callback);
-      alert("Product role updated successfully");
-    } catch (err) {
-      console.log(err);
-    }
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
   };
+
+  const filteredItems = productRole0.filter((product) => {
+    return (
+      getSellerName(product.user_cre)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      product.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   return (
     <div className="dashboard">
       <div className="container-fluid mt-3">
         <div className="row">
-          <aside className="col-md-2 bg-light sidebar">
-            <ul className="nav flex-column">
-              <li className="nav-item">
-                <a className="nav-link active" href="#">
-                  Dashboard
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Commerce
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Analytics
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Crypto
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Helpdesk
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Monitoring
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Fitness
-                </a>
-              </li>
-            </ul>
-          </aside>
           <main className="col-md-10 ml-sm-auto col-lg-10 px-4">
+            <div className="row mb-3">{/* Your card section */}</div>
+            <div className="row">
+              <div className="col-md-12">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+              </div>
+            </div>
             <div className="row mb-3">
               <div className="col-md-3">
                 <div className="card text-white bg-primary mb-3">
@@ -222,21 +177,11 @@ const Dashboard = () => {
                 <div>Không có sản phẩm</div>
               ) : (
                 <table className="table table-striped table-sm">
-                  <thead>
-                    <tr>
-                      <th>Tên người bán</th>
-                      <th>Tên sản phẩm</th>
-                      <th>Số lượng</th>
-                      <th>Loại</th>
-                      <th>Giá</th>
-                      <th>Ngày đăng</th>
-                      <th>Hành động</th>
-                    </tr>
-                  </thead>
+                  {/* Your table header */}
                   <tbody>
-                    {currentItems.map((product) => (
+                    {filteredItems.map((product) => (
                       <tr key={product._id}>
-                        <td>{getSellerName(product.userId)}</td>
+                        <td>{getSellerName(product.user_cre)}</td>
                         <td>{product.title}</td>
                         <td>
                           {product.types && product.types.length > 0
@@ -253,6 +198,9 @@ const Dashboard = () => {
                             : "N/A"}
                         </td>
                         <td>{formatDate(product.createdAt)}</td>
+                        <td>
+                          <Link to={`/detail/${product._id}`}>Xem</Link>
+                        </td>
                         <td className="action-buttons">
                           <button
                             className="btn btn-sm btn-success"
@@ -260,11 +208,11 @@ const Dashboard = () => {
                           >
                             Accept
                           </button>
-
                           <button className="btn btn-sm btn-primary">
-                            Edit
+                            <Link to={`/edit_product/${product._id}`}>
+                              Edit
+                            </Link>
                           </button>
-
                           <button
                             className="btn btn-sm btn-danger"
                             onClick={() =>
@@ -283,28 +231,21 @@ const Dashboard = () => {
                 </table>
               )}
             </div>
-            {productRole0.length > 0 && (
-              <nav aria-label="Page navigation example">
-                <ul className="pagination justify-content-center">
-                  {[...Array(totalPages)].map((_, index) => (
-                    <li
-                      key={index}
-                      className={`page-item ${
-                        currentPage === index + 1 ? "active" : ""
-                      }`}
-                    >
-                      <a
-                        className="page-link"
-                        href="#"
-                        onClick={() => handlePageChange(index + 1)}
-                      >
-                        {index + 1}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            )}
+            <div className="pagination">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    onClick={() => handlePageChange(pageNumber)}
+                    className={`page-link ${
+                      currentPage === pageNumber ? "active" : ""
+                    }`}
+                  >
+                    {pageNumber}
+                  </button>
+                )
+              )}
+            </div>
           </main>
         </div>
       </div>

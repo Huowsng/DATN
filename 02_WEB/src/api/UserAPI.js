@@ -8,6 +8,7 @@ function UserAPI(token) {
   const [history, setHistory] = useState([]);
   const [detail, setDetail] = useState([]);
   const [userID, setUserID] = useState("");
+  const [users, setUsers] = useState([]);
   useEffect(() => {
     if (token) {
       const getUser = async () => {
@@ -63,6 +64,7 @@ function UserAPI(token) {
     history: [history, setHistory],
     detail: [detail, setDetail],
     userID: [userID, setUserID],
+    users: [users, setUsers],
   };
 }
 

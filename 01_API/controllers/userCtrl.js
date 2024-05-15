@@ -187,17 +187,16 @@ const userCtrl = {
     }
   },
 
-  getInfor: async (req, res) => {
+  getUserName: async (req, res) => {
     try {
-        const userID = req.params.id; // Lấy id từ URL params
-        const user = await Users.findById(userID).select("-password");
-        if (!user)
-            return res.status(400).json({ msg: "User does not exist." });
-        res.json(user);
+      // Tìm user trong bảng User dựa trên ID
+      const user = await Users.find();
+      if (!user) return res.status(400).json({ msg: "User does not exist." });
+      res.json(user); // Trả về thông tin user
     } catch (err) {
-        return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ msg: err.message });
     }
-},
+  },
 
   addCart: async (req, res) => {
     try {

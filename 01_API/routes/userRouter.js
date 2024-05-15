@@ -14,8 +14,7 @@ router
   .get("/infor", auth, userCtrl.getUser)
   .put("/infor", auth, userCtrl.updateUser);
 
-router.get("/user/:id", userCtrl.getInfor);
-
+router.get("/username", userCtrl.getUserName);
 
 router.patch("/addcart", auth, userCtrl.addCart);
 

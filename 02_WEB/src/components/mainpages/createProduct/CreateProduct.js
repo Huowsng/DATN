@@ -11,6 +11,7 @@ const initialState = {
   description: "",
   category: "",
   _id: "",
+  role: 0,
 };
 
 let nextId = 0;

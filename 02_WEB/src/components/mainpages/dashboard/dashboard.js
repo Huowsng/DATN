@@ -108,7 +108,7 @@ const Dashboard = () => {
     try {
       setLoading(true);
       await axios.put(
-        `${API_URL}/api/products/${id}`,
+        `${API_URL}/api/products/role/${id}`,
         { role: 1 },
         {
           headers: { Authorization: token },

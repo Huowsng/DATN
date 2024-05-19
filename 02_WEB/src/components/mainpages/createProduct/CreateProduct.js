@@ -147,19 +147,16 @@ function CreateProduct() {
         re.push(obj);
         //setOrderItem(obj);
       }
-      console.log("hehehhehehhehe", re);
       const rs = {
         title: product.title,
         description: product.description,
         category: product.category,
         types: re,
+        role: isAdmin ? 1 : 0,
       };
-      console.log("ssssssssssssssssss");
-      // if (!isAdmin) return alert('you not admin');
       if (!images) return alert("image not upload");
 
       if (onEdit) {
-        console.log("hahahhahaha111111", rs);
         await axios.put(
           `${API_URL}/api/products/${product._id}`,
           { ...edit, images },
@@ -168,7 +165,6 @@ function CreateProduct() {
           }
         );
       } else {
-        console.log("hahahhahaha222222", rs);
         await axios.post(
           `${API_URL}/api/products`,
           { ...rs, images, user_cre },

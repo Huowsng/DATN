@@ -1,6 +1,5 @@
 .dashboard .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -45,6 +44,7 @@
 
 .pagination {
   margin-top: 20px;
+  justify-content: center;
 }
 
 .pagination .page-item .page-link {
@@ -55,4 +55,39 @@
 }
 .row .mb-3 {
   margin-top: 10px;
+}
+.checkbox-dashboard {
+}
+.small-checkbox {
+  width: 32px; /* Adjust the size as needed */
+  height: 32px; /* Adjust the size as needed */
+  transform: scale(0.75); /* Scale the checkbox */
+  -webkit-transform: scale(0.75); /* For Safari */
+  -moz-transform: scale(0.75); /* For Firefox */
+  -ms-transform: scale(0.75); /* For Internet Explorer */
+  -o-transform: scale(0.75); /* For Opera */
+  margin: 0; /* Remove any unwanted margin */
+  padding: 0; /* Remove any unwanted padding */
+  display: flex;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Distribute items evenly along the main axis */
+  align-items: center; /* Align items vertically */
+}
+
+.button-group {
+  display: flex;
+  gap: 9px; /* Spacing between items */
+  margin-right: 6px;
+  margin-left: auto; /* Align to the right */
+}
+.action-checkbox {
+  width: 30px; /* Adjust width as needed */
+}
+.action-buttons {
+  width: 200px;
+}
+.checkbox-all {
+  margin-left: 14px;
 }

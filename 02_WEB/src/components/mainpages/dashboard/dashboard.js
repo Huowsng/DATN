@@ -17,6 +17,11 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 10;
+  const [isCheck, setIsCheck] = useState(false);
+  const [acceptedCount, setAcceptedCount] = useState(0);
+  const [productsToProcess, setProductsToProcess] = useState(
+    productRole0.length
+  );
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -40,7 +45,12 @@ const Dashboard = () => {
       }
     };
     fetchUsers();
-  }, [state.token, productRole0, token]);
+    console.log("hihi", acceptedCount);
+    if (productsToProcess === 0 && acceptedCount > 0) {
+      alert("Product roles updated successfully");
+      setLoading(false); // Ensure loading state is reset after all products are processed
+    }
+  }, [state.token, productRole0, token, acceptedCount, productsToProcess]);
 
   const totalPages = Math.ceil(productRole0.length / itemsPerPage);
   const currentItems = productRole0.slice(
@@ -64,6 +74,35 @@ const Dashboard = () => {
     } catch (err) {
       console.log(err);
     }
+  };
+  const checkAll = () => {
+    productRole0?.forEach((product) => {
+      product.checked = !isCheck;
+    });
+    setProductRole0([...productRole0]);
+    setIsCheck(!isCheck);
+  };
+  const deleteAll = () => {
+    productRole0.forEach((product) => {
+      if (product.checked) deleteProduct(product._id, product.images.public_id);
+    });
+  };
+
+  // const [acceptedCount, setAcceptedCount] = useState(0);
+  const handleCheck = (id) => {
+    let newAcceptedCount = acceptedCount;
+    productRole0.forEach((product) => {
+      if (product._id === id) {
+        product.checked = !product.checked;
+        if (product.checked === true) {
+          newAcceptedCount += 1;
+        } else {
+          newAcceptedCount -= 1;
+        }
+      }
+    });
+    setAcceptedCount(newAcceptedCount);
+    setProductRole0([...productRole0]);
   };
 
   if (loading)
@@ -102,10 +141,29 @@ const Dashboard = () => {
           headers: { Authorization: token },
         }
       );
-      window.location.reload();
-      alert("Product role updated successfully");
+      setAcceptedCount((prevCount) => prevCount + 1);
     } catch (err) {
       console.log(err);
+    } finally {
+      setProductsToProcess((prevCount) => prevCount - 1);
+    }
+  };
+
+  const acceptAll = async () => {
+    let newAcceptedCount = acceptedCount;
+    try {
+      setLoading(true);
+      for (const product of productRole0) {
+        if (product.checked === true) {
+          newAcceptedCount -= 1;
+          setAcceptedCount(newAcceptedCount);
+          await acceptProduct(product._id);
+        }
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
     }
   };
 
@@ -125,58 +183,71 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="container-fluid mt-3">
-        <div className="row">
-          <main className="col-md-10 ml-sm-auto col-lg-10 px-4">
-            <div className="row mb-3">{/* Your card section */}</div>
-            <div className="row">
-              <div className="col-md-12">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-              </div>
+        <div className="row justify-content-center ">
+          <div className="row justify-content-center">
+            <div className="col-md-8 ">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
             </div>
-            <div className="row mb-3">
-              <div className="col-md-3">
-                <div className="card text-white bg-primary mb-3">
-                  <div className="card-header">Total Sales</div>
-                  <div className="card-body">
-                    <h5 className="card-title">$2,456</h5>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="card text-white bg-warning mb-3">
-                  <div className="card-header">Total Expenses</div>
-                  <div className="card-body">
-                    <h5 className="card-title">$3,326</h5>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="card text-white bg-success mb-3">
-                  <div className="card-header">Total Visitors</div>
-                  <div className="card-body">
-                    <h5 className="card-title">5,325</h5>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="card text-white bg-info mb-3">
-                  <div className="card-header">Total Orders</div>
-                  <div className="card-body">
-                    <h5 className="card-title">1,326</h5>
-                  </div>
+          </div>
+          <div className="row mb-3">
+            <div className="col-md-4">
+              <div className="card text-white bg-primary mb-3">
+                <div className="card-header">Tổng doanh thu</div>
+                <div className="card-body">
+                  <h5 className="card-title">$2,456</h5>
                 </div>
               </div>
             </div>
-            <div className="table-responsive">
-              {productRole0.length === 0 ? (
-                <div>Không có sản phẩm</div>
-              ) : (
-                <table className="table table-striped table-sm">
+            <div className="col-md-4">
+              <div className="card text-white bg-success mb-3">
+                <div className="card-header">Số khách hàng truy cập</div>
+                <div className="card-body">
+                  <h5 className="card-title">5,325</h5>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card text-white bg-info mb-3">
+                <div className="card-header">Tổng số đơn đặt hàng</div>
+                <div className="card-body">
+                  <h5 className="card-title">1,326</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="table-responsive">
+            {productRole0.length === 0 ? (
+              <div>Không có sản phẩm</div>
+            ) : (
+              <div>
+                <div class="button-container">
+                  <div class="button-group">
+                    <button
+                      class="btn btn-sm btn-success mr-2"
+                      onClick={acceptAll}
+                    >
+                      Duyệt tất cả
+                    </button>
+                    <button class="btn btn-sm btn-danger" onClick={deleteAll}>
+                      Xoá hết
+                    </button>
+                    <div className="checkbox-all">
+                      <input
+                        type="checkbox"
+                        class="small-checkbox"
+                        checked={isCheck}
+                        onChange={checkAll}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <table className="table table-striped table-sm mt-2">
                   {/* Your table header */}
                   <tbody>
                     {filteredItems.map((product) => (
@@ -225,28 +296,36 @@ const Dashboard = () => {
                             Delete
                           </button>
                         </td>
+                        <td className="action-checkbox">
+                          <input
+                            type="checkbox"
+                            class="small-checkbox"
+                            checked={product.checked}
+                            onChange={() => handleCheck(product._id)}
+                          />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-              )}
-            </div>
-            <div className="pagination">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (pageNumber) => (
-                  <button
-                    key={pageNumber}
-                    onClick={() => handlePageChange(pageNumber)}
-                    className={`page-link ${
-                      currentPage === pageNumber ? "active" : ""
-                    }`}
-                  >
-                    {pageNumber}
-                  </button>
-                )
-              )}
-            </div>
-          </main>
+              </div>
+            )}
+          </div>
+          <div className="pagination">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (pageNumber) => (
+                <button
+                  key={pageNumber}
+                  onClick={() => handlePageChange(pageNumber)}
+                  className={`page-link ${
+                    currentPage === pageNumber ? "active" : ""
+                  }`}
+                >
+                  {pageNumber}
+                </button>
+              )
+            )}
+          </div>
         </div>
       </div>
     </div>

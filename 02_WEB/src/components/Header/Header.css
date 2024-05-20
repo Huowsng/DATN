@@ -104,7 +104,10 @@ header ul li:hover {
   justify-content: space-between;
   padding: 15px;
 }
-
+.sd-body ul li a {
+  text-decoration: none;
+  color: #000;
+}
 .sidebar-overlay {
   position: fixed;
   top: 0;

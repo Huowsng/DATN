@@ -130,9 +130,7 @@ function Header({ hideFooter }) {
           onMouseLeave={onLeave}
           className="right-section "
         >
-          <Link to={isAdmin ? "/dasboard" : "/create_product"}>
-            {isAdmin ? "Postnews" : "Đăng tin"}
-          </Link>
+          {!isAdmin && <Link to="/create_product">Đăng tin</Link>}
         </div>
       </ul>
     </header>

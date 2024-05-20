@@ -19,10 +19,6 @@ const Dashboard = () => {
   const itemsPerPage = 10;
   const [isCheck, setIsCheck] = useState(false);
   const [acceptedCount, setAcceptedCount] = useState(0);
-  const [productsToProcess, setProductsToProcess] = useState(
-    productRole0.length
-  );
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -46,11 +42,7 @@ const Dashboard = () => {
     };
     fetchUsers();
     console.log("hihi", acceptedCount);
-    if (productsToProcess === 0 && acceptedCount > 0) {
-      alert("Product roles updated successfully");
-      setLoading(false); // Ensure loading state is reset after all products are processed
-    }
-  }, [state.token, productRole0, token, acceptedCount, productsToProcess]);
+  }, [state.token, productRole0, token, acceptedCount]);
 
   const totalPages = Math.ceil(productRole0.length / itemsPerPage);
   const currentItems = productRole0.slice(
@@ -68,13 +60,13 @@ const Dashboard = () => {
       await axios.delete(`${API_URL}/api/products/${id}`, {
         headers: { Authorization: token },
       });
-      setCallback(!callback);
       window.location.reload();
-      alert("Product deleted successfully");
+      alert("Product delete successfully");
     } catch (err) {
       console.log(err);
     }
   };
+
   const checkAll = () => {
     productRole0?.forEach((product) => {
       product.checked = !isCheck;
@@ -82,13 +74,32 @@ const Dashboard = () => {
     setProductRole0([...productRole0]);
     setIsCheck(!isCheck);
   };
-  const deleteAll = () => {
-    productRole0.forEach((product) => {
-      if (product.checked) deleteProduct(product._id, product.images.public_id);
-    });
+
+  const deleteAll = async () => {
+    try {
+      setLoading(true);
+      let newAcceptedCount = acceptedCount;
+      for (const product of productRole0) {
+        if (product.checked === true) {
+          newAcceptedCount -= 1;
+          setAcceptedCount(newAcceptedCount);
+          await axios.delete(`${API_URL}/api/products/${product._id}`, {
+            headers: { Authorization: token },
+          });
+        }
+      }
+      if (newAcceptedCount === 0) {
+        window.location.reload();
+        alert("All Product delete successfully");
+      }
+      setCallback(!callback);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
   };
 
-  // const [acceptedCount, setAcceptedCount] = useState(0);
   const handleCheck = (id) => {
     let newAcceptedCount = acceptedCount;
     productRole0.forEach((product) => {
@@ -96,12 +107,14 @@ const Dashboard = () => {
         product.checked = !product.checked;
         if (product.checked === true) {
           newAcceptedCount += 1;
+          setAcceptedCount(newAcceptedCount);
         } else {
           newAcceptedCount -= 1;
+          setAcceptedCount(newAcceptedCount);
         }
       }
     });
-    setAcceptedCount(newAcceptedCount);
+
     setProductRole0([...productRole0]);
   };
 
@@ -141,11 +154,11 @@ const Dashboard = () => {
           headers: { Authorization: token },
         }
       );
-      setAcceptedCount((prevCount) => prevCount + 1);
+      alert("Products accepted successfully");
+      window.location.reload();
+      console.log("33333", acceptedCount);
     } catch (err) {
       console.log(err);
-    } finally {
-      setProductsToProcess((prevCount) => prevCount - 1);
     }
   };
 
@@ -155,12 +168,20 @@ const Dashboard = () => {
       setLoading(true);
       for (const product of productRole0) {
         if (product.checked === true) {
+          await axios.put(
+            `${API_URL}/api/products/role/${product._id}`,
+            { role: 1 },
+            {
+              headers: { Authorization: token },
+            }
+          );
           newAcceptedCount -= 1;
-          setAcceptedCount(newAcceptedCount);
-          await acceptProduct(product._id);
         }
       }
+      setAcceptedCount(newAcceptedCount);
       setLoading(false);
+      alert("All selected products accepted successfully");
+      window.location.reload();
     } catch (err) {
       console.log(err);
       setLoading(false);

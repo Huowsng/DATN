@@ -209,6 +209,7 @@ const productCtrl = {
   //   }
   // },
   searchProduct: async (req, res) => {
+    console.log("111111111111");
     try {
       const { searchToken } = req.body;
 

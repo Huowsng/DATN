@@ -96,6 +96,13 @@ function UserInfo() {
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                                <Link to="/product-management">Quản lý sản phẩm</Link>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="detail-user-box">
+                        <div className="user-box">
+                            <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
                                 <Link to="/cart">Giỏ hàng</Link>
                             </p>
                         </div>

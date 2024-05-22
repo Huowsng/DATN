@@ -44,6 +44,8 @@ import Footer from "../footer/Footer";
 import TestChat from "./contact/TestChat";
 import Dashboard from "./dashboard/dashboard";
 
+import ProductManagement from "./productManagement/ProductManagement";
+
 function Pages() {
   const state = useContext(GlobalState);
   const [isLogged] = state.userAPI.isLogged;
@@ -89,6 +91,10 @@ function Pages() {
       <Route
         path="create_product"
         element={isLogged ? <CreateProduct /> : <Loading />}
+      />
+      <Route
+        path="product-management"
+        element={isLogged ? <ProductManagement /> : <Loading />}
       />
       <Route
         path="edit_product/:id"

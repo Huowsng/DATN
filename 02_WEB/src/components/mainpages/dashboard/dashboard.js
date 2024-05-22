@@ -41,7 +41,6 @@ const Dashboard = () => {
       }
     };
     fetchUsers();
-    console.log("hihi", acceptedCount);
   }, [state.token, productRole0, token, acceptedCount]);
 
   const totalPages = Math.ceil(productRole0.length / itemsPerPage);
@@ -61,7 +60,7 @@ const Dashboard = () => {
         headers: { Authorization: token },
       });
       window.location.reload();
-      alert("Product delete successfully");
+      alert("Xoá sản phẩm thành công!");
     } catch (err) {
       console.log(err);
     }
@@ -90,7 +89,7 @@ const Dashboard = () => {
       }
       if (newAcceptedCount === 0) {
         window.location.reload();
-        alert("All Product delete successfully");
+        alert("Xoá tất cả sản phẩm thành công!");
       }
       setCallback(!callback);
       setLoading(false);
@@ -154,9 +153,8 @@ const Dashboard = () => {
           headers: { Authorization: token },
         }
       );
-      alert("Products accepted successfully");
+      alert("Đăng tải sản phẩm thành công!");
       window.location.reload();
-      console.log("33333", acceptedCount);
     } catch (err) {
       console.log(err);
     }
@@ -180,7 +178,7 @@ const Dashboard = () => {
       }
       setAcceptedCount(newAcceptedCount);
       setLoading(false);
-      alert("All selected products accepted successfully");
+      alert("Đăng tải tất cả sản phẩm thành công!");
       window.location.reload();
     } catch (err) {
       console.log(err);

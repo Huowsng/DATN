@@ -11,14 +11,11 @@ const initialState = {
   description: "",
   category: "",
   _id: "",
-  role: 0,
 };
 
-let nextId = 0;
 function CreateProduct() {
   const state = useContext(GlobalState);
   const user_cre = state.userAPI.userID[0];
-  console.log("ìnorrrrrr:", user_cre);
   const [product, setProduct] = useState(initialState);
   const [categories] = state.categoriesAPI.categories;
   const [images, setImages] = useState(false);
@@ -26,20 +23,13 @@ function CreateProduct() {
 
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
-  console.log("sôsos", token);
 
   const history = useNavigate();
   const param = useParams();
 
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState();
-  const [amount, setMount] = useState();
-  const [types, setTypes] = useState([]);
-
   const [products] = state.productsAPI.products;
-  const [onEdit, setOnEdit] = useState(true);
+  const [onEdit, setOnEdit] = useState(false);
   const [callback, setCallback] = state.productsAPI.callback;
-  // console.log(JSON.stringify(product.types[0].name))
   const [edit, setEdit] = useState({
     title: "",
     description: "",
@@ -53,13 +43,12 @@ function CreateProduct() {
       },
     ],
   });
+
   useEffect(() => {
     if (param.id) {
-      console.log("11111", products);
       setOnEdit(true);
       products.forEach((product) => {
         if (product._id === param.id) {
-          console.log(product);
           setEdit(product);
           setImages(product.images);
         }
@@ -74,18 +63,15 @@ function CreateProduct() {
   const handleUpload = async (e) => {
     e.preventDefault();
     try {
-      // if (!isAdmin) return alert('You are not admin');
       const file = e.target.files[0];
 
       if (!file) return alert("The file is not correct.");
 
       if (file.size > 1024 * 1024)
-        // 1mb
         return alert("Image is large. Please try again");
 
       if (file.type !== "image/jpeg" && file.type !== "image/png")
-        // 1mb
-        return alert("The file is not correct.Please check again ");
+        return alert("The file is not correct. Please check again");
 
       let formData = new FormData();
       formData.append("file", file);
@@ -106,7 +92,6 @@ function CreateProduct() {
 
   const handleDestroy = async () => {
     try {
-      // if (!isAdmin) return alert('you not admin');
       setLoading(true);
       await axios.post(
         `${API_URL}/api/destroy`,
@@ -126,6 +111,7 @@ function CreateProduct() {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
   };
+
   const handleChangeInputEdit = (e, index) => {
     const { name, value } = e.target;
     const updatedTypes = [...edit.types];
@@ -136,29 +122,19 @@ function CreateProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const re = [];
-      for (const test of types) {
-        var obj = {
-          name: test.name,
-          price: test.price,
-          amount: test.amount,
-        };
-        // console.log(test);
-        re.push(obj);
-        //setOrderItem(obj);
-      }
+      if (!images) return alert("Image not uploaded");
+
       const rs = {
         title: product.title,
         description: product.description,
         category: product.category,
-        types: re,
+        types: edit.types,
         role: isAdmin ? 1 : 0,
       };
-      if (!images) return alert("image not upload");
 
       if (onEdit) {
         await axios.put(
-          `${API_URL}/api/products/${product._id}`,
+          `${API_URL}/api/products/${edit._id}`,
           { ...edit, images },
           {
             headers: { Authorization: token },
@@ -174,16 +150,21 @@ function CreateProduct() {
         );
       }
 
+      alert(
+        isAdmin
+          ? "Đăng tải sản phẩm thành công!"
+          : "Đăng tải sản phẩm thành công, Vui lòng chờ xét duyệt!"
+      );
       setCallback(!callback);
       history("/products");
     } catch (err) {
       alert(err.response.data.msg);
     }
   };
+
   const styleUpload = {
     display: images ? "block" : "none",
   };
-  console.log(edit);
 
   return (
     <div className="create_product">
@@ -287,8 +268,8 @@ function CreateProduct() {
             <select
               className="category"
               name="category"
-              value={product.category}
-              onChange={handleChangeInput}
+              value={onEdit ? edit.category : product.category}
+              onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
             >
               <option value="">Danh mục tin đăng</option>
               {categories.map((category) => (
@@ -305,80 +286,43 @@ function CreateProduct() {
               name="title"
               id="title"
               required
-              value={product.title}
-              onChange={handleChangeInput}
+              value={onEdit ? edit.title : product.title}
+              onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
               disabled={onEdit}
             />
           </div>
           <div className="row-type">
-            <div>
-              <input
-                type="text"
-                name="types"
-                id="types"
-                placeholder="Loại"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                name="price"
-                id="price"
-                placeholder="Giá"
-                // required
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                name="amount"
-                id="amount"
-                placeholder="Số lượng"
-                // required
-                value={amount}
-                onChange={(e) => setMount(e.target.value)}
-              />
-            </div>
-            <p id="output"></p>
-            <button
-              type="button"
-              onClick={() => {
-                setName("");
-                setPrice("");
-                setMount("");
-                types.push({
-                  id: nextId++,
-                  name: name,
-                  price: parseInt(price),
-                  amount: parseInt(amount),
-                });
-                setTypes(types);
-              }}
-            >
-              Add
-            </button>
-            <ul>
-              {types.map((artist) => (
-                <li key={artist.id}>
-                  name :{artist.name} , price: {artist.price} , amount:
-                  {artist.amount}{" "}
-                  <button
-                    onClick={() => {
-                      setTypes(types.filter((a) => a.id !== artist.id));
-                    }}
-                  >
-                    <AiOutlineCloseCircle />
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <ul>
-              <li>{product.type}</li>
-            </ul>
+            {edit.types.map((item, index) => (
+              <div key={index}>
+                <div>
+                  <label>Tên sản phẩm</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={item.name || ""}
+                    onChange={(e) => handleChangeInputEdit(e, index)}
+                  />
+                </div>
+                <div>
+                  <label>Giá</label>
+                  <input
+                    type="text"
+                    name="price"
+                    value={item.price || ""}
+                    onChange={(e) => handleChangeInputEdit(e, index)}
+                  />
+                </div>
+                <div>
+                  <label>Số lượng</label>
+                  <input
+                    type="text"
+                    name="amount"
+                    value={item.amount || ""}
+                    onChange={(e) => handleChangeInputEdit(e, index)}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
           <div className="row">
             <label htmlFor="description">Mô tả chi tiết</label>
@@ -393,9 +337,9 @@ function CreateProduct() {
                             - Địa chỉ, thông tin liên hệ
                             - Chính sách bảo hành"
               required
-              value={product.description}
+              value={onEdit ? edit.description : product.description}
               rows="10"
-              onChange={handleChangeInput}
+              onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
             />
           </div>
 

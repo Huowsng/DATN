@@ -85,7 +85,7 @@ const productCtrl = {
   },
   createProduct: async (req, res) => {
     try {
-      const { types, title, description, images, category, user_cre } =
+      const { types, title, description, images, category, user_cre, role } =
         req.body;
       console.log("dasdasd", req.body);
       var listType = [];
@@ -113,6 +113,7 @@ const productCtrl = {
         category: category,
         price: price,
         user_cre: user_cre,
+        role: role,
       });
       await newProduct.save();
       res.json({ msg: "Product create!", newProduct });

@@ -21,6 +21,7 @@ const ProductManagement = () => {
   const itemsPerPage = 10;
   const [isCheck, setIsCheck] = useState(false);
   const [acceptedCount, setAcceptedCount] = useState(0);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -31,6 +32,7 @@ const ProductManagement = () => {
       }
     };
     fetchCategories();
+
     const fetchUsers = async () => {
       try {
         const res = await axios.get(`${API_URL}/user/username`, {
@@ -43,7 +45,6 @@ const ProductManagement = () => {
       }
     };
     fetchUsers();
-    console.log("hihi", acceptedCount);
   }, [state.token, productRole0, token, acceptedCount]);
 
   const totalPages = Math.ceil(productRole0.length / itemsPerPage);
@@ -146,50 +147,6 @@ const ProductManagement = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const acceptProduct = async (id) => {
-    try {
-      setLoading(true);
-      await axios.put(
-        `${API_URL}/api/products/role/${id}`,
-        { role: 1 },
-        {
-          headers: { Authorization: token },
-        }
-      );
-      alert("Products accepted successfully");
-      window.location.reload();
-      console.log("33333", acceptedCount);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const acceptAll = async () => {
-    let newAcceptedCount = acceptedCount;
-    try {
-      setLoading(true);
-      for (const product of productRole0) {
-        if (product.checked === true) {
-          await axios.put(
-            `${API_URL}/api/products/role/${product._id}`,
-            { role: 1 },
-            {
-              headers: { Authorization: token },
-            }
-          );
-          newAcceptedCount -= 1;
-        }
-      }
-      setAcceptedCount(newAcceptedCount);
-      setLoading(false);
-      alert("All selected products accepted successfully");
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-    }
-  };
-
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -202,6 +159,10 @@ const ProductManagement = () => {
       product.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
+
+  const userProducts = filteredItems.filter(
+    (product) => product.user_cre === user_cre
+  );
 
   return (
     <div className="dashboard">
@@ -226,14 +187,7 @@ const ProductManagement = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
-              <div className="card text-white bg-success mb-3">
-                <div className="card-header">Số khách hàng truy cập</div>
-                <div className="card-body">
-                  <h5 className="card-title">5,325</h5>
-                </div>
-              </div>
-            </div>
+
             <div className="col-md-4">
               <div className="card text-white bg-info mb-3">
                 <div className="card-header">Tổng số đơn đặt hàng</div>
@@ -245,25 +199,22 @@ const ProductManagement = () => {
           </div>
 
           <div className="table-responsive">
-            {productRole0.length === 0 ? (
+            {userProducts.length === 0 ? (
               <div>Không có sản phẩm</div>
             ) : (
               <div>
-                <div class="button-container">
-                  <div class="button-group">
+                <div className="button-container">
+                  <div className="button-group">
                     <button
-                      class="btn btn-sm btn-success mr-2"
-                      onClick={acceptAll}
+                      className="btn btn-sm btn-danger"
+                      onClick={deleteAll}
                     >
-                      Duyệt tất cả
-                    </button>
-                    <button class="btn btn-sm btn-danger" onClick={deleteAll}>
                       Xoá hết
                     </button>
                     <div className="checkbox-all">
                       <input
                         type="checkbox"
-                        class="small-checkbox"
+                        className="small-checkbox"
                         checked={isCheck}
                         onChange={checkAll}
                       />
@@ -273,7 +224,7 @@ const ProductManagement = () => {
                 <table className="table table-striped table-sm mt-2">
                   {/* Your table header */}
                   <tbody>
-                    {filteredItems.map((product) => (
+                    {userProducts.map((product) => (
                       <tr key={product._id}>
                         <td>{getSellerName(product.user_cre)}</td>
                         <td>{product.title}</td>
@@ -296,12 +247,6 @@ const ProductManagement = () => {
                           <Link to={`/detail/${product._id}`}>Xem</Link>
                         </td>
                         <td className="action-buttons">
-                          <button
-                            className="btn btn-sm btn-success"
-                            onClick={() => acceptProduct(product._id)}
-                          >
-                            Accept
-                          </button>
                           <button className="btn btn-sm btn-primary">
                             <Link to={`/edit_product/${product._id}`}>
                               Edit
@@ -322,7 +267,7 @@ const ProductManagement = () => {
                         <td className="action-checkbox">
                           <input
                             type="checkbox"
-                            class="small-checkbox"
+                            className="small-checkbox"
                             checked={product.checked}
                             onChange={() => handleCheck(product._id)}
                           />

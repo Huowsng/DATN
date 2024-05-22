@@ -46,7 +46,12 @@ function ProductItem({ product, isAdmin, deleteProduct, handleCheck }) {
         </h2>
         <p>{product.description}</p>
         <div className="price">
-          {product.types[0]?.price || product.price} VND
+          {product.types && product.types.length > 0
+            ? product.types[0].price.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })
+            : "N/A"}
         </div>
       </div>
 

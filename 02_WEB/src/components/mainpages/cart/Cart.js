@@ -34,7 +34,7 @@ function Cart() {
         `${API_URL}/user/addcart`,
         { cart },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `${token}` },
         }
       );
     } catch (error) {
@@ -127,7 +127,15 @@ function Cart() {
 
             <div className="box-detail">
               <h2>{product.title}</h2>
-              <h3>￥ {product.types[0].price * product.quantity}</h3>
+              <h3>
+                {" "}
+                {product.types && product.types.length > 0
+                  ? product.types[0].price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })
+                  : "N/A"}
+              </h3>
               <p>{product.description}</p>
               <div className="amount">
                 <button onClick={() => decrement(product._id)}> - </button>
@@ -145,7 +153,15 @@ function Cart() {
         ))}
 
         <div className="total">
-          <h3>Giá: VND {total}</h3>
+          <h3>
+            Giá:{" "}
+            {total > 0
+              ? total.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })
+              : "N/A"}
+          </h3>
           <PaypalButton total={total} tranSuccess={tranSuccess} />
           <Link
             to="/checkout"

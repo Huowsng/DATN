@@ -33,8 +33,8 @@ function UserAPI(token) {
   // console.log(token);
   const addCart = async (product, type) => {
     console.log(type.amount);
-    if (!isLogged) return alert("Please login to continue buying");
-    if (type.amount === 0) return alert("This type not have in stock");
+    if (!isLogged) return alert("Vui lòng đăng nhập để có thể mua hàng");
+    if (type.amount === 0) return alert("Loại này không còn hàng");
     var newProduct = Object.assign({}, product);
     newProduct.types = [type];
     const check = cart.every((item) => {
@@ -43,16 +43,16 @@ function UserAPI(token) {
     //console.log("cart"+ newProduct.type);
     if (check) {
       setCart([...cart, { ...newProduct, quantity: 1 }]);
-
       await axios.patch(
-        "/user/addcart",
+        `${API_URL}/user/addcart`,
         { cart: [...cart, { ...newProduct, quantity: 1 }] },
         {
           headers: { Authorization: token },
         }
       );
+      alert("Thêm sản phẩm vào giỏ hàng thành công");
     } else {
-      alert("This product has been added to cart.");
+      alert("Sản phẩm này đã có sẵn trong giỏ hàng.");
     }
   };
 

@@ -40,9 +40,8 @@ function Products() {
       await destroyImg;
       await deleteProduct;
       setCallback(!callback);
-      alert("Product deleted successfully2");
+      alert("Product deleted successfully");
     } catch (err) {
-      // alert(err.response.data.msg);
       console.log(err);
     }
   };

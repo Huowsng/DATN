@@ -4,14 +4,13 @@ import ProductItem from "../utils/productItem/ProductItem";
 import Loading from "../utils/loading/Loading";
 import axios from "axios";
 import Filters from "./Filters";
-import LoadMore from "./LoadMore";
+import LoadMore from "./pagination";
 import { Link } from "react-router-dom";
 import API_URL from "../../../api/baseAPI";
 
 function Products() {
   const state = useContext(GlobalState);
   const [productRole1, setProductRole1] = state.productsAPI.productRole1 ?? [];
-  console.log(productRole1);
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
   const [callback, setCallback] = state.productsAPI.callback;
@@ -22,6 +21,7 @@ function Products() {
       if (product._id === id) product.checked = !product.checked;
     });
     setProductRole1([...productRole1]);
+    console.log("do dai", productRole1.length);
   };
 
   const deleteProduct = async (id, public_id) => {

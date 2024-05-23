@@ -16,12 +16,8 @@ function ProductsAPI() {
   useEffect(() => {
     const getProducts = async () => {
       const res = await axios.get(
-        `${API_URL}/api/products?limit=${
-          page * 9
-        }&${category}&${sort}&title[regex]=${search}`
+        `${API_URL}/api/products?${category}&${sort}&title[regex]=${search}`
       );
-      // console.log('price' + JSON.stringify(res.data.products[0].types));
-      // console.log(res.data.products.types.length)
       setProducts(res.data.products);
       setResult(res.data.result);
     };
@@ -29,12 +25,10 @@ function ProductsAPI() {
 
     const getProductRole1 = async () => {
       const res = await axios.get(
-        `${API_URL}/api/products?limit=${
-          page * 9
-        }&${category}&${sort}&title[regex]=${search}&role=1`
+        `${API_URL}/api/products?${category}&${sort}&title[regex]=${search}&role=1`
       );
       // console.log('price' + JSON.stringify(res.data.products[0].types));
-      // console.log(res.data.products.types.length)
+      // console.log(res.data.products.types.length);
       setProductRole1(res.data.products);
       setResult(res.data.result);
     };
@@ -42,12 +36,10 @@ function ProductsAPI() {
 
     const getProductRole0 = async () => {
       const res = await axios.get(
-        `${API_URL}/api/products?limit=${
-          page * 9
-        }&${category}&${sort}&title[regex]=${search}&role=0`
+        `${API_URL}/api/products?${category}&${sort}&title[regex]=${search}&role=0`
       );
       // console.log('price' + JSON.stringify(res.data.products[0].types));
-      // console.log(res.data.products.types.length)
+      // console.log(res.data.products.types.length);
       setProductRole0(res.data.products);
       setResult(res.data.result);
     };

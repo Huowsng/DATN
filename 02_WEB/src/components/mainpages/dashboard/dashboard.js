@@ -267,7 +267,18 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <table className="table table-striped table-sm mt-2">
-                  {/* Your table header */}
+                  <thead>
+                    <tr>
+                      <th>Tên người đăng</th>
+                      <th>Tiêu đề bài đăng</th>
+                      <th>Số lượng</th>
+                      <th>Loại sản phẩm</th>
+                      <th>Giá</th>
+                      <th>Ngày đăng</th>
+                      <th>Chi tiết</th>
+                      <th></th>
+                    </tr>
+                  </thead>
                   <tbody>
                     {filteredItems.map((product) => (
                       <tr key={product._id}>

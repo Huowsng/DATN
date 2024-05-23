@@ -5,6 +5,7 @@ import axios from "axios";
 import Loading from "../utils/loading/Loading";
 import ItemCorrect from "./ItemCorrect";
 import API_URL from "../../../api/baseAPI";
+import Pagination from "../products/pagination";
 
 function OrderHistory() {
   const state = useContext(GlobalState);
@@ -131,36 +132,13 @@ function OrderHistory() {
         <Loading />
       )}
       {history.length > 0 && (
-        <nav aria-label="Page navigation example">
-          <ul className="pagination justify-content-center">
-            <li className="page-item">
-              <a className="page-link" href="#" onClick={handlePreviousPage}>
-                Previous
-              </a>
-            </li>
-            {[...Array(totalPages)].map((_, index) => (
-              <li
-                key={index}
-                className={`page-item ${
-                  currentPage === index + 1 ? "active" : ""
-                }`}
-              >
-                <a
-                  className="page-link"
-                  href="#"
-                  onClick={() => handlePageChange(index + 1)}
-                >
-                  {index + 1}
-                </a>
-              </li>
-            ))}
-            <li className="page-item">
-              <a className="page-link" href="#" onClick={handleNextPage}>
-                Next
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePreviousPage={handlePreviousPage}
+          handleNextPage={handleNextPage}
+          handlePageChange={handlePageChange}
+        />
       )}
     </div>
   );

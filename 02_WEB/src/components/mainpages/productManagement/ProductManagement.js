@@ -11,7 +11,7 @@ const ProductManagement = () => {
   const [token] = state.token;
   const user_cre = state.userAPI.userID[0];
   console.log("444444444444:", user_cre);
-  const [productRole0, setProductRole0] = state.productsAPI.productRole0 ?? [];
+  const [products, setProducts] = state.productsAPI.products ?? [];
   const [categories, setCategories] = useState([]);
   const [users, setUsers] = useState([]);
   const [callback, setCallback] = state.productsAPI.callback;
@@ -45,10 +45,10 @@ const ProductManagement = () => {
       }
     };
     fetchUsers();
-  }, [state.token, productRole0, token, acceptedCount]);
+  }, [state.token, products, token, acceptedCount]);
 
-  const totalPages = Math.ceil(productRole0.length / itemsPerPage);
-  const currentItems = productRole0.slice(
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const currentItems = products.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -71,10 +71,10 @@ const ProductManagement = () => {
   };
 
   const checkAll = () => {
-    productRole0?.forEach((product) => {
+    products?.forEach((product) => {
       product.checked = !isCheck;
     });
-    setProductRole0([...productRole0]);
+    setProducts([...products]);
     setIsCheck(!isCheck);
   };
 
@@ -82,7 +82,7 @@ const ProductManagement = () => {
     try {
       setLoading(true);
       let newAcceptedCount = acceptedCount;
-      for (const product of productRole0) {
+      for (const product of products) {
         if (product.checked === true) {
           newAcceptedCount -= 1;
           setAcceptedCount(newAcceptedCount);
@@ -105,7 +105,7 @@ const ProductManagement = () => {
 
   const handleCheck = (id) => {
     let newAcceptedCount = acceptedCount;
-    productRole0.forEach((product) => {
+    products.forEach((product) => {
       if (product._id === id) {
         product.checked = !product.checked;
         if (product.checked === true) {
@@ -118,7 +118,7 @@ const ProductManagement = () => {
       }
     });
 
-    setProductRole0([...productRole0]);
+    setProducts([...products]);
   };
 
   if (loading)
@@ -151,7 +151,7 @@ const ProductManagement = () => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredItems = productRole0.filter((product) => {
+  const filteredItems = products.filter((product) => {
     return (
       getSellerName(product.user_cre)
         .toLowerCase()
@@ -222,7 +222,19 @@ const ProductManagement = () => {
                   </div>
                 </div>
                 <table className="table table-striped table-sm mt-2">
-                  {/* Your table header */}
+                  <thead>
+                    <tr>
+                      <th>Tên</th>
+                      <th>Tiêu đề bài đăng</th>
+                      <th>Số lượng</th>
+                      <th>Loại sản phẩm</th>
+                      <th>Giá</th>
+                      <th>Trạng thái</th>
+                      <th>Ngày đăng</th>
+                      <th>Chi tiết</th>
+                      <th></th>
+                    </tr>
+                  </thead>
                   <tbody>
                     {userProducts.map((product) => (
                       <tr key={product._id}>
@@ -231,7 +243,7 @@ const ProductManagement = () => {
                         <td>
                           {product.types && product.types.length > 0
                             ? product.types[0].amount
-                            : "N/A"}
+                            : "0"}
                         </td>
                         <td>{getCategoryName(product.category)}</td>
                         <td>
@@ -241,6 +253,13 @@ const ProductManagement = () => {
                                 currency: "VND",
                               })
                             : "N/A"}
+                        </td>
+                        <td>
+                          {product.amount === 0
+                            ? "Đã bán hết"
+                            : product.role === 1
+                            ? "Đã duyệt"
+                            : "Chờ duyệt"}
                         </td>
                         <td>{formatDate(product.createdAt)}</td>
                         <td>

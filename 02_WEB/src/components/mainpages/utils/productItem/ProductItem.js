@@ -17,7 +17,6 @@ function ProductItem({ product, isAdmin, deleteProduct, handleCheck }) {
       }
     });
   }, []);
-  // console.log(product)
   const onEnter = ({ currentTarget }) => {
     gsap.to(currentTarget, {
       repeatDelay: 1,
@@ -47,10 +46,12 @@ function ProductItem({ product, isAdmin, deleteProduct, handleCheck }) {
         <p>{product.description}</p>
         <div className="price">
           {product.types && product.types.length > 0
-            ? product.types[0].price.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })
+            ? product.types[0].amount === 0
+              ? "Đã bán"
+              : product.types[0].price.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })
             : "N/A"}
         </div>
       </div>

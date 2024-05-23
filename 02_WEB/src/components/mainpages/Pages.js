@@ -98,7 +98,7 @@ function Pages() {
       />
       <Route
         path="edit_product/:id"
-        element={isAdmin ? <CreateProduct /> : <Loading />}
+        element={isLogged ? <CreateProduct /> : <Loading />}
       />
 
       <Route

@@ -20,13 +20,15 @@ function DetailProduct() {
   const [feedback, setFeedback] = useState([]);
   const [result, setResult] = useState(0);
   const [isLogged] = useState(false);
-
-  console.log(products);
+  const user_id = state.userAPI.userID[0];
+  const [total, setTotal] = useState(0);
+  const [score, setScore] = useState(0);
 
   useEffect(() => {
     if (params.id) {
       products.forEach((product) => {
         if (product._id === params.id) {
+          console.log("product", product);
           setDetailProduct(product);
           setType(product.types[0]);
         }
@@ -40,6 +42,7 @@ function DetailProduct() {
         try {
           const res = await axios.get(`${API_URL}/api/products/${params.id}`);
           setFeedback(res.data.feedbacks);
+          console.log("data", res.data.feedbacks);
         } catch (err) {
           alert(err.response.data.msg);
         }
@@ -56,26 +59,28 @@ function DetailProduct() {
       setResult(total / feedback.length);
     }
   }, [feedback]);
-
   const handleAddItem = () => {
+    console.log("detail", detailProduct);
+    console.log("test", detailProduct.user_cre);
+    console.log("id", user_id);
     if (isLogged) {
       alert("Vui lòng đăng nhập");
     } else {
       addCart(detailProduct, type);
     }
   };
-  // useEffect(() => {
-  //     feedback.map(item=>{
-  //       console.log(item.rating)
-  //     })
-  //     setTotal(total);
-  // }, []);
-  // var sum= 0;
-  // useEffect(() => {
-  //   const obj = feedback.forEach(item=>{
-  //     setScore(item.rating)
-  //   })
-  // },[]);
+  useEffect(() => {
+    feedback.map((item) => {
+      console.log(item.rating);
+    });
+    setTotal(total);
+  }, []);
+  var sum = 0;
+  useEffect(() => {
+    const obj = feedback.forEach((item) => {
+      setScore(item.rating);
+    });
+  }, []);
   const onEnter = ({ currentTarget }) => {
     gsap.to(currentTarget, {
       repeatDelay: 1,
@@ -88,19 +93,16 @@ function DetailProduct() {
   };
 
   if (detailProduct.length === 0) return null;
-  console.log(detailProduct);
   const checktype = (event) => {
     const id = event.target.value;
     const types = detailProduct.types;
     const type2 = types.filter((t) => t._id === id);
-    console.log(type2);
     setType(type2[0]);
   };
   const colors = {
     orange: "#FFA500",
     grey: "#808080",
   };
-  console.log(feedback);
 
   return (
     <>
@@ -126,15 +128,22 @@ function DetailProduct() {
           </p>
           <div className="underline"></div>
           <br />
-          <span>
+          <span className="span-detail">
             {type?.price.toLocaleString("vi-VN", {
               style: "currency",
               currency: "VND",
             })}{" "}
           </span>
-          &nbsp;&nbsp;&nbsp;&nbsp;Số lượng: <span>{type?.amount}</span>
-          <p>{detailProduct.description}</p>
-          <b />
+          &nbsp;&nbsp;&nbsp;&nbsp;Số lượng:{" "}
+          <span className="span-detail">{type?.amount}</span>
+          <p>
+            {detailProduct.description.split("\n").map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </p>
           <label htmlFor="types">Loại:</label>
           <select onChange={checktype} name="type" id="type">
             {detailProduct.types.map((type) => (
@@ -143,21 +152,21 @@ function DetailProduct() {
               </option>
             ))}
           </select>
-          <Link
-            to={`/detail/${detailProduct._id}`}
-            className="cart"
-            onClick={handleAddItem}
-          >
-            Thêm vào giỏ hàng
-          </Link>
+          <>
+            {detailProduct.user_cre !== user_id && (
+              <Link
+                to={`/detail/${detailProduct._id}`}
+                className="cart"
+                onClick={handleAddItem}
+              >
+                Thêm vào giỏ hàng
+              </Link>
+            )}
+          </>
         </div>
       </div>
       <br />
-      <div className="description-detail">
-        <h1>Đánh giá</h1>
-        <hr />
-        <p>{detailProduct.description}</p>
-      </div>
+      <div className="description-detail"></div>
       <Feedback feedback={feedback} />
       <br />
       <div className="product-info-tabs">

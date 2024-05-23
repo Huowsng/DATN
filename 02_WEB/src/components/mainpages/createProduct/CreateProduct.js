@@ -11,6 +11,13 @@ const initialState = {
   description: "",
   category: "",
   _id: "",
+  types: [
+    {
+      name: "",
+      price: 0,
+      amount: 0,
+    },
+  ],
 };
 
 function CreateProduct() {
@@ -30,19 +37,7 @@ function CreateProduct() {
   const [products] = state.productsAPI.products;
   const [onEdit, setOnEdit] = useState(false);
   const [callback, setCallback] = state.productsAPI.callback;
-  const [edit, setEdit] = useState({
-    title: "",
-    description: "",
-    category: "",
-    _id: "",
-    types: [
-      {
-        name: "",
-        price: 0,
-        amount: 0,
-      },
-    ],
-  });
+  const [edit, setEdit] = useState(initialState);
 
   useEffect(() => {
     if (param.id) {
@@ -115,7 +110,15 @@ function CreateProduct() {
   const handleChangeInputEdit = (e, index) => {
     const { name, value } = e.target;
     const updatedTypes = [...edit.types];
-    updatedTypes[index] = { ...updatedTypes[index], [name]: value };
+
+    if (name === "price") {
+      // Remove non-numeric characters and limit to 11 digits
+      const formattedValue = value.replace(/\D/g, "").slice(0, 11);
+      updatedTypes[index] = { ...updatedTypes[index], [name]: formattedValue };
+    } else {
+      updatedTypes[index] = { ...updatedTypes[index], [name]: value };
+    }
+
     setEdit({ ...edit, types: updatedTypes });
   };
 
@@ -162,6 +165,10 @@ function CreateProduct() {
     }
   };
 
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("vi-VN").format(price);
+  };
+
   const styleUpload = {
     display: images ? "block" : "none",
   };
@@ -181,171 +188,89 @@ function CreateProduct() {
           </div>
         )}
       </div>
-      {onEdit ? (
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <label htmlFor="categories">Categories: </label>
-            <select
-              name="category"
-              value={edit.category || ""}
-              onChange={handleChangeInputEdit}
-            >
-              <option>Danh mục tin đăng</option>
-              {categories.map((category) => (
-                <option value={category._id || ""} key={category._id}>
-                  {category.name || ""}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="row">
-            <label htmlFor="title">Edit product</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              required
-              value={edit.title}
-              onChange={handleChangeInputEdit}
-              // disabled={onEdit}
-            />
-          </div>
-          <label htmlFor="title">Types</label>
-
-          {edit.types.map((item, index) => {
-            return (
-              <div className="row-type" key={index}>
-                <div>
-                  <label>Tiêu đề của sản phẩm</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={item.name || ""}
-                    onChange={(e) => handleChangeInputEdit(e, index)}
-                  />
-                </div>
-                <div>
-                  <label>Price</label>
-                  <input
-                    type="text"
-                    name="price"
-                    value={item.price || ""}
-                    onChange={(e) => handleChangeInputEdit(e, index)}
-                  />
-                </div>
-                <div>
-                  <label>Amount</label>
-                  <input
-                    type="text"
-                    name="amount"
-                    value={item.amount || ""}
-                    onChange={(e) => handleChangeInputEdit(e, index)}
-                  />
-                </div>
-              </div>
-            );
-          })}
-
-          <div className="row">
-            <label htmlFor="description">Description</label>
-            <textarea
-              type="text"
-              name="description"
-              id="description"
-              required
-              value={edit.description || ""}
-              rows="5"
-              onChange={handleChangeInputEdit}
-            />
-          </div>
-
-          <button type="submit">{onEdit ? "Edit" : "Create"}</button>
-        </form>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <label htmlFor="categories">Danh mục: </label>
-            <select
-              className="category"
-              name="category"
-              value={onEdit ? edit.category : product.category}
-              onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
-            >
-              <option value="">Danh mục tin đăng</option>
-              {categories.map((category) => (
-                <option value={category._id} key={category._id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="row">
-            <label htmlFor="title">Tiêu đề của sản phẩm</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              required
-              value={onEdit ? edit.title : product.title}
-              onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
-              disabled={onEdit}
-            />
-          </div>
-          <div className="row-type">
-            {edit.types.map((item, index) => (
-              <div key={index}>
-                <div>
-                  <label>Tên sản phẩm</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={item.name || ""}
-                    onChange={(e) => handleChangeInputEdit(e, index)}
-                  />
-                </div>
-                <div>
-                  <label>Giá</label>
-                  <input
-                    type="text"
-                    name="price"
-                    value={item.price || ""}
-                    onChange={(e) => handleChangeInputEdit(e, index)}
-                  />
-                </div>
-                <div>
-                  <label>Số lượng</label>
-                  <input
-                    type="text"
-                    name="amount"
-                    value={item.amount || ""}
-                    onChange={(e) => handleChangeInputEdit(e, index)}
-                  />
-                </div>
-              </div>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <label htmlFor="categories">Danh mục: </label>
+          <select
+            className="category"
+            name="category"
+            value={onEdit ? edit.category : product.category}
+            onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
+          >
+            <option value="">Danh mục tin đăng</option>
+            {categories.map((category) => (
+              <option value={category._id} key={category._id}>
+                {category.name}
+              </option>
             ))}
-          </div>
-          <div className="row">
-            <label htmlFor="description">Mô tả chi tiết</label>
-            <textarea
-              type="text"
-              name="description"
-              id="description"
-              placeholder="Thông tin chi tiết của sản phẩm:
-                            - Nhã hiệu, xuất xứ
-                            - Tình trạng sản phẩm
-                            - Kích thước
-                            - Địa chỉ, thông tin liên hệ
-                            - Chính sách bảo hành"
-              required
-              value={onEdit ? edit.description : product.description}
-              rows="10"
-              onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
-            />
-          </div>
+          </select>
+        </div>
+        <div className="row">
+          <label htmlFor="title">Tiêu đề của sản phẩm</label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            required
+            value={onEdit ? edit.title : product.title}
+            onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
+            disabled={onEdit}
+          />
+        </div>
+        <div className="row-type">
+          {edit.types.map((item, index) => (
+            <div key={index}>
+              <div>
+                <label>Tên sản phẩm</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={item.name || ""}
+                  onChange={(e) => handleChangeInputEdit(e, index)}
+                />
+              </div>
+              <div>
+                <label>Giá</label>
+                <input
+                  type="text"
+                  name="price"
+                  value={formatPrice(item.price) || ""}
+                  onChange={(e) => handleChangeInputEdit(e, index)}
+                />
+              </div>
+              <div>
+                <label>Số lượng</label>
+                <input
+                  type="text"
+                  name="amount"
+                  value={item.amount || ""}
+                  onChange={(e) => handleChangeInputEdit(e, index)}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="row">
+          <label htmlFor="description">Mô tả chi tiết</label>
+          <textarea
+            type="text"
+            name="description"
+            id="description"
+            placeholder="Thông tin chi tiết của sản phẩm:
+                          - Nhã hiệu, xuất xứ
+                          - Tình trạng sản phẩm
+                          - Kích thước
+                          - Địa chỉ, thông tin liên hệ
+                          - Chính sách bảo hành"
+            required
+            value={onEdit ? edit.description : product.description}
+            rows="10"
+            onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
+          />
+        </div>
 
-          <button type="submit">{onEdit ? "Edit" : "Create"}</button>
-        </form>
-      )}
+        <button type="submit">{onEdit ? "Edit" : "Create"}</button>
+      </form>
     </div>
   );
 }

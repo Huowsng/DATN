@@ -5,10 +5,10 @@ import { GlobalState } from "../../../../GlobalState";
 import ProductItem from "../../utils/productItem/ProductItem";
 import Loading from "../../utils/loading/Loading";
 import axios from "axios";
-import LoadMore from "../../products/LoadMore";
+import LoadMore from "../../products/pagination";
 import API_URL from "../../../../api/baseAPI";
 
-const PRODUCTS_PER_PAGE = 20; // 5 hàng * 4 cột
+const PRODUCTS_PER_PAGE = 6; // 6 sản phẩm trên mỗi trang
 
 export const Service = () => {
   const state = useContext(GlobalState);
@@ -89,18 +89,13 @@ export const Service = () => {
   };
 
   // Sort products by createdAt date in descending order
-  const sortedProducts = [...productRole1].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
 
-  const indexOfLastProduct = currentPage * PRODUCTS_PER_PAGE;
-  const indexOfFirstProduct = indexOfLastProduct - PRODUCTS_PER_PAGE;
-  const currentProducts = sortedProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  const totalPages = Math.ceil(productRole1.length / 2);
 
-  const totalPages = Math.ceil(sortedProducts.length / PRODUCTS_PER_PAGE);
+  const currentItems = productRole1.slice(
+    (currentPage - 1) * 2,
+    currentPage * 2
+  );
 
   if (loading) return <Loading />;
 
@@ -121,29 +116,18 @@ export const Service = () => {
       )}
 
       <div className="services">
-        {currentProducts.map((product) => (
+        {currentItems.map((product) => (
           <ProductItem
             key={product._id}
             product={product}
             isAdmin={isAdmin}
             deleteProduct={deleteProduct}
             handleCheck={handleCheck}
-            className="service-product-item" // Thêm dòng này
+            className="service-product-item"
           />
         ))}
       </div>
 
-      <div className="pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => setCurrentPage(index + 1)}
-            className={currentPage === index + 1 ? "active" : ""}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
       <LoadMore />
       {productRole1.length === 0 && <Loading />}
     </>

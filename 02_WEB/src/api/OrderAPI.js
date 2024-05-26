@@ -1,37 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import API_URL from "./baseAPI";
 
 function OrderAPI(token) {
-    const [order, setOrder] = useState([]);
+  const [order, setOrder] = useState([]);
 
-    const [isLogged, setIsLogged] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [callback, setCallback] = useState(false);
-    const [processed, setProcessed] = useState([]);
-    const [review, setReview] = useState([]);
-    const [check, serCheck] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [callback, setCallback] = useState(false);
+  const [processed, setProcessed] = useState([]);
+  const [review, setReview] = useState([]);
+  const [check, serCheck] = useState(false);
 
-    useEffect(() => {
-        const getOrder = async () => {
-            try {
-                const res = await axios.get('/api/orders');
-                setOrder(res.data);
-            } catch (err) {
-                alert(err.response.data.msg);
-            }
-        };
-        getOrder();
-    }, [callback]);
-    const AddOrder = async (product, type) => {
-        if (!isLogged) return alert('Please login to continue buying OderAPI');
+  useEffect(() => {
+    const getOrder = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/api/orders`);
+        setOrder(res.data);
+      } catch (err) {
+        alert(err.response.data.msg);
+      }
     };
-    return {
-        order: [order, setOrder],
-        callback: [callback, setCallback],
-        processed: [processed, setProcessed],
-        reviews: [review, setReview],
-        check: [check, serCheck],
-    };
+    getOrder();
+  }, [callback]);
+  const AddOrder = async (product, type) => {
+    if (!isLogged) return alert("Please login to continue buying OderAPI");
+  };
+  return {
+    order: [order, setOrder],
+    callback: [callback, setCallback],
+    processed: [processed, setProcessed],
+    reviews: [review, setReview],
+    check: [check, serCheck],
+  };
 }
 
 export default OrderAPI;

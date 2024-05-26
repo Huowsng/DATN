@@ -1,76 +1,78 @@
-.our-service-wrapper{
-    background-color: #f766310a;
-    /* transition: background .3s,border .3s,border-radius .3s,box-shadow .3s; */
-    padding: 120px 30px;
+.services {
+  width: 100%;
+  max-width: 960px; /* Đảm bảo chiều rộng tối đa là 960px */
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(240px, 1fr)
+  ); /* Điều chỉnh kích thước minmax để phù hợp với 4 services */
+  justify-items: center;
+  margin: 20px auto; /* Điều chỉnh margin để căn giữa */
+  padding: 0 0px; /* Giảm padding để phù hợp với chiều rộng tổng thể */
 }
-.our-service-label-container{
-    text-align: center;
-}
-.our-service-label{
-    color: #282344;
-    font-size: 56px;
-    font-weight: 700;
-    text-transform: capitalize;
-    line-height: 80px;
-    display: block;
-}
-.our-service-paragraph{
-    margin-bottom: 50px;
-}
-.our-service-grid-container{
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 50px;
-}
-.our-service-container{
-    width: 17%;
-    text-align: center;
-    box-shadow: 0 4px 40px 0 rgb(43 89 255 / 8%);
-    transition: background .3s,border .3s,border-radius .3s,box-shadow .3s;
-    border-radius: 24px 24px 24px 24px;
-    padding: 50px 20px;
-    background-color: #fff;
-}
-.our-service-container:hover{
-    background-color: #ffc99ad8;
 
+/* ----------- Product Item ----------------- */
+@import url("../../utils/productItem/productItem.css");
+
+.delete-all {
+  text-align: right;
+  margin: 20px;
+  padding: 0px 144px;
 }
-.our-service-container-purple{
-    width: 17%;
-    text-align: center;
-    box-shadow: 0 4px 40px 0 rgb(43 89 255 / 8%);
-    transition: background .3s,border .3s,border-radius .3s,box-shadow .3s;
-    border-radius: 24px 24px 24px 24px;
-    padding: 50px 20px;
+.delete-all input {
+  height: 25px;
+  width: 25px;
+  transform: translateY(5px);
+  margin: 0 15px;
 }
-.our-service-container-purple p{
-    color: #fff;
+.delete-all span {
+  text-transform: uppercase;
+  color: rgb(3, 165, 206);
+  letter-spacing: 1.3px;
 }
-.our-service-container-label{
-    color: #282344;
-    font-size: 24px;
-    font-weight: 700;
+.delete-all button {
+  border: 1px solid crimson;
+  padding: 2px 20px;
+  border-radius: 10px;
+  color: crimson;
+  text-transform: uppercase;
 }
-.our-service-container-paragraph{
-    color: #605C78;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 26px;
+
+/* ------------ Filters Menu ----------------- */
+.filter_menu {
+  background-color: var(--primary-background);
+  width: 100%;
+  min-height: 82px;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 180px;
+  /* margin: 15px 0; */
 }
-.our-service-btn{
-    text-align: center;
+.filter_menu select,
+input {
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  outline: none;
+  width: 177px;
+  height: 46.54px;
+  padding: 0 23px;
+  /* margin: 10px 25px 10px 21px; */
 }
-.our-service-btn>button {
-    background-color: #524eb7;
-    border-radius: 40px;
-    font-weight: 600;
-    font-size: 16px;
-    color: #fff;
-    width: 190px;
-    height: 50px;
-    cursor: pointer;
-  }
-.active{
-    background-color: rgba(251, 248, 244, 0.8);
-    color: #fff;
+.filter_menu input {
+  flex: 1;
+  margin: 0 170px;
+}
+
+/* -------------------- Load More --------------- */
+.load_more {
+  text-align: center;
+}
+.load_more button {
+  padding: 10px 25px;
+  margin-bottom: 20px;
+  border: 1px solid #555;
+  text-transform: capitalize;
 }

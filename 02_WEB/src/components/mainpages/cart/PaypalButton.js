@@ -1,62 +1,59 @@
-import React from 'react';
-import PaypalExpressBtn from 'react-paypal-express-checkout';
- 
+import React from "react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
 export default class PaypalButton extends React.Component {
-    render() {
-        const onSuccess = (payment) => {
-            // Congratulation, it came here means everything's fine!
-            		console.log("The payment was succeeded!", payment);
-                    // You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
-                    this.props.tranSuccess(payment)
-        }
- 
-        const onCancel = (data) => {
-            // User pressed "cancel" or close Paypal's popup!
-            console.log('The payment was cancelled!', data);
-            // You can bind the "data" object's value to your state or props or whatever here, please see below for sample returned data
-        }
- 
-        const onError = (err) => {
-            // The main Paypal's script cannot be loaded or somethings block the loading of that script!
-            console.log("Error!", err);
-            // Because the Paypal's main script is loaded asynchronously from "https://www.paypalobjects.com/api/checkout.js"
-            // => sometimes it may take about 0.5 second for everything to get set, or for the button to appear
-        }
- 
-        let env = 'sandbox'; // you can set here to 'production' for production
-        let currency = 'USD'; // or you can set this value from your props or state
-        let total = this.props.total; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
-        // Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
- 
-        const client = {
-            //AaIqJCwAUHrWTyKro3DNE2VhB3Qmbcn70KNtZUOTwGCS1EHuUemBbW4CkWs2wjN5ioVhpat_ixhg6DRy
-            sandbox:    'AaIqJCwAUHrWTyKro3DNE2VhB3Qmbcn70KNtZUOTwGCS1EHuUemBbW4CkWs2wjN5ioVhpat_ixhg6DRy',
-            production: 'YOUR-PRODUCTION-APP-ID',
-        }
-        // In order to get production's app-ID, you will have to send your app to Paypal for approval first
-        // For sandbox app-ID (after logging into your developer account, please locate the "REST API apps" section, click "Create App"):
-        //   => https://developer.paypal.com/docs/classic/lifecycle/sb_credentials/
-        // For production app-ID:
-        //   => https://developer.paypal.com/docs/classic/lifecycle/goingLive/
- 
-        // NB. You can also have many Paypal express checkout buttons on page, just pass in the correct amount and they will work!
-        let style = {
-            size: 'small',
-            color: 'blue',
-            shape: 'rect',
-            label: 'checkout',
-            tagline: false
-        }
+  render() {
+    const onSuccess = (details, data) => {
+      // Xử lý khi thanh toán thành công
+      console.log("The payment was succeeded!", details);
+      this.props.tranSuccess(details);
+    };
 
-        return (
-            <PaypalExpressBtn 
-            env={env} client={client} 
-            currency={currency} 
-            total={total} onError={onError} 
-            onSuccess={onSuccess} onCancel={onCancel}
-            style={style} />
-        );
-    }
+    const onCancel = (data) => {
+      // Xử lý khi người dùng hủy thanh toán
+      console.log("The payment was cancelled!", data);
+    };
+
+    const onError = (err) => {
+      // Xử lý khi có lỗi xảy ra trong quá trình thanh toán
+      console.log("Error!", err);
+    };
+
+    let env = "sandbox"; // Bạn có thể đặt ở đây thành 'production' cho môi trường sản phẩm
+    let currency = "USD"; // Hoặc bạn có thể đặt giá trị này từ props hoặc state của bạn
+    let total = this.props.total; // Giống như trên, đây là tổng số tiền (dựa trên loại tiền tệ) cần thanh toán bằng cách sử dụng thanh toán express PayPal
+    // Tài liệu về mã tiền của PayPal: https://developer.paypal.com/docs/classic/api/currency_codes/
+
+    const options = {
+      "client-id": "YOUR-CLIENT-ID", // Thay YOUR-CLIENT-ID bằng client ID của ứng dụng PayPal của bạn
+      currency: currency,
+    };
+
+    return (
+      <PayPalScriptProvider options={options}>
+        <PayPalButtons
+          style={{ layout: "horizontal" }}
+          createOrder={(data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: {
+                    value: total,
+                    currency_code: currency,
+                  },
+                },
+              ],
+            });
+          }}
+          onApprove={(data, actions) => {
+            return actions.order.capture().then(function (details) {
+              onSuccess(details, data);
+            });
+          }}
+          onCancel={onCancel}
+          onError={onError}
+        />
+      </PayPalScriptProvider>
+    );
+  }
 }
-
-// paypal

@@ -40,14 +40,6 @@ class APIfeatures {
 
     return this;
   }
-
-  paginating() {
-    const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 9;
-    const skip = (page - 1) * limit;
-    this.query = this.query.skip(skip).limit(limit);
-    return this;
-  }
 }
 
 const productCtrl = {
@@ -55,8 +47,7 @@ const productCtrl = {
     try {
       const features = new APIfeatures(Products.find(), req.query)
         .filtering()
-        .sorting()
-        .paginating();
+        .sorting();
 
       const products = await features.query;
 
@@ -85,7 +76,9 @@ const productCtrl = {
   },
   createProduct: async (req, res) => {
     try {
-      const { types, title, description, images, category } = req.body;
+      const { types, title, description, images, category, user_cre, role } =
+        req.body;
+      console.log("dasdasd", req.body);
       var listType = [];
       for (var i = 0; i < types.length; i++) {
         const typeItem = new Type({
@@ -100,7 +93,7 @@ const productCtrl = {
       if (!images)
         return res.status(400).json({ msg: "Không có hình ảnh tải lên" });
       const product = await Products.findOne({ title: title });
-      console.log(title);
+      console.log(title, "333");
       if (product)
         return res.status(400).json({ msg: "Sản phẩm này đã tồn tại." });
       const newProduct = new Products({
@@ -110,11 +103,13 @@ const productCtrl = {
         images: images,
         category: category,
         price: price,
+        user_cre: user_cre,
+        role: role,
       });
       await newProduct.save();
       res.json({ msg: "Product create!", newProduct });
     } catch (err) {
-      console.log(err);
+      console.log(err, "44444");
       return res.status(500).json({ msg: "Internal Server" });
     }
   },
@@ -129,7 +124,8 @@ const productCtrl = {
   updateProduct: async (req, res) => {
     try {
       const { types, title, description, images, category } = req.body;
-      if (!images) return res.status(400).json({ Error: "Dont have image" });
+      console.log("dung tester", req.body);
+      // if (!images) return res.status(400).json({ Error: "Dont have image" });
       var listType = [];
       for (var i = 0; i < types.length; i++) {
         var type;
@@ -153,11 +149,11 @@ const productCtrl = {
           _id: type._id,
           name: type.name,
           price: type?.price,
-          amount: type.amount,
+          amount: types[i].amount,
         });
       }
       const id = req.params;
-      console.log(id);
+      console.log(id, "5555");
       await Products.findOneAndUpdate(
         { _id: req.params._id },
         {
@@ -170,7 +166,26 @@ const productCtrl = {
       );
       res.json({ message: "Update successful" });
     } catch (err) {
-      console.log(err);
+      console.log(err, "66666");
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  updateProductRole: async (req, res) => {
+    try {
+      const { role } = req.body;
+
+      const id = req.params.id;
+      console.log(id, "ssss");
+      await Products.findOneAndUpdate(
+        { _id: id },
+        {
+          role: role,
+        }
+      );
+      res.json({ message: "Update successful" });
+    } catch (err) {
+      console.log(err, "66666");
       return res.status(500).json({ msg: err.message });
     }
   },
@@ -186,29 +201,30 @@ const productCtrl = {
   //   }
   // },
   searchProduct: async (req, res) => {
+    console.log("111111111111");
     try {
-        const { searchToken } = req.body;
+      const { searchToken } = req.body;
 
-        if (!searchToken) {
-            return res.status(400).json({ msg: "Search token is required." });
-        }
+      if (!searchToken) {
+        return res.status(400).json({ msg: "Search token is required." });
+      }
 
-        const products = await Products.find({
-            $or: [
-                { title: { $regex: searchToken, $options: "i" } },
-                { description: { $regex: searchToken, $options: "i" } },
-            ],
-        });
+      const products = await Products.find({
+        $or: [
+          { title: { $regex: searchToken, $options: "i" } },
+          { description: { $regex: searchToken, $options: "i" } },
+        ],
+      });
 
-        res.json({
-            status: "success",
-            result: products.length,
-            products: products,
-        });
+      res.json({
+        status: "success",
+        result: products.length,
+        products: products,
+      });
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+      res.status(500).json({ msg: error.message });
     }
-},
+  },
   getDetailProduct: async (req, res) => {
     try {
       const productId = req.params.id;
@@ -236,7 +252,7 @@ const productCtrl = {
         type.amount = type.amount - amount;
       }
     });
-    console.log(types);
+    console.log(types, "8888");
     // if (type.amount < amount) {
     //     return false;
     // } else {

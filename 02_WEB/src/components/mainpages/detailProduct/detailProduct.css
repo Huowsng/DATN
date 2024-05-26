@@ -54,9 +54,10 @@
   border: 1px solid rgba(123, 120, 120, 0.35);
   /* transform: rotate(0.2deg); */
 }
-.box-detail span {
+.span-detail {
   color: rgba(255, 61, 0, 1);
 }
+
 .box-detail > .orange {
   color: orange;
 }
@@ -112,7 +113,7 @@
   padding: 0 160px;
 }
 .row-feedback:after {
-  content: '';
+  content: "";
   display: table;
   clear: both;
 }
@@ -134,7 +135,6 @@
 }
 /* Individual bars */
 .bar-5 {
-
   height: 18px;
   background-color: #ff9800;
 }

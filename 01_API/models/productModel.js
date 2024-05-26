@@ -4,7 +4,6 @@ const productSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      unique: true,
       trim: true,
       required: true,
     },
@@ -14,7 +13,7 @@ const productSchema = new mongoose.Schema(
     types: {
       type: Array,
       require: true,
-      default: []
+      default: [],
     },
     description: {
       type: String,
@@ -32,7 +31,15 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    user_cre: {
+      type: String,
+      default: "test",
+    },
     sold: {
+      type: Number,
+      default: 0,
+    },
+    role: {
       type: Number,
       default: 0,
     },

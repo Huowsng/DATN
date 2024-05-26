@@ -65,7 +65,7 @@ legend {
   width: 86px !important;
   height: 18.54px !important;
 }
-.form__radio > input[type='radio'] {
+.form__radio > input[type="radio"] {
   accent-color: var(--color-primary) !important;
 }
 .process-table > table {
@@ -181,4 +181,13 @@ tr {
 .feedback-upload-img {
   width: 200px;
   height: 200px;
+}
+.form__radio {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Khoảng cách giữa các radio button */
+}
+
+.form__radio img {
+  margin-right: 30px; /* Khoảng cách giữa hình ảnh và dòng chữ */
 }

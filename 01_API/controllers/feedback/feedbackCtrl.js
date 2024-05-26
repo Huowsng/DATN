@@ -30,7 +30,7 @@ const feedbackCtrl = {
       res.send(JSON.stringify(feedback));
 
     } catch (error) {
-      console.log(error);
+      console.log(error, "11111");
       res.status(500).json({ message: "Internal Server" });
     }
   },

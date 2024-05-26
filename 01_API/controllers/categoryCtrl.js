@@ -30,7 +30,7 @@ const categoryCtrl = {
         try {
             const products = await Products.findOne({category: req.params.id})
             if(products) return res.status(400).json({
-                msg: "Vui lòng xóa tất cả các sản phẩm có mối quan hệ."
+                msg: "Vui lòng xóa Tất cả  các sản phẩm có mối quan hệ."
             })
 
             await Category.findByIdAndDelete(req.params.id)

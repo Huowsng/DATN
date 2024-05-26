@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { GlobalState } from '../../../GlobalState';
 import axios from 'axios';
+import API_URL from '../../../api/baseAPI';
 
 function Categories() {
     const state = useContext(GlobalState);
@@ -16,7 +17,7 @@ function Categories() {
         try {
             if (onEdit) {
                 const res = await axios.put(
-                    `/api/category/${id}`,
+                    `${API_URL}/api/category/${id}`,
                     { name: category },
                     {
                         headers: { Authorization: token },
@@ -25,7 +26,7 @@ function Categories() {
                 alert('Success');
             } else {
                 const res = await axios.post(
-                    '/api/category',
+                    `${API_URL}/api/category`,
                     { name: category },
                     {
                         headers: { Authorization: token },
@@ -66,7 +67,7 @@ function Categories() {
 
             // Nếu người dùng xác nhận, thực hiện xóa
             if (isConfirmed) {
-                const res = await axios.delete(`/api/category/${id}`, {
+                const res = await axios.delete(`${API_URL}/api/category/${id}`, {
                     headers: { Authorization: token },
                 });
 

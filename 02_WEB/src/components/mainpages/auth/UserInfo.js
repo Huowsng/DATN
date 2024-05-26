@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { GlobalState } from '../../../GlobalState';
 import { gsap } from 'gsap';
 import axios from 'axios';
+import API_URL from '../../../api/baseAPI';
 
 function UserInfo() {
     const state = useContext(GlobalState);
@@ -20,7 +21,7 @@ function UserInfo() {
     };
 
     const logoutUser = async () => {
-        await axios.get('/user/logout');
+        await axios.get(`${API_URL}/user/logout`);
         localStorage.removeItem('firstLogin');
         window.location.href = '/';
     };
@@ -31,22 +32,22 @@ function UserInfo() {
                     <div className="header-information">
                         <p className="header-label">Admin</p>
                         <div className="header-direction">
-                            <Link to="/">ホーム /</Link>
-                            <Link to="/infor">マネージャー</Link>
+                            <Link to="/">Trang chủ /</Link>
+                            <Link to="/infor">Admin</Link>
                         </div>
                     </div>
 
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/profile">個人情報</Link>
+                                <Link to="/profile">Thông tin cá nhân</Link>
                             </p>
                         </div>
                     </div>
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/history">すべての注文</Link>
+                                <Link to="/history">Tất cả Đơn hàng</Link>
                             </p>
                         </div>
                     </div>
@@ -54,14 +55,14 @@ function UserInfo() {
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/create_product">クリエート プロダクト</Link>
+                                <Link to="/create_product">Thêm sản phẩm</Link>
                             </p>
                         </div>
                     </div>
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/category">クリエートカテゴリ</Link>
+                                <Link to="/category">Thêm Category</Link>
                             </p>
                         </div>
                     </div>
@@ -69,7 +70,7 @@ function UserInfo() {
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
                                 <Link to="/" onClick={logoutUser}>
-                                    ログアウト
+                                    Đăng xuất
                                 </Link>
                             </p>
                         </div>
@@ -78,24 +79,31 @@ function UserInfo() {
             ) : (
                 <div className="container-information">
                     <div className="header-information">
-                        <p className="header-label">アカウント詳細</p>
+                        <p className="header-label">Chi tiết tài khoản</p>
                         <div className="header-direction">
-                            <Link to="/">ホーム /</Link>
-                            <Link to="/infor">アカウント</Link>
+                            <Link to="/">Trang chủ /</Link>
+                            <Link to="/infor">Tài khoản</Link>
                         </div>
                     </div>
 
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/profile">個人情報</Link>
+                                <Link to="/profile">Thông tin cá nhân</Link>
                             </p>
                         </div>
                     </div>
                     <div className="detail-user-box">
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
-                                <Link to="/cart">カート</Link>
+                                <Link to="/product-management">Quản lý sản phẩm</Link>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="detail-user-box">
+                        <div className="user-box">
+                            <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
+                                <Link to="/cart">Giỏ hàng</Link>
                             </p>
                         </div>
                     </div>
@@ -103,7 +111,7 @@ function UserInfo() {
                         <div className="user-box">
                             <p onMouseEnter={onEnter} onMouseLeave={onLeave}>
                                 <Link to="/" onClick={logoutUser}>
-                                    ログアウト
+                                    Đăng xuất
                                 </Link>
                             </p>
                         </div>

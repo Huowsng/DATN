@@ -1,7 +1,7 @@
 import React from 'react';
 import { BsFacebook, BsInstagram, BsGithub } from 'react-icons/bs';
 
-import images from '../../asset/img';
+// import images from '../../asset/img';
 
 import classNames from 'classnames/bind';
 import styles from './Footer.module.scss';

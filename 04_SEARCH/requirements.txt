@@ -1,7 +1,7 @@
-fastapi==0.68.1
-uvicorn==0.15.0
-tensorflow==2.7.0  # Đảm bảo phiên bản phù hợp với TensorFlow
-numpy==1.22.1
-pandas==1.3.5
-pillow==8.4.0
-opencv-python==4.5.4.60
+fastapi
+uvicorn
+tensorflow  
+numpy
+pandas
+pillow
+opencv-python

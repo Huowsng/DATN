@@ -58,9 +58,11 @@ input {
   padding: 0 23px;
   /* margin: 10px 25px 10px 21px; */
 }
-.filter_menu input {
+
+.filter_menu .search-input {
   flex: 1;
   margin: 0 170px;
+  margin-right: 20px;
 }
 
 /* -------------------- Load More --------------- */
@@ -72,4 +74,96 @@ input {
   margin-bottom: 20px;
   border: 1px solid #555;
   text-transform: capitalize;
+}
+.camera-icon {
+  cursor: pointer;
+  margin-right: 100px;
+}
+
+.filter_menu {
+  position: relative;
+}
+
+/* Điều chỉnh vị trí của hộp thoại chọn hình ảnh */
+
+/* CSS cho phần modal */
+.modal {
+  display: flex;
+  justify-content: center; /* Canh giữa theo chiều ngang */
+  align-items: center; /* Canh giữa theo chiều dọc */
+  position: fixed;
+  z-index: 999; /* Đảm bảo modal hiển thị trên tất cả các phần tử khác */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Một lớp mờ đen cho phần nền */
+}
+
+/* CSS cho nội dung của modal */
+.modal-content {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  width: 500px; /* Độ rộng cố định của modal */
+  height: 500px; /* Chiều cao cố định của modal */
+  border-radius: 10px; /* Bo tròn các góc */
+  padding: 20px;
+  position: relative; /* Để có thể sử dụng absolute position cho close button */
+}
+
+/* CSS cho nút close */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-upload {
+  height: 350px;
+  width: 100%;
+  border: 2px dotted #6b5a41;
+  position: relative;
+  margin-top: 20px;
+}
+
+#modal-fileup {
+  width: 100%;
+  outline: none;
+}
+
+#modal-fileup::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: white;
+  background-image: url("../../asset/img/upload_img/camera.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  color: transparent;
+}
+.modal-button {
+  width: 200px;
+  height: 40px;
+  background: #07055b;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  border-radius: 20px;
+  margin-top: 20px;
 }

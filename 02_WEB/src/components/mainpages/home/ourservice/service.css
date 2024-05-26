@@ -61,10 +61,6 @@ input {
   padding: 0 23px;
   /* margin: 10px 25px 10px 21px; */
 }
-.filter_menu input {
-  flex: 1;
-  margin: 0 170px;
-}
 
 /* -------------------- Load More --------------- */
 .load_more {

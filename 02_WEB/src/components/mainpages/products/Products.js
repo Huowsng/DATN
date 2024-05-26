@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { GlobalState } from "../../../GlobalState";
 import ProductItem from "../utils/productItem/ProductItem";
 import Loading from "../utils/loading/Loading";
 import axios from "axios";
 import Filters from "./Filters";
-import LoadMore from "./pagination";
+import Pagination from "./pagination";
 import { Link } from "react-router-dom";
 import API_URL from "../../../api/baseAPI";
 
@@ -16,6 +16,10 @@ function Products() {
   const [callback, setCallback] = state.productsAPI.callback;
   const [loading, setLoading] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
+  const topRef = useRef(null); // Tạo tham chiếu tới phần tử trên cùng của trang
+
   const handleCheck = (id) => {
     productRole1.forEach((product) => {
       if (product._id === id) product.checked = !product.checked;
@@ -41,6 +45,7 @@ function Products() {
       await deleteProduct;
       setCallback(!callback);
       alert("Product deleted successfully");
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -60,16 +65,42 @@ function Products() {
     });
   };
 
+  const currentItems = productRole1.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(productRole1.length / itemsPerPage);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  useEffect(() => {
+    setCurrentPage(1); // Đặt lại trang đầu tiên khi cập nhật productRole1
+  }, [productRole1]);
+
   if (loading)
     return (
       <div>
         <Loading />
       </div>
     );
+
   return (
     <>
       <Filters />
-      <div className="header-information">
+      <div ref={topRef} className="header-information">
+        {" "}
+        {/* Thêm ref vào đây */}
         <p className="header-label">Cửa hàng</p>
         <div className="header-direction">
           <Link to="/">Trang chủ /</Link>
@@ -86,7 +117,7 @@ function Products() {
       )}
 
       <div className="products">
-        {productRole1?.map((product) => {
+        {currentItems?.map((product) => {
           return (
             <ProductItem
               key={product._id}
@@ -98,7 +129,16 @@ function Products() {
           );
         })}
       </div>
-      <LoadMore />
+      {productRole1.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePreviousPage={handlePreviousPage}
+          handleNextPage={handleNextPage}
+          handlePageChange={handlePageChange}
+          topRef={topRef} // Truyền topRef vào Pagination
+        />
+      )}
       {productRole1?.length === 0 && <Loading />}
     </>
   );

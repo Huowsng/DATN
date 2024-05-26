@@ -1,14 +1,11 @@
 import "./service.css";
-import { BsPlusCircle } from "react-icons/bs";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { GlobalState } from "../../../../GlobalState";
 import ProductItem from "../../utils/productItem/ProductItem";
 import Loading from "../../utils/loading/Loading";
 import axios from "axios";
-import LoadMore from "../../products/pagination";
 import API_URL from "../../../../api/baseAPI";
-
-const PRODUCTS_PER_PAGE = 6; // 6 sản phẩm trên mỗi trang
+import Pagination from "../../products/pagination";
 
 export const Service = () => {
   const state = useContext(GlobalState);
@@ -19,6 +16,8 @@ export const Service = () => {
   const [loading, setLoading] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+  const topRef = useRef(null); // Tạo tham chiếu tới phần tử trên cùng của trang
 
   const handleCheck = (id) => {
     productRole1.forEach((product) => {
@@ -44,6 +43,7 @@ export const Service = () => {
       await deleteProduct;
       setCallback(!callback);
       alert("Xóa sản phẩm thành công");
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -61,6 +61,7 @@ export const Service = () => {
       );
       setCallback(!callback);
       alert("Cập nhật vai trò sản phẩm thành công");
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -88,20 +89,36 @@ export const Service = () => {
     });
   };
 
-  // Sort products by createdAt date in descending order
+  const totalPages = Math.ceil(productRole1.length / itemsPerPage);
 
-  const totalPages = Math.ceil(productRole1.length / 2);
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const currentItems = productRole1.slice(
-    (currentPage - 1) * 2,
-    currentPage * 2
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
+
+  useEffect(() => {
+    setCurrentPage(1); // Đặt lại trang đầu tiên khi cập nhật productRole1
+  }, [productRole1]);
 
   if (loading) return <Loading />;
 
   return (
     <>
-      <div className="service-main">
+      <div ref={topRef} className="service-main">
+        {" "}
+        {/* Thêm ref vào đây */}
         <div className="service-top">
           <p className="service-p">Tin đăng mới</p>
         </div>
@@ -128,7 +145,16 @@ export const Service = () => {
         ))}
       </div>
 
-      <LoadMore />
+      {productRole1.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePreviousPage={handlePreviousPage}
+          handleNextPage={handleNextPage}
+          handlePageChange={handlePageChange}
+          topRef={topRef} // Truyền topRef vào Pagination
+        />
+      )}
       {productRole1.length === 0 && <Loading />}
     </>
   );

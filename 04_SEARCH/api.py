@@ -31,6 +31,7 @@ class App:
             return {"message": "hello"}
 
         @self.app.post("/image-search")
+
         async def image_search(image: UploadFile = File(...)):
             print("1111111111111")
             image_data = await image.read()
@@ -50,8 +51,9 @@ class App:
             else:
                 print("Mảng hình ảnh trống hoặc không hợp lệ.")
   
-            csv_path = Path('/Users/Admin/Desktop/DATN/04_SEARCH/class_dict.csv')
-            model_path = Path('/Users/Admin/Desktop/DATN/04_SEARCH/Search.h5')
+            csv_path = Path('/Users/ADMIN/Desktop/DATN/DATN/04_SEARCH/class_dict.csv')
+     
+            model_path = Path('/Users/ADMIN/Desktop/DATN/DATN/04_SEARCH/Search.h5')
 
             klass, prob, img, df  = predictor(store_path, csv_path, model_path, averaged=True, verbose=False)
             print(klass)

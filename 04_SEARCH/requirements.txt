@@ -6,3 +6,4 @@ pandas
 pillow
 opencv-python
 matplotlib
+patool

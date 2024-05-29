@@ -20,29 +20,68 @@ const Dashboard = () => {
   const itemsPerPage = 10;
   const [isCheck, setIsCheck] = useState(false);
   const [acceptedCount, setAcceptedCount] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [history, setHistory] = state.userAPI.history;
+  const [isAdmin] = state.userAPI.isAdmin;
+
   useEffect(() => {
     const fetchCategories = async () => {
-      try {
-        const res = await axios.get(`${API_URL}/api/category`);
-        setCategories(res.data);
-      } catch (err) {
-        console.log(err);
+      if (isAdmin) {
+        try {
+          const res = await axios.get(`${API_URL}/api/category`);
+          setCategories(res.data);
+        } catch (err) {
+          console.log(err);
+        } finally {
+          setIsLoaded(true);
+        }
       }
     };
-    fetchCategories();
+    if (!isLoaded) {
+      fetchCategories();
+    }
+
     const fetchUsers = async () => {
       try {
         const res = await axios.get(`${API_URL}/user/username`, {
           headers: { Authorization: token },
         });
-        setUsers(res.data);
-        console.log(res.data);
+        setHistory(res.data);
       } catch (err) {
         console.log(err);
+      } finally {
+        setIsLoaded(true);
       }
     };
-    fetchUsers();
-  }, [state.token, productRole0, token, acceptedCount]);
+    if (!isLoaded) {
+      fetchUsers();
+    }
+
+    if (token) {
+      const getHistory = async () => {
+        let res;
+        if (isAdmin) {
+          res = await axios.get(`${API_URL}/api/orders/admin?`, {
+            headers: { Authorization: token },
+          });
+        } else {
+          res = await axios.get(`${API_URL}/api/orders?`, {
+            headers: { Authorization: token },
+          });
+        }
+        setHistory(res.data);
+      };
+      getHistory();
+    }
+  }, [
+    isAdmin,
+    state.token,
+    productRole0,
+    token,
+    acceptedCount,
+    isLoaded,
+    setHistory,
+  ]);
 
   const deleteProduct = async (id, public_id) => {
     try {
@@ -89,6 +128,23 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
+  const calculateTotalRevenue = (history) => {
+    // Sử dụng reduce() để tính tổng doanh thu từ mảng history
+    const totalRevenue = history.reduce((accumulator, currentItem) => {
+      // Nếu currentItem.total là một số, thêm giá trị của nó vào accumulator
+      if (!isNaN(currentItem.total)) {
+        return accumulator + currentItem.total;
+      } else {
+        // Nếu currentItem.total không phải là một số, trả về accumulator mà không thay đổi
+        return accumulator;
+      }
+    }, 0); // Giá trị ban đầu của accumulator là 0
+
+    return (totalRevenue * 10) / 100;
+  };
+
+  // Sử dụng hàm calculateTotalRevenue với mảng history để tính tổng doanh thu
+  const totalRevenue = calculateTotalRevenue(history);
 
   const handleCheck = (id) => {
     let newAcceptedCount = acceptedCount;
@@ -204,6 +260,10 @@ const Dashboard = () => {
     setCurrentPage(pageNumber);
   };
 
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("vi-VN").format(price);
+  };
+
   return (
     <div className="dashboard">
       <div className="container-fluid mt-3">
@@ -223,15 +283,7 @@ const Dashboard = () => {
               <div className="card text-white bg-primary mb-3">
                 <div className="card-header">Tổng doanh thu</div>
                 <div className="card-body">
-                  <h5 className="card-title">$2,456</h5>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card text-white bg-success mb-3">
-                <div className="card-header">Số khách hàng truy cập</div>
-                <div className="card-body">
-                  <h5 className="card-title">5,325</h5>
+                  <h5 className="card-title">{formatPrice(totalRevenue)} đ</h5>
                 </div>
               </div>
             </div>
@@ -239,7 +291,7 @@ const Dashboard = () => {
               <div className="card text-white bg-info mb-3">
                 <div className="card-header">Tổng số đơn đặt hàng</div>
                 <div className="card-body">
-                  <h5 className="card-title">1,326</h5>
+                  <h5 className="card-title">{history.length} đơn đặt hàng</h5>
                 </div>
               </div>
             </div>

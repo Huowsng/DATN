@@ -17,7 +17,7 @@ function Products() {
   const [loading, setLoading] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+  const itemsPerPage = 12;
   const topRef = useRef(null); // Tạo tham chiếu tới phần tử trên cùng của trang
 
   const handleCheck = (id) => {

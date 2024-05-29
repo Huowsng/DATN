@@ -9,6 +9,7 @@ import FeedbackItem from "./FeedbackItem";
 import Rating from "react-rating";
 import gsap from "gsap";
 import API_URL from "../../../api/baseAPI";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 function DetailProduct() {
   const params = useParams();
@@ -23,6 +24,7 @@ function DetailProduct() {
   const user_id = state.userAPI.userID[0];
   const [total, setTotal] = useState(0);
   const [score, setScore] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     if (params.id) {
@@ -81,13 +83,7 @@ function DetailProduct() {
       setScore(item.rating);
     });
   }, []);
-  const onEnter = ({ currentTarget }) => {
-    gsap.to(currentTarget, {
-      repeatDelay: 1,
-      yoyo: true,
-      scale: 1.5,
-    });
-  };
+
   const onLeave = ({ currentTarget }) => {
     gsap.to(currentTarget, { scale: 1 });
   };
@@ -103,16 +99,88 @@ function DetailProduct() {
     orange: "#FFA500",
     grey: "#808080",
   };
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? detailProduct.images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === detailProduct.images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handleDotClick = (index) => {
+    setCurrentImageIndex(index);
+  };
 
   return (
     <>
       <div className="detail">
-        <img
-          onMouseEnter={onEnter}
-          onMouseLeave={onLeave}
-          src={detailProduct.images.url}
-          alt=""
-        />
+        <div className="image-container" style={{ position: "relative" }}>
+          {detailProduct.images.length > 1 && (
+            <>
+              <FaChevronLeft
+                className="prev-btn"
+                onClick={handlePrevImage}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "0",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
+              />
+              <FaChevronRight
+                className="next-btn"
+                onClick={handleNextImage}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "0",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                }}
+              />
+            </>
+          )}
+          <img
+            onMouseLeave={onLeave}
+            src={detailProduct.images[currentImageIndex].url}
+            alt=""
+          />
+          {detailProduct.images.length > 1 && (
+            <>
+              <div
+                className="dot-container"
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  display: "flex",
+                  gap: "5px",
+                }}
+              >
+                {detailProduct.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className="dot"
+                    style={{
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      background: index === currentImageIndex ? "blue" : "gray",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleDotClick(index)}
+                  ></div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
         <div className="box-detail">
           <div className="row">
             <h3>{detailProduct.title}</h3>

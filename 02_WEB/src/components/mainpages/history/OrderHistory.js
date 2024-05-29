@@ -19,22 +19,15 @@ function OrderHistory() {
   useEffect(() => {
     if (token) {
       const getHistory = async () => {
-        const limit = 10;
         let res;
         if (isAdmin) {
-          res = await axios.get(
-            `${API_URL}/api/orders/admin?limit=${limit}&page=${page}`,
-            {
-              headers: { Authorization: token },
-            }
-          );
+          res = await axios.get(`${API_URL}/api/orders/admin?`, {
+            headers: { Authorization: token },
+          });
         } else {
-          res = await axios.get(
-            `${API_URL}/api/orders?limit=${limit}&page=${page}`,
-            {
-              headers: { Authorization: token },
-            }
-          );
+          res = await axios.get(`${API_URL}/api/orders?`, {
+            headers: { Authorization: token },
+          });
         }
         setHistory(res.data);
       };

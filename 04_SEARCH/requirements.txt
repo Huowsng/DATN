@@ -8,3 +8,4 @@ opencv-python
 matplotlib
 patool
 rarfile
+python-dotenv

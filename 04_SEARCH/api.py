@@ -2,7 +2,7 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import uvicorn
 import argparse
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 from predictor import predictor
@@ -13,6 +13,9 @@ import pandas as pd
 import cv2 as cv2
 import io
 import rarfile
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
 
 class App:
     def __init__(self) -> None:
@@ -31,7 +34,6 @@ class App:
 
         @self.app.post("/image-search")
         async def image_search(image: UploadFile = File(...)):
-            print("1111111111111")
             image_data = await image.read()
             image_pil = Image.open(io.BytesIO(image_data))
             img = cv2.cvtColor(np.array(image_pil), cv2.COLOR_RGB2BGR)
@@ -49,16 +51,31 @@ class App:
             else:
                 print("Mảng hình ảnh trống hoặc không hợp lệ.")
   
-            csv_path = Path('/04_SEARCH/class_dict.csv')
+            base_path = os.getenv('BASE_PATH')
+            rar_file_name = os.getenv('RAR_FILE_NAME')
+            csv_file_name = os.getenv('CSV_FILE_NAME')
+            
+            if not base_path or not rar_file_name or not csv_file_name:
+                raise HTTPException(status_code=500, detail="Missing environment variable configurations")
+
+            csv_path = Path(base_path) / csv_file_name
+            rar_path = Path(base_path) / rar_file_name
      
-            # Giải nén file h5.rar để lấy file search.h5
-            rar_path = '/04_SEARCH/h5.rar'
-            with rarfile.RarFile(rar_path) as rf:
-                rf.extract('search.h5', '/04_SEARCH/')
+            # Extract h5.rar to get Search.h5
+            if not rar_path.exists():
+                raise HTTPException(status_code=404, detail=f"File not found: {rar_path}")
+            
+            try:
+                with rarfile.RarFile(rar_path) as rf:
+                    rf.extract('Search.h5', base_path)
+            except rarfile.RarCannotExec as e:
+                raise HTTPException(status_code=500, detail=f"Error extracting RAR file: {e}")
 
-            model_path = Path('/04_SEARCH/search.h5')
+            model_path = Path(base_path) / 'Search.h5'
+            if not model_path.exists():
+                raise HTTPException(status_code=404, detail=f"Extracted file not found: {model_path}")
 
-            klass, prob, img, df  = predictor(store_path, csv_path, model_path, averaged=True, verbose=False)
+            klass, prob, img, df = predictor(store_path, csv_path, model_path, averaged=True, verbose=False)
             print(klass)
             print(f'{prob * 100: 6.2f}')
             

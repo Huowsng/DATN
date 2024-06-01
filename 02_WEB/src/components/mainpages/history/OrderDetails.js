@@ -62,6 +62,7 @@ function OrderDetails() {
                 <th>Loại</th>
                 <th>Giá</th>
                 <th>Đánh giá</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -90,6 +91,7 @@ function OrderDetails() {
                       <Link to={`/comment/${item.product_id}`}>Đánh giá</Link>
                     </td>
                   )}
+                  <td>Đã nhận được hàng</td>
                 </tr>
               ))}
             </tbody>
@@ -105,6 +107,7 @@ function OrderDetails() {
               <th>Loại</th>
               <th>Giá</th>
               <th>Đánh giá</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -133,6 +136,7 @@ function OrderDetails() {
                     <Link to={`/comment/${item.product_id}`}>Đánh giá</Link>
                   </td>
                 )}
+                <td>Đã nhận được hàng</td>
               </tr>
             ))}
           </tbody>

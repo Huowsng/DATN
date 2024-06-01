@@ -123,7 +123,7 @@ function Cart() {
       <form onSubmit={Checkout}>
         {cart.map((product, type) => (
           <div className="detail cart" key={product._id}>
-            <img src={product.images.url} alt="" />
+            <img src={product.images[0].url} alt="" />
 
             <div className="box-detail">
               <h2>{product.title}</h2>
@@ -162,7 +162,6 @@ function Cart() {
                 })
               : "N/A"}
           </h3>
-          <PaypalButton total={total} tranSuccess={tranSuccess} />
           <Link
             to="/checkout"
             className="checkout"

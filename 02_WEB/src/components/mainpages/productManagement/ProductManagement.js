@@ -10,7 +10,6 @@ const ProductManagement = () => {
   const state = useContext(GlobalState);
   const [token] = state.token;
   const user_cre = state.userAPI.userID[0];
-  console.log("444444444444:", user_cre);
   const [products, setProducts] = state.productsAPI.products ?? [];
   const [categories, setCategories] = useState([]);
   const [users, setUsers] = useState([]);
@@ -39,7 +38,6 @@ const ProductManagement = () => {
           headers: { Authorization: token },
         });
         setUsers(res.data);
-        console.log(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -164,6 +162,15 @@ const ProductManagement = () => {
     (product) => product.user_cre === user_cre
   );
 
+  const totalPrice = userProducts.reduce(
+    (total, product) => total + product.price,
+    0
+  );
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("vi-VN").format(price);
+  };
+
   return (
     <div className="dashboard">
       <div className="container-fluid mt-3">
@@ -183,7 +190,7 @@ const ProductManagement = () => {
               <div className="card text-white bg-primary mb-3">
                 <div className="card-header">Tổng doanh thu</div>
                 <div className="card-body">
-                  <h5 className="card-title">$2,456</h5>
+                  <h5 className="card-title">{formatPrice(totalPrice)} đ</h5>
                 </div>
               </div>
             </div>
@@ -192,7 +199,7 @@ const ProductManagement = () => {
               <div className="card text-white bg-info mb-3">
                 <div className="card-header">Tổng số đơn đặt hàng</div>
                 <div className="card-body">
-                  <h5 className="card-title">1,326</h5>
+                  <h5 className="card-title">{userProducts.length}</h5>
                 </div>
               </div>
             </div>
@@ -255,7 +262,7 @@ const ProductManagement = () => {
                             : "N/A"}
                         </td>
                         <td>
-                          {product.amount === 0
+                          {product.types[0].amount === 0
                             ? "Đã bán hết"
                             : product.role === 1
                             ? "Đã duyệt"

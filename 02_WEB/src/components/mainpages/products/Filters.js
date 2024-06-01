@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { GlobalState } from "../../../GlobalState";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
@@ -18,6 +18,14 @@ function Filters() {
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState(false);
   const [imageAi, setImageAi] = useState(false);
+
+  const [analyzedProducts, setAnalyzedProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    console.log("Categories:", categories); // Log the categories array
+    console.log("Categories Structure:", categories.map(cat => ({ name: cat.name, id: cat._id }))); // Log the structure of each category
+  }, [categories]);
 
   const handleCategory = (e) => {
     setCategory(e.target.value);
@@ -53,7 +61,9 @@ function Filters() {
       setLoading(false);
       setImages(res.data);
       setImageAi(file);
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleDestroy = async () => {
@@ -78,27 +88,64 @@ function Filters() {
     setImage(file);
   };
 
+
   const handleSubmit = async () => {
     try {
-      // Gửi request đến API với file ảnh
+      // Gửi hình ảnh để dự đoán danh mục
       let formData = new FormData();
       formData.append("image", imageAi);
-      const res = await axios.post(
-        "http://localhost:8000/image-search",
-        formData,
-        {
-          headers: {
-            "content-type": "multipart/form-data",
-          },
-        }
+      const res = await axios.post("http://localhost:8000/image-search", formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+      
+      // Trích xuất tên danh mục từ phản hồi
+      const categoryName = res.data.trim();
+      console.log("Tên danh mục:", categoryName);
+  
+      // Tìm danh mục phù hợp từ danh sách các danh mục
+      const matchedCategory = categories.find(
+        (cat) => cat.name.trim().toLowerCase() === categoryName.toLowerCase()
       );
-      console.log("API response:", res.data);
+  
+      if (matchedCategory) {
+        // Đặt trạng thái danh mục dựa trên danh mục phù hợp
+        setCategory(`category=${matchedCategory._id}`);
+  
+        // Lấy danh sách sản phẩm dựa trên danh mục phù hợp
+        const productsRes = await axios.get(`${API_URL}/api/products?category=${matchedCategory._id}`);
+        const productsData = productsRes.data.products;
+  
+        // Trích xuất các URL hình ảnh từ productsData
+        const productImages = productsData.map((product) => product.images[0].url);
+  
+        // Đảm bảo mảng productImages không rỗng trước khi gửi để phân tích
+        if (productImages.length > 0) {
+          // Gửi các hình ảnh sản phẩm đến máy chủ AI để phân tích
+          const analysisRes = await axios.post("http://localhost:8000/product-analysis", productImages);
+          const analyzedProducts = analysisRes.data;
+          console.log("Các sản phẩm đã được phân tích:", analyzedProducts);
+          // Xử lý các sản phẩm đã được phân tích theo cách cần thiết...
+  
+          // Hiển thị các sản phẩm đã được phân tích từ trên xuống
+          setAnalyzedProducts(analyzedProducts);
+        } else {
+          throw new Error("Không tìm thấy hình ảnh sản phẩm để phân tích.");
+        }
+      } else {
+        // Không tìm thấy danh mục phù hợp
+        alert("Dữ liệu chưa có danh mục phù hợp.");
+      }
     } catch (err) {
-      console.error(err);
-      alert("Failed to process image.");
+      // Xử lý lỗi
+      console.error("Lỗi khi xử lý hình ảnh:", err);
+      alert("Không thể xử lý hình ảnh.");
     }
   };
-
+  
+  
+  
   return (
     <div className="filter_menu">
       <div className="row">
@@ -165,8 +212,8 @@ function Filters() {
                   id="file_img"
                   className="no-line d-flex justify-content-center align-items-center"
                 >
-                  <div class="spinner-grow " role="status">
-                    <span class="visually-hidden">Loading...</span>
+                  <div className="spinner-grow" role="status">
+                    <span className="visually-hidden">Loading...</span>
                   </div>
                 </div>
               ) : (

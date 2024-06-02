@@ -3,8 +3,8 @@ import axios from "axios";
 import { GlobalState } from "../../../GlobalState";
 import Loading from "../utils/loading/Loading";
 import { useNavigate, useParams } from "react-router-dom";
-import { AiOutlineCloseCircle } from "react-icons/ai";
 import API_URL from "../../../api/baseAPI";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 const initialState = {
   title: "",
@@ -13,6 +13,7 @@ const initialState = {
   _id: "",
   types: [
     {
+      id: Date.now(),
       name: "",
       price: 0,
       amount: 0,
@@ -25,15 +26,12 @@ function CreateProduct() {
   const user_cre = state.userAPI.userID[0];
   const [product, setProduct] = useState(initialState);
   const [categories] = state.categoriesAPI.categories;
-  const [images, setImages] = useState(false);
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
-
   const history = useNavigate();
   const param = useParams();
-
   const [products] = state.productsAPI.products;
   const [onEdit, setOnEdit] = useState(false);
   const [callback, setCallback] = state.productsAPI.callback;
@@ -51,87 +49,132 @@ function CreateProduct() {
     } else {
       setOnEdit(false);
       setProduct(initialState);
-      setImages(false);
+      setImages([]);
     }
   }, [param.id, products]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    try {
-      const file = e.target.files[0];
+    const files = Array.from(e.target.files);
 
-      if (!file) return alert("The file is not correct.");
+    const newImages = [];
 
-      if (file.size > 1024 * 1024)
-        return alert("Image is large. Please try again");
+    for (const file of files) {
+      if (!file) {
+        alert("The file is not correct.");
+        return;
+      }
 
-      if (file.type !== "image/jpeg" && file.type !== "image/png")
-        return alert("The file is not correct. Please check again");
+      if (file.size > 1024 * 1024) {
+        alert("Image is too large. Please try again.");
+        return;
+      }
+
+      if (file.type !== "image/jpeg" && file.type !== "image/png") {
+        alert("The file is not correct. Please check again.");
+        return;
+      }
 
       let formData = new FormData();
       formData.append("file", file);
 
       setLoading(true);
-      const res = await axios.post(`${API_URL}/api/upload`, formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: token,
-        },
-      });
-      setLoading(false);
-      setImages(res.data);
-    } catch (err) {
-      alert(err.response.data.msg);
+      try {
+        const res = await axios.post(`${API_URL}/api/upload`, formData, {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: token,
+          },
+        });
+        newImages.push(res.data);
+      } catch (err) {
+        alert(err.response.data.msg);
+        setLoading(false);
+        return;
+      }
     }
+
+    setImages((prevImages) => [...prevImages, ...newImages].slice(0, 5));
+    setLoading(false);
   };
 
-  const handleDestroy = async () => {
+  const handleDestroy = async (public_id) => {
     try {
       setLoading(true);
       await axios.post(
         `${API_URL}/api/destroy`,
-        { public_id: images.public_id },
+        { public_id },
         {
           headers: { Authorization: token },
         }
       );
+      setImages((prevImages) =>
+        prevImages.filter((image) => image.public_id !== public_id)
+      );
       setLoading(false);
-      setImages(false);
     } catch (err) {
       alert(err.response.data.msg);
+      setLoading(false);
     }
   };
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
-    setProduct({ ...product, [name]: value });
+    if (onEdit) {
+      setEdit({ ...edit, [name]: value });
+    } else {
+      setProduct({ ...product, [name]: value });
+    }
   };
 
   const handleChangeInputEdit = (e, index) => {
     const { name, value } = e.target;
-    const updatedTypes = [...edit.types];
+    const updatedTypes = onEdit ? [...edit.types] : [...product.types];
 
     if (name === "price") {
-      // Remove non-numeric characters and limit to 11 digits
       const formattedValue = value.replace(/\D/g, "").slice(0, 11);
       updatedTypes[index] = { ...updatedTypes[index], [name]: formattedValue };
     } else {
       updatedTypes[index] = { ...updatedTypes[index], [name]: value };
     }
 
-    setEdit({ ...edit, types: updatedTypes });
+    if (onEdit) {
+      setEdit({ ...edit, types: updatedTypes });
+    } else {
+      setProduct({ ...product, types: updatedTypes });
+    }
+  };
+
+  const addType = () => {
+    const newType = { id: Date.now(), name: "", price: 0, amount: 0 };
+    if (onEdit) {
+      setEdit({ ...edit, types: [...edit.types, newType] });
+    } else {
+      setProduct({ ...product, types: [...product.types, newType] });
+    }
+  };
+
+  const removeType = (id) => {
+    if (onEdit) {
+      setEdit({ ...edit, types: edit.types.filter((type) => type.id !== id) });
+    } else {
+      setProduct({
+        ...product,
+        types: product.types.filter((type) => type.id !== id),
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (!images) return alert("Image not uploaded");
+      if (images.length === 0) return alert("Image not uploaded");
 
       const rs = {
         title: product.title,
         description: product.description,
         category: product.category,
-        types: edit.types,
+        types: onEdit ? edit.types : product.types,
         role: isAdmin ? 1 : 0,
       };
 
@@ -169,25 +212,36 @@ function CreateProduct() {
     return new Intl.NumberFormat("vi-VN").format(price);
   };
 
-  const styleUpload = {
-    display: images ? "block" : "none",
-  };
-
   return (
     <div className="create_product">
       <div className="upload">
-        <input type="file" name="file" id="file_up" onChange={handleUpload} />
         {loading ? (
           <div id="file_img" className="no-line">
             <Loading />
           </div>
         ) : (
-          <div id="file_img" style={styleUpload}>
-            <img src={images ? images.url : ""} alt="" />
-            <span onClick={handleDestroy}>X</span>
-          </div>
+          <input
+            type="file"
+            name="file"
+            id="file_up"
+            onChange={handleUpload}
+            multiple
+          />
         )}
+        {images.map((image, index) => (
+          <div key={index} id="file_img">
+            <div className="file-img-load">
+              <img
+                src={image.url}
+                alt=""
+                style={{ border: index === 0 ? "2px solid red" : "none" }}
+              />
+              <span onClick={() => handleDestroy(image.public_id)}>X</span>
+            </div>
+          </div>
+        ))}
       </div>
+
       <form onSubmit={handleSubmit}>
         <div className="row">
           <label htmlFor="categories">Danh mục: </label>
@@ -195,7 +249,7 @@ function CreateProduct() {
             className="category"
             name="category"
             value={onEdit ? edit.category : product.category}
-            onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
+            onChange={handleChangeInput}
           >
             <option value="">Danh mục tin đăng</option>
             {categories.map((category) => (
@@ -213,43 +267,73 @@ function CreateProduct() {
             id="title"
             required
             value={onEdit ? edit.title : product.title}
-            onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
-            disabled={onEdit}
+            onChange={handleChangeInput}
           />
         </div>
-        <div className="row-type">
-          {edit.types.map((item, index) => (
-            <div key={index}>
-              <div>
-                <label>Tên sản phẩm</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={item.name || ""}
-                  onChange={(e) => handleChangeInputEdit(e, index)}
-                />
+        <div className="add-type-container row">
+          <div className="row-type ">
+            {(onEdit ? edit.types : product.types).map((item, index) => (
+              <div key={index}>
+                <div>
+                  <label>Phân loại</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={item.name || ""}
+                    onChange={(e) => handleChangeInputEdit(e, index)}
+                  />
+                </div>
+                <div>
+                  <label>Giá</label>
+                  <input
+                    type="text"
+                    name="price"
+                    value={formatPrice(item.price) || ""}
+                    onChange={(e) => handleChangeInputEdit(e, index)}
+                  />
+                </div>
+                <div>
+                  <label>Số lượng</label>
+                  <input
+                    type="text"
+                    name="amount"
+                    value={item.amount || ""}
+                    onChange={(e) => handleChangeInputEdit(e, index)}
+                  />
+                </div>
               </div>
-              <div>
-                <label>Giá</label>
-                <input
-                  type="text"
-                  name="price"
-                  value={formatPrice(item.price) || ""}
-                  onChange={(e) => handleChangeInputEdit(e, index)}
-                />
-              </div>
-              <div>
-                <label>Số lượng</label>
-                <input
-                  type="text"
-                  name="amount"
-                  value={item.amount || ""}
-                  onChange={(e) => handleChangeInputEdit(e, index)}
-                />
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <button type="button" className="add-type-button" onClick={addType}>
+            Add Type
+          </button>
+
+          <table className="types-table ">
+            <thead>
+              <tr>
+                <th>Loại sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {(onEdit ? edit.types : product.types).map((type) => (
+                <tr key={type.id}>
+                  <td>{type.name}</td>
+                  <td>{formatPrice(type.price)}</td>
+                  <td>{type.amount}</td>
+                  <td>
+                    <button onClick={() => removeType(type.id)}>
+                      <AiOutlineCloseCircle />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+
         <div className="row">
           <label htmlFor="description">Mô tả chi tiết</label>
           <textarea
@@ -265,7 +349,7 @@ function CreateProduct() {
             required
             value={onEdit ? edit.description : product.description}
             rows="10"
-            onChange={onEdit ? handleChangeInputEdit : handleChangeInput}
+            onChange={handleChangeInput}
           />
         </div>
 

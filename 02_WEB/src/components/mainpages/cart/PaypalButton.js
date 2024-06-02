@@ -23,12 +23,12 @@ export default class PaypalButton extends React.Component {
     let currency = "USD"; // Hoặc bạn có thể đặt giá trị này từ props hoặc state của bạn
     let total = this.props.total; // Giống như trên, đây là tổng số tiền (dựa trên loại tiền tệ) cần thanh toán bằng cách sử dụng thanh toán express PayPal
     // Tài liệu về mã tiền của PayPal: https://developer.paypal.com/docs/classic/api/currency_codes/
-
+    const totalInUSD = (total / 23).toFixed(2);
     const options = {
-      "client-id": "YOUR-CLIENT-ID", // Thay YOUR-CLIENT-ID bằng client ID của ứng dụng PayPal của bạn
+      "client-id":
+        "AR83cyvMkvUJAe4x-ajPu4LQlcMOyJhMePsJyJwQDUQFrnQdHHJtakPMx1-3P6BEojFjJtG-CXsD9HQ9", // Thay YOUR-CLIENT-ID bằng client ID của ứng dụng PayPal của bạn
       currency: currency,
     };
-
     return (
       <PayPalScriptProvider options={options}>
         <PayPalButtons
@@ -38,7 +38,7 @@ export default class PaypalButton extends React.Component {
               purchase_units: [
                 {
                   amount: {
-                    value: total,
+                    value: totalInUSD,
                     currency_code: currency,
                   },
                 },

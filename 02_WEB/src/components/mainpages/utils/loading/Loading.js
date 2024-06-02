@@ -1,14 +1,17 @@
-import React from 'react';
-import './loading.css';
+import React from "react";
+import "./loading.css";
 
 function Loading() {
-    return (
-        <div className="load-page">
-            <div className="loader">
-                <div>load</div>
-            </div>
-        </div>
-    );
+  return (
+    <div
+      id="file_img"
+      className="no-line d-flex justify-content-center align-items-center"
+    >
+      <div class="spinner-grow " role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  );
 }
 
 export default Loading;

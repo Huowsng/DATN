@@ -17,18 +17,11 @@ function ProductItem({ product, isAdmin, deleteProduct, handleCheck }) {
       }
     });
   }, []);
-  const onEnter = ({ currentTarget }) => {
-    gsap.to(currentTarget, {
-      repeatDelay: 1,
-      yoyo: true,
-      scale: 1.1,
-    });
-  };
   const onLeave = ({ currentTarget }) => {
     gsap.to(currentTarget, { scale: 1 });
   };
   return (
-    <div onMouseEnter={onEnter} onMouseLeave={onLeave} className="product_card">
+    <div onMouseLeave={onLeave} className="product_card">
       {isAdmin && (
         <input
           type="checkbox"
@@ -36,7 +29,7 @@ function ProductItem({ product, isAdmin, deleteProduct, handleCheck }) {
           onChange={() => handleCheck(product._id)}
         />
       )}
-      <img src={product.images.url} alt="" />
+      <img src={product.images[0].url} alt="" />
 
       <div className="product_box">
         <span>{newCate}</span>

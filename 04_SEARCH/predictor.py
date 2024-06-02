@@ -1,5 +1,5 @@
 import os
-import cv2 as cv2
+import cv2
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -17,7 +17,7 @@ def custom_objects_dict():
     }
 
 def predictor(sdir, csv_path, model_path, averaged=True, verbose=True):
-    class_df = pd.read_csv(csv_path)
+    class_df = pd.read_csv(csv_path, encoding='latin1')  # Sửa đổi tại đây
     class_count = len(class_df['class'].unique())
     img_height = int(class_df['height'].iloc[0])
     img_width = int(class_df['width'].iloc[0])

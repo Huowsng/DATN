@@ -12,7 +12,7 @@ function ProductItem({ product, isAdmin, deleteProduct, handleCheck }) {
   useEffect(() => {
     categoriesName.forEach((item) => {
       //console.log(item);
-      if (item._id === product.category) {
+      if (item._id === product?.category) {
         setNewCate(item.name);
       }
     });
@@ -25,23 +25,23 @@ function ProductItem({ product, isAdmin, deleteProduct, handleCheck }) {
       {isAdmin && (
         <input
           type="checkbox"
-          checked={product.checked}
-          onChange={() => handleCheck(product._id)}
+          checked={product?.checked}
+          onChange={() => handleCheck(product?._id)}
         />
       )}
-      <img src={product.images[0].url} alt="" />
+      <img src={product?.images[0]?.url} alt="" />
 
       <div className="product_box">
         <span>{newCate}</span>
         <h2 className="content animation">
-          <Link to={`/detail/${product._id}`}>{product.title}</Link>
+          <Link to={`/detail/${product?._id}`}>{product?.title}</Link>
         </h2>
-        <p>{product.description}</p>
+        <p>{product?.description}</p>
         <div className="price">
-          {product.types && product.types.length > 0
-            ? product.types[0].amount === 0
+          {product?.types && product?.types.length > 0
+            ? product?.types[0].amount === 0
               ? "Đã bán"
-              : product.types[0].price.toLocaleString("vi-VN", {
+              : product?.types[0].price.toLocaleString("vi-VN", {
                   style: "currency",
                   currency: "VND",
                 })

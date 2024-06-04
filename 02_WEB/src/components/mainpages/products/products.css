@@ -6,6 +6,7 @@
   justify-items: center;
   margin: 20px 0;
   padding: 0px 0px;
+  position: relative;
 }
 
 /* ----------- Product Item ----------------- */
@@ -166,4 +167,15 @@ input {
   font-weight: 700;
   border-radius: 20px;
   margin-top: 20px;
+}
+
+.close-button {
+  position: absolute; /* Đặt vị trí tuyệt đối cho nút "X" */
+  top: -15px; /* Đặt vị trí ở đỉnh của phần tử cha */
+  right: 0; /* Đặt vị trí bên phải của phần tử cha */
+  background-color: red; /* Màu nền của nút */
+  color: white; /* Màu chữ */
+  border: none; /* Xóa viền */
+  padding: 5px 10px; /* Kích thước nút */
+  cursor: pointer; /* Đổi hình con trỏ khi di chuột qua nút */
 }

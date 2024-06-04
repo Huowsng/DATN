@@ -6,7 +6,7 @@ import axios from "axios";
 import API_URL from "../../../api/baseAPI";
 import Loading from "../utils/loading/Loading";
 
-function Filters() {
+function Filters({ setImageSearch }) {
   const state = useContext(GlobalState);
   const [categories] = state.categoriesAPI.categories;
 
@@ -19,13 +19,13 @@ function Filters() {
   const [images, setImages] = useState(false);
   const [imageAi, setImageAi] = useState(false);
 
-  const [analyzedProducts, setAnalyzedProducts] = useState([]);
-  const [products, setProducts] = useState([]);
-
   useEffect(() => {
     console.log("Categories:", categories); // Log the categories array
-    console.log("Categories Structure:", categories.map(cat => ({ name: cat.name, id: cat._id }))); // Log the structure of each category
-  }, [categories]);
+    console.log(
+      "Categories Structure:",
+      categories.map((cat) => ({ name: cat.name, id: cat._id }))
+    );
+  }, [categories, sort]);
 
   const handleCategory = (e) => {
     setCategory(e.target.value);
@@ -88,48 +88,59 @@ function Filters() {
     setImage(file);
   };
 
-
   const handleSubmit = async () => {
     try {
       // Gửi hình ảnh để dự đoán danh mục
       let formData = new FormData();
       formData.append("image", imageAi);
-      const res = await axios.post("http://localhost:8000/image-search", formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      });
-      
+      const res = await axios.post(
+        "http://localhost:8000/image-search",
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
+
       // Trích xuất tên danh mục từ phản hồi
       const categoryName = res.data.trim();
       console.log("Tên danh mục:", categoryName);
-  
+
       // Tìm danh mục phù hợp từ danh sách các danh mục
       const matchedCategory = categories.find(
         (cat) => cat.name.trim().toLowerCase() === categoryName.toLowerCase()
       );
-  
+
       if (matchedCategory) {
         // Đặt trạng thái danh mục dựa trên danh mục phù hợp
-        setCategory(`category=${matchedCategory._id}`);
-  
+        // setCategory(`category=${matchedCategory._id}`);
+
         // Lấy danh sách sản phẩm dựa trên danh mục phù hợp
-        const productsRes = await axios.get(`${API_URL}/api/products?category=${matchedCategory._id}`);
+        const productsRes = await axios.get(
+          `${API_URL}/api/products?category=${matchedCategory._id}`
+        );
         const productsData = productsRes.data.products;
-  
+
         // Trích xuất các URL hình ảnh từ productsData
-        const productImages = productsData.map((product) => product.images[0].url);
-  
+        const productImages = productsData.map(
+          (product) => product.images[0].url
+        );
+
         // Đảm bảo mảng productImages không rỗng trước khi gửi để phân tích
         if (productImages.length > 0) {
           // Gửi các hình ảnh sản phẩm đến máy chủ AI để phân tích
-          const analysisRes = await axios.post("http://localhost:8000/product-analysis", productImages);
+          const analysisRes = await axios.post(
+            "http://localhost:8000/product-analysis",
+            productImages
+          );
           const analyzedProducts = analysisRes.data;
           console.log("Các sản phẩm đã được phân tích:", analyzedProducts);
           // Xử lý các sản phẩm đã được phân tích theo cách cần thiết...
-  
+
           // Hiển thị các sản phẩm đã được phân tích từ trên xuống
-          setAnalyzedProducts(analyzedProducts);
+          setImageSearch(analyzedProducts);
+          setShowModal(false);
         } else {
           throw new Error("Không tìm thấy hình ảnh sản phẩm để phân tích.");
         }
@@ -143,9 +154,7 @@ function Filters() {
       alert("Không thể xử lý hình ảnh.");
     }
   };
-  
-  
-  
+
   return (
     <div className="filter_menu">
       <div className="row">
@@ -185,7 +194,6 @@ function Filters() {
         <select value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value="">Sản phẩm mới</option>
           <option value="sort=oldest">Sản phẩm cũ</option>
-          <option value="sort=-sold"> Sản phẩm</option>
           <option value="sort=-price">Giá : cao-thấp</option>
           <option value="sort=price">Giá: thấp-cao</option>
         </select>

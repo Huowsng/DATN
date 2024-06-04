@@ -17,15 +17,21 @@ function Products() {
   const [loading, setLoading] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [imageSearch, setImageSearch] = useState([]);
   const itemsPerPage = 12;
-  const topRef = useRef(null); // Tạo tham chiếu tới phần tử trên cùng của trang
+  const topRef = useRef(null);
+  const [productSearch, setProductSearch] = useState([]);
+  const [isHidden, setIsHidden] = useState(false);
+
+  const handleHide = () => {
+    setIsHidden(true); // Thiết lập isHidden thành true khi nhấn nút X
+  };
 
   const handleCheck = (id) => {
     productRole1.forEach((product) => {
       if (product._id === id) product.checked = !product.checked;
     });
     setProductRole1([...productRole1]);
-    console.log("do dai", productRole1.length);
   };
 
   const deleteProduct = async (id, public_id) => {
@@ -78,11 +84,37 @@ function Products() {
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    console.log("do dai", imageSearch);
   };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    console.log("do dai", orderedMatchingProducts);
   };
+  const matchingProducts = [];
+
+  imageSearch.forEach((searchItem) => {
+    // Duyệt qua mỗi sản phẩm trong productRole1 để so sánh
+    productRole1.forEach((product) => {
+      // Duyệt qua mỗi ảnh của sản phẩm
+      product.images.forEach((image) => {
+        // So sánh URL của ảnh với URL trong imageSearch
+        if (image.url === searchItem.image) {
+          // Nếu URL giống nhau, thêm sản phẩm vào mảng matchingProducts
+          matchingProducts.push(product);
+        }
+      });
+    });
+  });
+
+  // Giữ nguyên thứ tự của imageSearch bằng cách sử dụng map để tạo một mảng mới theo thứ tự của imageSearch
+  const orderedMatchingProducts = imageSearch.map((searchItem) => {
+    // Tìm sản phẩm tương ứng trong matchingProducts dựa trên URL của ảnh
+    const product = matchingProducts.find((p) => {
+      return p.images.some((image) => image.url === searchItem.image);
+    });
+    return product; // Trả về sản phẩm tìm được
+  });
 
   useEffect(() => {
     setCurrentPage(1); // Đặt lại trang đầu tiên khi cập nhật productRole1
@@ -97,7 +129,34 @@ function Products() {
 
   return (
     <>
-      <Filters />
+      <Filters
+        setImageSearch={setImageSearch}
+        setProductSearch={setProductSearch}
+      />
+      <div>
+        {orderedMatchingProducts.length > 0 && !isHidden && (
+          <div className="products">
+            <button className="close-button" onClick={handleHide}>
+              X
+            </button>
+            {orderedMatchingProducts.map(
+              (product) =>
+                product &&
+                product._id &&
+                product.category &&
+                product.images && (
+                  <ProductItem
+                    key={product._id}
+                    product={product}
+                    isAdmin={isAdmin}
+                    deleteProduct={deleteProduct}
+                    handleCheck={handleCheck}
+                  />
+                )
+            )}
+          </div>
+        )}
+      </div>
       <div ref={topRef} className="header-information">
         {" "}
         {/* Thêm ref vào đây */}
@@ -115,7 +174,6 @@ function Products() {
           <button onClick={deleteAll}>Xoá hết</button>
         </div>
       )}
-
       <div className="products">
         {currentItems?.map((product) => {
           return (

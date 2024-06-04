@@ -13,6 +13,7 @@ const ProductManagement = () => {
   const [products, setProducts] = state.productsAPI.products ?? [];
   const [categories, setCategories] = useState([]);
   const [users, setUsers] = useState([]);
+  const [orders, setOrder] = useState([]);
   const [callback, setCallback] = state.productsAPI.callback;
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,6 +44,18 @@ const ProductManagement = () => {
       }
     };
     fetchUsers();
+    const getOrders = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/api/orders/payment`, {
+          headers: { Authorization: token },
+        });
+        const allOrders = res.data;
+        setOrder(allOrders);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getOrders();
   }, [state.token, products, token, acceptedCount]);
 
   const totalPages = Math.ceil(products.length / itemsPerPage);

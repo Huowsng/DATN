@@ -18,7 +18,8 @@ def custom_objects_dict():
     }
 
 def predictor(sdir, csv_path, model_path, averaged=True, verbose=True):
-    class_df = pd.read_csv(csv_path, encoding='latin1')  # Sửa đổi tại đây
+    # Load the CSV file with UTF-8 encoding
+    class_df = pd.read_csv(csv_path, encoding='utf-8')
     class_count = len(class_df['class'].unique())
     img_height = int(class_df['height'].iloc[0])
     img_width = int(class_df['width'].iloc[0])

@@ -42,10 +42,6 @@ const paypalCtrl = {
           payment_method: "paypal",
         },
         redirect_urls: {
-          //"return_url": "http://pet.kreazy.me/api/paypal/success",
-          //   return_url:
-          //     "https://www.sandbox.paypal.com/us/cgi-bin/webscr?cmd=_profile-website-payments",
-          // new url
           cancel_url: "http://localhost:5000/api/paypal/cancel",
           return_url: "http://localhost:5000/api/paypal/success",
         },
@@ -62,9 +58,6 @@ const paypalCtrl = {
                 },
               ],
             },
-            address: {
-              recipient_name: address,
-            },
             amount: {
               currency: "USD",
               total: amount,
@@ -75,7 +68,8 @@ const paypalCtrl = {
       };
       await paypal.payment.create(payment, function (error, payment) {
         if (error) {
-          throw error;
+          console.log(error);
+          res.status(500).json({ status: "error" }); // Trả về status: error nếu có lỗi khi tạo thanh toán
         } else {
           for (let i = 0; i < payment.links.length; i++) {
             if (payment.links[i].rel === "approval_url") {
@@ -86,7 +80,7 @@ const paypalCtrl = {
       });
     } catch (err) {
       console.log(err);
-      return console.log(res.status(500).json({ message: err.message }));
+      res.status(500).json({ status: "error" }); // Trả về status: error nếu có lỗi trong try-catch
     }
   },
   success: async (req, res) => {
@@ -96,15 +90,13 @@ const paypalCtrl = {
       payer_id: payerId,
     };
 
-    console.log(req);
     await paypal.payment.execute(
       paymentId,
       execute_payment_json,
       async function (error, payment) {
         if (error) {
           console.log(error.response);
-          res.status(401).send("Error");
-          throw error;
+          res.status(401).json({ status: "error" }); // Trả về status: error nếu có lỗi khi thực hiện thanh toán
         } else {
           try {
             const order_id = payment.transactions[0].item_list.items[0].name;
@@ -112,12 +104,10 @@ const paypalCtrl = {
               { _id: order_id },
               { status: "Paid" }
             );
-            res.send("Success");
+            res.json({ status: "success" }); // Trả về status: success nếu thanh toán thành công
           } catch (err) {
             console.log(err);
-            res
-              .status(401)
-              .send("Something went wrong, cant complete your order");
+            res.status(401).json({ status: "error" }); // Trả về status: error nếu có lỗi khi cập nhật trạng thái đơn hàng
           }
         }
       }
@@ -125,7 +115,7 @@ const paypalCtrl = {
   },
 
   cancel: async (req, res) => {
-    res.status(406).send("Cancelled");
+    res.status(406).json({ status: "cancelled" }); // Trả về status: cancelled nếu người dùng hủy thanh toán
   },
 
   test: async (req, res) => {

@@ -52,10 +52,11 @@ const Checkout = () => {
     for (const test of cart) {
       var obj = {
         product_id: test._id,
+        user_cre: test.user_cre,
         type_id: test.types[0]._id,
         amount: test.quantity,
       };
-      console.log(test);
+      console.log("lllllllllll", test);
       rs.push(obj);
       //setOrderItem(obj);
     }

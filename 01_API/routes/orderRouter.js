@@ -15,7 +15,7 @@ router
 router.route("/orders/admin").get(auth, authAdmin, orderCtrl.getAllOrders);
 
 router.route("/orders/:id").put(orderCtrl.updateOrder);
-
+router.route("/orders/payment").get(orderCtrl.getOrders);
 router
   .route("/cart")
   .get(auth, orderCtrl.getCart)

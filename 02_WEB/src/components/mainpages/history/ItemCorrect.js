@@ -51,7 +51,13 @@ const ItemCorrect = (items) => {
         <td>{new Date(item.createdAt).toLocaleDateString()}</td>
         <td>{item.address}</td>
         <td>{item.phone}</td>
-        <td>{item.status}</td>
+        <td>
+          {item.status === "Pending"
+            ? "Đang xử lý"
+            : item.status === "Paid"
+            ? "Đã thanh toán"
+            : item.status}
+        </td>
         <td>
           <button type="button" onClick={() => confirm(item._id)}>
             {item.delivery == null ? (

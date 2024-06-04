@@ -97,7 +97,13 @@ function OrderHistory() {
                   <td>{new Date(items.createdAt).toLocaleDateString()}</td>
                   <td>{items.address}</td>
                   <td>{items.phone}</td>
-                  <td>{items.status}</td>
+                  <td>
+                    {items.status === "Pending"
+                      ? "Đang xử lý"
+                      : items.status === "Paid"
+                      ? "Đã thanh toán"
+                      : items.status}
+                  </td>
                   <td>
                     {items.delivery == null ? (
                       <img

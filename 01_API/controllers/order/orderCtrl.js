@@ -42,7 +42,7 @@ const orderCtrl = {
                 product_id: orderItems[item].product_id,
                 type_id: orderItems[item].type_id,
                 amount: orderItems[item].amount,
-                image: productItem.images.url,
+                image: productItem.images[0]?.url || "",
                 product_name: productItem.title,
                 price: i.price,
                 type_name: i.name,

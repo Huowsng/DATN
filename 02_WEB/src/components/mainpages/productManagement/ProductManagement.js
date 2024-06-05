@@ -265,7 +265,7 @@ const ProductManagement = () => {
                       <th>Giá</th>
                       <th>Trạng thái</th>
                       <th>Ngày đăng</th>
-                      <th>Chi tiết</th>
+                      <th>Các đơn hàng</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -297,7 +297,7 @@ const ProductManagement = () => {
                         </td>
                         <td>{formatDate(product.createdAt)}</td>
                         <td>
-                          <Link to={`/detail/${product._id}`}>Xem</Link>
+                          <Link to={`/history/`}>Xem</Link>
                         </td>
                         <td className="action-buttons">
                           <button className="btn btn-sm btn-primary">

@@ -20,13 +20,12 @@ const initialState = {
 };
 const Checkout = () => {
   const state = useContext(GlobalState);
-  console.log(state);
   const [order, setOrder] = useState(initialState);
   const [cart, setCart] = state.userAPI.cart;
   const [process, setProcess] = state.orderAPI.processed;
   const [loading, setLoading] = useState(false);
-  console.log(process);
-  console.log(cart);
+  console.log("process", process);
+  console.log("cart", cart);
   const history = useNavigate();
   const [token] = state.token;
   //const [orderitem,setOrderItem] = useState();
@@ -55,10 +54,9 @@ const Checkout = () => {
         user_cre: test.user_cre,
         type_id: test.types[0]._id,
         amount: test.quantity,
+        image: test.images[0].url, // Ensure this line correctly references the image URL
       };
-      console.log("lllllllllll", test);
       rs.push(obj);
-      //setOrderItem(obj);
     }
 
     const re = {
@@ -67,20 +65,24 @@ const Checkout = () => {
       phone: order.phone,
       shippingCode: order.shippingCode,
     };
-    console.log(re);
-    const orders = await axios.post(
-      `${API_URL}/api/orders`,
-      { ...re },
-      {
-        headers: { Authorization: token },
-      }
-    );
-    setLoading(false);
-    setProcess(orders.data.order);
-    //alert('Bạn đã đặt hàng thành công.');
-    setCart([]);
-    addToCart([]);
-    history("/processed");
+
+    try {
+      const orders = await axios.post(
+        `${API_URL}/api/orders`,
+        { ...re },
+        {
+          headers: { Authorization: token },
+        }
+      );
+      setLoading(false);
+      setProcess(orders.data.order);
+      setCart([]);
+      addToCart([]);
+      history("/processed");
+    } catch (error) {
+      console.error("Error placing order:", error);
+      setLoading(false);
+    }
   };
   if (loading)
     return (
@@ -94,56 +96,6 @@ const Checkout = () => {
       <h1 style={{ textAlign: "center", marginBottom: "10px" }}>
         Checkout order
       </h1>
-
-      <div className="checkout-page">
-        {/* <div className="">
-          {cart.map((product, type) => (
-            <div className="orderItem" key={product._id}>
-              <img src={product.images.url} alt="" />
-              <h3>Tên sản phẩm: {product.title}</h3>
-              <h3>Số lượng: {product.quantity}</h3>
-              <h3>
-                {" "}
-                Giá tiền:{" "}
-                {(product.types[0].price * product.quantity).toLocaleString(
-                  "vi-VN",
-                  {
-                    style: "currency",
-                    currency: "VND",
-                  }
-                )}{" "}
-              </h3>
-            </div>
-          ))}
-        </div> */}
-        <form onSubmit={handleSubmit}>
-          <div className="order-info">
-            <label>Address</label>
-            <input
-              type="text"
-              id="address"
-              required
-              value={order.address}
-              onChange={handleChangeInput}
-              name="address"
-              placeholder="example:!!  Robert Robertson,  1234 NW Bobcat Lane,  St. Robert "
-            />
-            <label>Số điện thoại</label>
-            <input
-              type="text"
-              id="phone"
-              required
-              value={order.phone}
-              onChange={handleChangeInput}
-              name="phone"
-              placeholder="+84 065584-5678."
-            />
-          </div>
-          <button type="submit" className="btn_check">
-            processed Order
-          </button>
-        </form>
-      </div>
       <div className="row-billing">
         <div className="col-75">
           <div className="container-billing">
@@ -208,7 +160,7 @@ const Checkout = () => {
                 <p>x{product.quantity}</p>
                 <img
                   style={{ width: "40px" }}
-                  src={product.images.url}
+                  src={product.images[0].url}
                   alt=""
                 />
 
@@ -221,12 +173,6 @@ const Checkout = () => {
               </div>
             ))}
             <hr />
-            {/* <p>
-              Total{' '}
-              <span className="price" style={{color:"black"}}>
-                <b></b>
-              </span>
-            </p> */}
           </div>
         </div>
       </div>

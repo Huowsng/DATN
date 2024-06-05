@@ -6,7 +6,7 @@ import axios from "axios";
 import API_URL from "../../../api/baseAPI";
 import Loading from "../utils/loading/Loading";
 
-function Filters({ setImageSearch }) {
+function Filters({ setImageSearch, setIsHidden }) {
   const state = useContext(GlobalState);
   const [categories] = state.categoriesAPI.categories;
 
@@ -18,6 +18,7 @@ function Filters({ setImageSearch }) {
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState(false);
   const [imageAi, setImageAi] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     console.log("Categories:", categories); // Log the categories array
@@ -89,6 +90,7 @@ function Filters({ setImageSearch }) {
   };
 
   const handleSubmit = async () => {
+    setIsProcessing(true);
     try {
       // Gửi hình ảnh để dự đoán danh mục
       let formData = new FormData();
@@ -141,6 +143,7 @@ function Filters({ setImageSearch }) {
           // Hiển thị các sản phẩm đã được phân tích từ trên xuống
           setImageSearch(analyzedProducts);
           setShowModal(false);
+          setIsHidden(false);
         } else {
           throw new Error("Không tìm thấy hình ảnh sản phẩm để phân tích.");
         }
@@ -153,6 +156,7 @@ function Filters({ setImageSearch }) {
       console.error("Lỗi khi xử lý hình ảnh:", err);
       alert("Không thể xử lý hình ảnh.");
     }
+    setIsProcessing(false);
   };
 
   return (
@@ -217,7 +221,7 @@ function Filters({ setImageSearch }) {
               />
               {loading ? (
                 <div
-                  id="file_img"
+                  id="modal_file_img"
                   className="no-line d-flex justify-content-center align-items-center"
                 >
                   <div className="spinner-grow" role="status">
@@ -225,14 +229,18 @@ function Filters({ setImageSearch }) {
                   </div>
                 </div>
               ) : (
-                <div id="file_img" style={styleUpload}>
+                <div id="modal_file_img" style={styleUpload}>
                   <img src={images ? images.url : ""} alt="" />
                   <span onClick={handleDestroy}>X</span>
                 </div>
               )}
             </div>
-            <button className="modal-button" onClick={handleSubmit}>
-              Xác nhận
+            <button
+              className="modal-button"
+              onClick={handleSubmit}
+              disabled={isProcessing}
+            >
+              {isProcessing ? "Đang xử lý..." : "Xác nhận"}
             </button>
           </div>
         </div>

@@ -132,6 +132,7 @@ function Products() {
       <Filters
         setImageSearch={setImageSearch}
         setProductSearch={setProductSearch}
+        setIsHidden={setIsHidden}
       />
       <div>
         {orderedMatchingProducts.length > 0 && !isHidden && (

@@ -56,6 +56,7 @@ const ProductManagement = () => {
       }
     };
     getOrders();
+    console.log("test", userProducts);
   }, [state.token, products, token, acceptedCount]);
 
   const totalPages = Math.ceil(products.length / itemsPerPage);
@@ -175,10 +176,23 @@ const ProductManagement = () => {
     (product) => product.user_cre === user_cre
   );
 
-  const totalPrice = userProducts.reduce(
-    (total, product) => total + product.price,
-    0
+  const productIds = userProducts.map((product) => product._id);
+
+  const filteredOrders = orders.filter(
+    (order) =>
+      order.status === "Paid" &&
+      order.listOrderItems.some((item) => productIds.includes(item.product_id))
   );
+
+  const totalPrice = filteredOrders.reduce((total, order) => {
+    const orderTotal = order.listOrderItems.reduce((subTotal, item) => {
+      if (productIds.includes(item.product_id)) {
+        return subTotal + item.price;
+      }
+      return subTotal;
+    }, 0);
+    return total + orderTotal;
+  }, 0);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("vi-VN").format(price);
@@ -212,7 +226,7 @@ const ProductManagement = () => {
               <div className="card text-white bg-info mb-3">
                 <div className="card-header">Tổng số đơn đặt hàng</div>
                 <div className="card-body">
-                  <h5 className="card-title">{userProducts.length}</h5>
+                  <h5 className="card-title">{filteredOrders.length}</h5>
                 </div>
               </div>
             </div>

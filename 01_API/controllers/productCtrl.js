@@ -124,19 +124,23 @@ const productCtrl = {
   updateProduct: async (req, res) => {
     try {
       const { types, title, description, images, category } = req.body;
-      console.log("dung tester", req.body);
-      // if (!images) return res.status(400).json({ Error: "Dont have image" });
+      console.log("Tester dung", req.body);
+
       var listType = [];
+
       for (var i = 0; i < types.length; i++) {
         var type;
-        if (types[i]._id != null) {
+
+        // Kiểm tra types[i] và types[i]._id trước khi truy cập
+        if (types[i] && types[i]._id != null) {
           type = await Type.findOneAndUpdate(
             { _id: types[i]._id },
             {
               name: types[i].name,
               price: types[i]?.price,
               amount: types[i].amount,
-            }
+            },
+            { new: true } // Đảm bảo trả về giá trị mới nhất sau khi cập nhật
           );
         } else {
           type = new Type({
@@ -144,16 +148,23 @@ const productCtrl = {
             price: types[i]?.price,
             amount: types[i].amount,
           });
+          await type.save(); // Lưu loại mới vào cơ sở dữ liệu
         }
-        listType.push({
-          _id: type._id,
-          name: type.name,
-          price: type?.price,
-          amount: types[i].amount,
-        });
+
+        // Kiểm tra xem type có tồn tại không trước khi truy cập thuộc tính _id
+        if (type) {
+          listType.push({
+            _id: type._id,
+            name: type.name,
+            price: type?.price,
+            amount: types[i].amount,
+          });
+        }
       }
+
       const id = req.params;
-      console.log(id, "5555");
+      console.log(id, "Tester 5555");
+
       await Products.findOneAndUpdate(
         { _id: req.params._id },
         {
@@ -164,9 +175,10 @@ const productCtrl = {
           category: category,
         }
       );
-      res.json({ message: "Update successful" });
+
+      res.json({ message: "Cập nhật thành công" });
     } catch (err) {
-      console.log(err, "66666");
+      console.log(err, "Tester 66666");
       return res.status(500).json({ msg: err.message });
     }
   },

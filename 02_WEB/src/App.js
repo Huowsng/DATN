@@ -8,14 +8,16 @@ import { TopHeader } from "./components/top-header/TopHeader";
 
 function App() {
   const location = useLocation();
-  const noHeaderPaths = ["/login"];
+  const noHeaderPaths = ["/login", "/register"];
   const noFooterPaths = ["/dashboard", "/login", "/register"];
+  const noTopHeaderPaths = ["/login", "/register"];
   const showHeader = !noHeaderPaths.includes(location.pathname);
   const showFooter = !noFooterPaths.includes(location.pathname);
+  const showTopHeader = !noTopHeaderPaths.includes(location.pathname);
 
   return (
     <DataProvider>
-      <TopHeader />
+      {showTopHeader && <TopHeader />}
       {showHeader && <Header />}
       <MainPages />
       {showFooter && <Footer />}

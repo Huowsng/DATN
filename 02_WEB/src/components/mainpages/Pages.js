@@ -1,5 +1,10 @@
 import React, { useContext } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 
 import Products from "./products/Products";
 import DetailProduct from "./detailProduct/DetailProduct";
@@ -90,7 +95,7 @@ function Pages() {
       <Route path="type" element={<Type />} />
       <Route
         path="create_product"
-        element={isLogged ? <CreateProduct /> : <Loading />}
+        element={isLogged ? <CreateProduct /> : <Navigate to="/login" />}
       />
       <Route
         path="product-management"

@@ -5,6 +5,7 @@ import Loading from "../utils/loading/Loading";
 import { Link } from "react-router-dom";
 import API_URL from "../../../api/baseAPI";
 import "./product_management.css";
+import Pagination from "../products/pagination";
 
 const ProductManagement = () => {
   const state = useContext(GlobalState);
@@ -58,16 +59,6 @@ const ProductManagement = () => {
     getOrders();
     console.log("test", userProducts);
   }, [state.token, products, token, acceptedCount]);
-
-  const totalPages = Math.ceil(products.length / itemsPerPage);
-  const currentItems = products.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
 
   const deleteProduct = async (id, public_id) => {
     try {
@@ -198,6 +189,25 @@ const ProductManagement = () => {
     return new Intl.NumberFormat("vi-VN").format(price);
   };
 
+  const totalPages = Math.ceil(userProducts.length / itemsPerPage);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const currentItems = userProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="dashboard">
       <div className="container-fluid mt-3">
@@ -270,7 +280,7 @@ const ProductManagement = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {userProducts.map((product) => (
+                    {currentItems.map((product) => (
                       <tr key={product._id}>
                         <td>{getSellerName(product.user_cre)}</td>
                         <td>{product.title}</td>
@@ -332,21 +342,15 @@ const ProductManagement = () => {
               </div>
             )}
           </div>
-          <div className="pagination">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-              (pageNumber) => (
-                <button
-                  key={pageNumber}
-                  onClick={() => handlePageChange(pageNumber)}
-                  className={`page-link ${
-                    currentPage === pageNumber ? "active" : ""
-                  }`}
-                >
-                  {pageNumber}
-                </button>
-              )
-            )}
-          </div>
+          {userProducts.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              handlePreviousPage={handlePreviousPage}
+              handleNextPage={handleNextPage}
+              handlePageChange={handlePageChange}
+            />
+          )}
         </div>
       </div>
     </div>

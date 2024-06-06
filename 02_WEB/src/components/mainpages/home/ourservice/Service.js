@@ -126,9 +126,12 @@ export const Service = () => {
 
       {isAdmin && (
         <div className="delete-all">
-          <span>Chọn Tất cả </span>
-          <input type="checkbox" checked={isCheck} onChange={checkAll} />
-          <button onClick={deleteAll}>Xóa hết</button>
+          <button className="check-button" onClick={checkAll} checked={isCheck}>
+            Chọn Tất cả{" "}
+          </button>
+          <button className="delete-button" onClick={deleteAll}>
+            Xóa hết
+          </button>
         </div>
       )}
 

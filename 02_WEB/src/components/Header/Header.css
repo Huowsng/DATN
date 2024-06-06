@@ -108,6 +108,12 @@ header ul li:hover {
   text-decoration: none;
   color: #000;
 }
+
+.sd-body ul li {
+  display: block;
+  padding: 15px;
+}
+
 .sidebar-overlay {
   position: fixed;
   top: 0;

@@ -29,6 +29,7 @@ function ProductItem({ product, isAdmin, deleteProduct, handleCheck }) {
           onChange={() => handleCheck(product?._id)}
         />
       )}
+
       <img src={product?.images[0]?.url} alt="" />
 
       <div className="product_box">

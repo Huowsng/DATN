@@ -23,10 +23,16 @@
   transform: translateY(5px);
   margin: 0 15px;
 }
-.delete-all span {
+.delete-all .check-button {
   text-transform: uppercase;
   color: rgb(3, 165, 206);
   letter-spacing: 1.3px;
+  border: 1px solid rgb(3, 165, 206);
+  padding: 2px 20px;
+  border-radius: 10px;
+  color: rgb(3, 165, 206);
+  text-transform: uppercase;
+  margin-right: 20px;
 }
 .delete-all button {
   border: 1px solid crimson;
@@ -54,7 +60,7 @@ input {
   border: 1px solid #ccc;
   border-radius: 30px;
   outline: none;
-  width: 177px;
+  width: 200px;
   height: 46.54px;
   padding: 0 23px;
   /* margin: 10px 25px 10px 21px; */

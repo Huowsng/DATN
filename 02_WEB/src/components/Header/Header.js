@@ -48,13 +48,13 @@ function Header({ hideFooter }) {
             <div className="sd-body">
               <ul>
                 <li>
-                  <Link to="/create_product">Add Product</Link>
+                  <Link to="/dashboard">Dashboard</Link>
                 </li>
                 <li>
                   <Link to="/category">Add Category</Link>
                 </li>
                 <li>
-                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/create_product">Add Product</Link>
                 </li>
               </ul>
             </div>
@@ -119,9 +119,6 @@ function Header({ hideFooter }) {
           </li>
           <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
             <Link to="/products">{isAdmin ? "Cửa hàng" : "Cửa hàng"}</Link>
-          </li>
-          <li onMouseEnter={onEnter} onMouseLeave={onLeave}>
-            <Link to="/testchat">{"Liên hệ"}</Link>
           </li>
         </ul>
 

@@ -179,6 +179,7 @@ function CreateProduct() {
       };
 
       if (onEdit) {
+        console.log(edit);
         await axios.put(
           `${API_URL}/api/products/${edit._id}`,
           { ...edit, images },

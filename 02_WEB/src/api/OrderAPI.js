@@ -4,7 +4,7 @@ import API_URL from "./baseAPI";
 
 function OrderAPI(token) {
   const [order, setOrder] = useState([]);
-
+  const [allOrder, setAllOrder] = useState([]);
   const [isLogged, setIsLogged] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [callback, setCallback] = useState(false);
@@ -22,11 +22,25 @@ function OrderAPI(token) {
       }
     };
     getOrder();
+
+    const getAllOrder = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/api/orders/payment`, {
+          headers: { Authorization: token },
+        });
+        const allOrders = res.data;
+        setAllOrder(allOrders);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAllOrder();
   }, [callback]);
   const AddOrder = async (product, type) => {
     if (!isLogged) return alert("Please login to continue buying OderAPI");
   };
   return {
+    allOrder: [allOrder, setAllOrder],
     order: [order, setOrder],
     callback: [callback, setCallback],
     processed: [processed, setProcessed],

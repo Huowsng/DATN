@@ -51,7 +51,7 @@ const ItemCorrect = ({ item: initialItem }) => {
       <td>{item.phone}</td>
       <td>
         {item.status === "Pending"
-          ? "Đang xử lý"
+          ? "Đang xử lý thanh toán"
           : item.status === "Paid"
           ? "Đã thanh toán"
           : item.status}

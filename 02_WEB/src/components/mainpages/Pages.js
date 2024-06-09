@@ -51,6 +51,8 @@ import Dashboard from "./dashboard/dashboard";
 
 import ProductManagement from "./productManagement/ProductManagement";
 
+import SellHistory from "./history/SellHistory";
+
 function Pages() {
   const state = useContext(GlobalState);
   const [isLogged] = state.userAPI.isLogged;
@@ -109,6 +111,11 @@ function Pages() {
       <Route
         path="history"
         element={isLogged ? <OrderHistory /> : <Loading />}
+      />
+
+      <Route
+        path="sell-history/:id"
+        element={isLogged ? <SellHistory /> : <Loading />}
       />
 
       <Route path="revenue" element={isAdmin ? <Revenue /> : <Loading />} />

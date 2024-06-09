@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import { GlobalState } from "../../../GlobalState";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../utils/loading/Loading";
 import ItemCorrect from "./ItemCorrect";
@@ -9,34 +9,31 @@ import Pagination from "../products/pagination";
 
 function SellHistory() {
   const state = useContext(GlobalState);
-  const [history, setHistory] = state.userAPI.history;
+  const [allOrder, setAllOrder] = state.orderAPI.allOrder;
   const [isAdmin] = state.userAPI.isAdmin;
   const [token] = state.token;
-  const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [orderDetails, setOrderDetails] = useState([]);
+  // Nhận product_id từ URL
+  const product_id = useParams();
   useEffect(() => {
-    if (token) {
-      const getHistory = async () => {
-        let res;
-        if (isAdmin) {
-          res = await axios.get(`${API_URL}/api/orders/admin?`, {
-            headers: { Authorization: token },
-          });
-        } else {
-          res = await axios.get(`${API_URL}/api/orders?`, {
-            headers: { Authorization: token },
-          });
-        }
-        setHistory(res.data);
-      };
-      getHistory();
+    if (product_id && allOrder.length > 0) {
+      const filteredOrders = [];
+      allOrder.forEach((order) => {
+        order.listOrderItems.forEach((item) => {
+          if (item.product_id === product_id.id) {
+            filteredOrders.push(order);
+          }
+        });
+      });
+      setOrderDetails(filteredOrders);
     }
-  }, [token, isAdmin, page, setHistory]);
+  }, [product_id, allOrder]);
+  // Lọc các đơn hàng có product_id tương ứng
 
-  // Calculate total pages based on actual number of items
-  const totalPages = Math.ceil(history.length / itemsPerPage);
+  // Tính toán tổng số trang dựa trên số lượng các mục đã lọc
+  const totalPages = Math.ceil(orderDetails.length / itemsPerPage);
 
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -46,7 +43,7 @@ function SellHistory() {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
-  const currentItems = history.slice(
+  const currentItems = orderDetails.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -58,8 +55,8 @@ function SellHistory() {
   return (
     <div className="history-page">
       <h2>{isAdmin ? "Tất cả Đơn hàng" : "Đơn hàng của tôi"}</h2>
-      <h4>{history.length} Đơn hàng</h4>
-      {history.length > 0 ? (
+      <h4>{currentItems.length} Đơn hàng</h4>
+      {currentItems.length > 0 ? (
         isAdmin ? (
           <table>
             <thead>
@@ -83,6 +80,7 @@ function SellHistory() {
           <table>
             <thead>
               <tr>
+                <th>Tên sản phẩm</th>
                 <th>Ngày mua</th>
                 <th>Địa chỉ</th>
                 <th>Số điện thoại</th>
@@ -94,6 +92,7 @@ function SellHistory() {
             <tbody>
               {currentItems.map((items) => (
                 <tr key={items._id}>
+                  <td>{items.listOrderItems[0].product_name}</td>
                   <td>{new Date(items.createdAt).toLocaleDateString()}</td>
                   <td>{items.address}</td>
                   <td>{items.phone}</td>
@@ -130,7 +129,7 @@ function SellHistory() {
       ) : (
         <Loading />
       )}
-      {history.length > 0 && (
+      {orderDetails.length > 0 && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { TiStarburst } from "react-icons/ti";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
 import classNames from "classnames/bind";
 import styles from "./Register.module.scss";
 import API_URL from "../../../api/baseAPI";
-import { FaFacebook, FaGoogle } from "react-icons/fa";
 const cx = classNames.bind(styles);
 
 function Register() {
@@ -25,21 +24,21 @@ function Register() {
   const registerSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_URL}/user/register`, { ...user });
+      // Xóa toàn bộ localStorage
+      localStorage.clear();
 
+      // Thực hiện đăng ký
+      const res = await axios.post(`${API_URL}/user/register`, { ...user });
       localStorage.setItem("firstLogin", true);
+      localStorage.setItem("accesstoken", res?.data?.accesstoken);
 
+      // Chuyển hướng đến trang chủ
       window.location.href = "/";
     } catch (err) {
       alert(err.response.data.msg);
     }
   };
-  const style = {
-    marginRight: "10px",
-    color: {
-      color: "rgba(255,255,255)",
-    },
-  };
+
   return (
     <section
       className="vh-150 main-login"
@@ -148,9 +147,9 @@ function Register() {
                 </button>
                 <div className="mt-3">
                   <p className="text-white mb-0">
-                    Have an account?{" "}
+                    Đã có tài khoản?{" "}
                     <Link to="/login" className="text-white fw-bold">
-                      Sign in now
+                      Đăng nhập ngay
                     </Link>
                   </p>
                 </div>
@@ -162,5 +161,5 @@ function Register() {
     </section>
   );
 }
-// register
+
 export default Register;

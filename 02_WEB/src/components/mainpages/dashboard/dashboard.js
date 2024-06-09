@@ -23,6 +23,7 @@ const Dashboard = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [history, setHistory] = state.userAPI.history;
   const [isAdmin] = state.userAPI.isAdmin;
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -41,19 +42,19 @@ const Dashboard = () => {
       fetchCategories();
     }
 
-    const fetchUsers = async () => {
-      try {
-        const res = await axios.get(`${API_URL}/user/username`, {
-          headers: { Authorization: token },
-        });
-        setHistory(res.data);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setIsLoaded(true);
-      }
-    };
-    if (!isLoaded) {
+    if (!isUserLoaded) {
+      const fetchUsers = async () => {
+        try {
+          const res = await axios.get(`${API_URL}/user/username`, {
+            headers: { Authorization: token },
+          });
+          setUsers(res.data);
+        } catch (err) {
+          console.log(err);
+        } finally {
+          setIsUserLoaded(true);
+        }
+      };
       fetchUsers();
     }
 
@@ -73,15 +74,7 @@ const Dashboard = () => {
       };
       getHistory();
     }
-  }, [
-    isAdmin,
-    state.token,
-    productRole0,
-    token,
-    acceptedCount,
-    isLoaded,
-    setHistory,
-  ]);
+  }, [token, isLoaded]);
 
   const deleteProduct = async (id, public_id) => {
     try {

@@ -33,7 +33,7 @@ function OrderHistory() {
       };
       getHistory();
     }
-  }, [token, isAdmin, page, setHistory]);
+  }, [token]);
 
   // Calculate total pages based on actual number of items
   const totalPages = Math.ceil(history.length / itemsPerPage);
@@ -99,7 +99,7 @@ function OrderHistory() {
                   <td>{items.phone}</td>
                   <td>
                     {items.status === "Pending"
-                      ? "Đang xử lý"
+                      ? "Đang xử lý thanh toán"
                       : items.status === "Paid"
                       ? "Đã thanh toán"
                       : items.status}

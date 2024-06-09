@@ -22,6 +22,7 @@ const ProductManagement = () => {
   const itemsPerPage = 10;
   const [isCheck, setIsCheck] = useState(false);
   const [acceptedCount, setAcceptedCount] = useState(0);
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -34,17 +35,22 @@ const ProductManagement = () => {
     };
     fetchCategories();
 
-    const fetchUsers = async () => {
-      try {
-        const res = await axios.get(`${API_URL}/user/username`, {
-          headers: { Authorization: token },
-        });
-        setUsers(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchUsers();
+    if (!isUserLoaded) {
+      const fetchUsers = async () => {
+        try {
+          const res = await axios.get(`${API_URL}/user/username`, {
+            headers: { Authorization: token },
+          });
+          setUsers(res.data);
+        } catch (err) {
+          console.log(err);
+        } finally {
+          setIsUserLoaded(true);
+        }
+      };
+      fetchUsers();
+    }
+
     const getOrders = async () => {
       try {
         const res = await axios.get(`${API_URL}/api/orders/payment`, {
@@ -57,8 +63,7 @@ const ProductManagement = () => {
       }
     };
     getOrders();
-    console.log("test", userProducts);
-  }, [state.token, products, token, acceptedCount]);
+  }, [token]);
 
   const deleteProduct = async (id, public_id) => {
     try {
@@ -307,7 +312,7 @@ const ProductManagement = () => {
                         </td>
                         <td>{formatDate(product.createdAt)}</td>
                         <td>
-                          <Link to={`/history/`}>Xem</Link>
+                          <Link to={`/sell-history/${product._id}`}>Xem</Link>
                         </td>
                         <td className="action-buttons">
                           <button className="btn btn-sm btn-primary">

@@ -1,2 +1,2 @@
-const API_URL = "http://localhost:5000";
+const API_URL = "https://datn-aywu.onrender.com";
 export default API_URL;

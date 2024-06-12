@@ -77,17 +77,35 @@
 }
 
 .button-group {
+  width: 100%;
   display: flex;
+  justify-content: space-between;
   gap: 9px; /* Spacing between items */
   margin-right: 6px;
-  margin-left: auto; /* Align to the right */
 }
 .action-checkbox {
   width: 30px; /* Adjust width as needed */
 }
 .action-buttons {
-  width: 200px;
+  width: 250px;
 }
 .checkbox-all {
   margin-left: 14px;
+}
+
+.left-buttons {
+  display: flex;
+  gap: 9px; /* Khoảng cách giữa các nút bên trái */
+}
+
+.right-buttons {
+  display: flex;
+  gap: 9px; /* Khoảng cách giữa các nút bên phải */
+  margin-left: auto; /* Căn phải */
+}
+
+.btn-page {
+  border-color: #5a8dee;
+  background-color: #690437;
+  color: #fff;
 }

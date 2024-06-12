@@ -33,8 +33,8 @@ const userSchema = new mongoose.Schema(
       type: Array,
     },
     sex: {
-      type: Boolean,
-      default: true,
+      type: String,
+      default: "",
     },
     fullName: {
       type: String,

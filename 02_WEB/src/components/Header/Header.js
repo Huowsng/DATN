@@ -51,10 +51,10 @@ function Header({ hideFooter }) {
                   <Link to="/dashboard">Dashboard</Link>
                 </li>
                 <li>
-                  <Link to="/category">Add Category</Link>
+                  <Link to="/category">Thêm Category</Link>
                 </li>
                 <li>
-                  <Link to="/create_product">Add Product</Link>
+                  <Link to="/create_product">Thêm sản phẩm</Link>
                 </li>
               </ul>
             </div>

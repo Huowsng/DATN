@@ -354,7 +354,7 @@ function CreateProduct() {
           />
         </div>
 
-        <button type="submit">{onEdit ? "Edit" : "Create"}</button>
+        <button type="submit">{onEdit ? "Chỉnh sửa" : "Xác nhận"}</button>
       </form>
     </div>
   );

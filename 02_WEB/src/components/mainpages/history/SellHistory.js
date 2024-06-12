@@ -24,6 +24,7 @@ function SellHistory() {
         order.listOrderItems.forEach((item) => {
           if (item.product_id === product_id.id) {
             filteredOrders.push(order);
+            console.log(order);
           }
         });
       });

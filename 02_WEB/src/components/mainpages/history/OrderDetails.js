@@ -111,34 +111,36 @@ function OrderDetails() {
             </tr>
           </thead>
           <tbody>
-            {orderDetails.listOrderItems.map((item) => (
-              <tr key={item._id}>
-                <td>
-                  <img src={item.image} alt="" />
-                </td>
-                <td>{item.product_name}</td>
-                <td>{item.amount}</td>
-                <td>{item.type_name}</td>
-                <td>
-                  {item.price.toLocaleString("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  })}
-                </td>
-                {isAdmin ? (
+            {orderDetails.listOrderItems.map((item) => {
+              return (
+                <tr key={item._id}>
                   <td>
-                    <Link to={`/detail/${item.product_id}`}>
-                      Xem đánh giá của người dùng
-                    </Link>
+                    <img src={item.image} alt={item.product_name} />
                   </td>
-                ) : (
+                  <td>{item.product_name}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.type_name}</td>
                   <td>
-                    <Link to={`/comment/${item.product_id}`}>Đánh giá</Link>
+                    {item.price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
                   </td>
-                )}
-                <td>Đã nhận được hàng</td>
-              </tr>
-            ))}
+                  {isAdmin ? (
+                    <td>
+                      <Link to={`/detail/${item.product_id}`}>
+                        Xem đánh giá của người dùng
+                      </Link>
+                    </td>
+                  ) : (
+                    <td>
+                      <Link to={`/comment/${item.product_id}`}>Đánh giá</Link>
+                    </td>
+                  )}
+                  <td>Đã nhận được hàng</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

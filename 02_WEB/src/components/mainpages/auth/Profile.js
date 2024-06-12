@@ -1,71 +1,117 @@
-import React, { useContext, useState } from 'react';
-import { GlobalState } from '../../../GlobalState';
+import React, { useContext, useState } from "react";
+import { GlobalState } from "../../../GlobalState";
 
 const Profile = () => {
-    const state = useContext(GlobalState);
-    const [token] = state.token;
-    const [user] = state.userAPI.detail;
-    console.log(user);
-    console.log(token);
+  const state = useContext(GlobalState);
+  const [token] = state.token;
+  const [user] = state.userAPI.detail;
 
-    // Sử dụng useState để theo dõi giá trị nhập liệu
-    const [firstName, setFirstName] = useState(user.name);
-    const [phone, setPhone] = useState(user.phone);
-    const [address, setAddress] = useState(user.address);
-    const [email, setEmail] = useState(user.email);
+  const [firstName, setFirstName] = useState(user.name);
+  const [phone, setPhone] = useState(user.phone);
+  const [email, setEmail] = useState(user.email);
+  const [sex, setSex] = useState(user.sex);
+  const [birthDate, setBirthDate] = useState(user.birthDate);
 
-    // Xử lý sự kiện khi người dùng thay đổi giá trị
-    const handleFirstNameChange = (e) => setFirstName(e.target.value);
-    const handlePhoneChange = (e) => setPhone(e.target.value);
-    const handleAddressChange = (e) => setAddress(e.target.value);
-    const handleEmailChange = (e) => setEmail(e.target.value);
+  const handleFirstNameChange = (e) => setFirstName(e.target.value);
+  const handlePhoneChange = (e) => setPhone(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handleGenderChange = (e) => setSex(e.target.value);
+  const handleBirthDateChange = (e) => setBirthDate(e.target.value);
 
-    // Xử lý sự kiện khi người dùng nhấn nút "Lưu thay đổi"
-    const handleSaveChanges = (e) => {
-        e.preventDefault();
+  const handleSaveChanges = (e) => {
+    e.preventDefault();
+    console.log("Saving changes:", {
+      firstName,
+      phone,
+      email,
+      sex,
+      birthDate,
+    });
+  };
 
-        // Gọi hàm hoặc API để lưu các giá trị đã thay đổi
-        // Ví dụ: saveUserData(firstName, phone, address, email);
-        console.log('Saving changes:', { firstName, phone, address, email });
-    };
-
-    return (
-        <>
-            <div className="body-information">
-                <form>
-                    <div className="name-information">
-                        <div className="firstname-information">
-                            <label className="label-information">Tên</label>
-                            <input
-                                type="text"
-                                id="fname"
-                                name="firstname"
-                                value={firstName}
-                                onChange={handleFirstNameChange}
-                            />
-                        </div>
-                    </div>
-                    <label className="label-information">Số điện thoại</label>
-                    <input type="text" id="phone" name="phonenumber" value={phone} onChange={handlePhoneChange} />
-                    {
-                        //<label className="label-information">Address*</label>
-                        //<input type="text" id="address" name="address" value={address} onChange={handleAddressChange} />
-                    }
-                    <label className="label-information">Email</label>
-                    <input type="text" id="email" name="email" value={email} onChange={handleEmailChange} />
-                    <button
-                        type="submit"
-                        className="btn-submit"
-                        onClick={handleSaveChanges}
-                        name="save_account_details"
-                        value="Save changes"
-                    >
-                        Save changes
-                    </button>
-                </form>
+  return (
+    <>
+      <div className="profile-container row">
+        <div className="sidebar-profile">
+          <div className="profile-header">
+            <img src={user.avatar} alt="Avatar" className="profile-avatar" />
+            <button className="edit-profile-btn">Sửa Hồ Sơ</button>
+          </div>
+          <ul className="sidebar-menu">
+            <li>Hồ Sơ</li>
+            <li>Ngân Hàng</li>
+            <li>Địa Chỉ</li>
+            <li>Đổi Mật Khẩu</li>
+          </ul>
+        </div>
+        <div className="profile-content">
+          <h2>Hồ Sơ Của Tôi</h2>
+          <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+          <form onSubmit={handleSaveChanges}>
+            <div className="form-group">
+              <label>Tên</label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={handleFirstNameChange}
+              />
             </div>
-        </>
-    );
+            <div className="form-group">
+              <label>Email</label>
+              <div>{email}</div>
+            </div>
+            <div className="form-group">
+              <label>Số điện thoại</label>
+              <div>{phone}</div>
+            </div>
+            <div className="form-group">
+              <label>Giới tính</label>
+              <div className="form-group-sex">
+                <label>
+                  <input
+                    type="radio"
+                    value="man"
+                    checked={sex === "man"}
+                    onChange={handleGenderChange}
+                  />
+                  Nam
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="girl"
+                    checked={sex === "girl"}
+                    onChange={handleGenderChange}
+                  />
+                  Nữ
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="other"
+                    checked={sex === "other"}
+                    onChange={handleGenderChange}
+                  />
+                  Khác
+                </label>
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Ngày sinh</label>
+              <input
+                type="date"
+                value={birthDate}
+                onChange={handleBirthDateChange}
+              />
+            </div>
+            <button type="submit" className="btn-submit">
+              Lưu
+            </button>
+          </form>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Profile;

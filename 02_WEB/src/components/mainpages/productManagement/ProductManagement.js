@@ -317,7 +317,7 @@ const ProductManagement = () => {
                         <td className="action-buttons">
                           <button className="btn btn-sm btn-primary">
                             <Link to={`/edit_product/${product._id}`}>
-                              Edit
+                              Chỉnh sửa
                             </Link>
                           </button>
                           <button

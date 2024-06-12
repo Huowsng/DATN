@@ -124,61 +124,72 @@ const productCtrl = {
   updateProduct: async (req, res) => {
     try {
       const { types, title, description, images, category } = req.body;
-      console.log("Tester dung", req.body);
+      console.log("Request body:", req.body);
 
-      var listType = [];
+      let listType = [];
 
-      for (var i = 0; i < types.length; i++) {
-        var type;
+      // Kiểm tra nếu types được cung cấp trong yêu cầu
+      if (types && types.length > 0) {
+        for (let i = 0; i < types.length; i++) {
+          let type;
 
-        // Kiểm tra types[i] và types[i]._id trước khi truy cập
-        if (types[i] && types[i]._id != null) {
-          type = await Type.findOneAndUpdate(
-            { _id: types[i]._id },
-            {
+          if (types[i] && types[i]._id != null) {
+            type = await Type.findOneAndUpdate(
+              { _id: types[i]._id },
+              {
+                name: types[i].name,
+                price: types[i].price,
+                amount: types[i].amount,
+              },
+              { new: true }
+            );
+          } else {
+            type = new Type({
               name: types[i].name,
-              price: types[i]?.price,
+              price: types[i].price,
               amount: types[i].amount,
-            },
-            { new: true } // Đảm bảo trả về giá trị mới nhất sau khi cập nhật
-          );
-        } else {
-          type = new Type({
-            name: types[i].name,
-            price: types[i]?.price,
-            amount: types[i].amount,
-          });
-          await type.save(); // Lưu loại mới vào cơ sở dữ liệu
-        }
+            });
+            await type.save();
+          }
 
-        // Kiểm tra xem type có tồn tại không trước khi truy cập thuộc tính _id
-        if (type) {
-          listType.push({
-            _id: type._id,
-            name: type.name,
-            price: type?.price,
-            amount: types[i].amount,
-          });
+          if (type) {
+            listType.push({
+              _id: type._id,
+              name: type.name,
+              price: type.price,
+              amount: types[i].amount,
+            });
+          }
         }
       }
 
-      const id = req.params;
-      console.log(id, "Tester 5555");
+      const { id } = req.params; // Sử dụng id thay vì _id
+      console.log("Product ID:", id);
 
-      await Products.findOneAndUpdate(
-        { _id: req.params._id },
-        {
-          types: listType,
-          title: title,
-          description: description,
-          images: images,
-          category: category,
-        }
-      );
+      let product = await Products.findById(id);
 
-      res.json({ message: "Cập nhật thành công" });
+      if (!product) {
+        return res.status(404).json({ msg: "Product not found" });
+      }
+
+      // Nếu types không được cung cấp, giữ nguyên types hiện có
+      if (listType.length === 0) {
+        listType = product.types;
+      }
+
+      product.types = listType;
+      product.title = title || product.title;
+      product.description = description || product.description;
+      product.images = images || product.images;
+      product.category = category || product.category;
+
+      const updatedProduct = await product.save();
+
+      console.log("Updated product:", updatedProduct);
+
+      res.json({ message: "Cập nhật thành công", updatedProduct });
     } catch (err) {
-      console.log(err, "Tester 66666");
+      console.log("Error:", err.message);
       return res.status(500).json({ msg: err.message });
     }
   },

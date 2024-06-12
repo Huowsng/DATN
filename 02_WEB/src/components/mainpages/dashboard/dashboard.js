@@ -11,6 +11,7 @@ const Dashboard = () => {
   const state = useContext(GlobalState);
   const [token] = state.token;
   const [productRole0, setProductRole0] = state.productsAPI.productRole0 ?? [];
+  const [productRole1, setProductRole1] = state.productsAPI.productRole1 ?? [];
   const [categories, setCategories] = useState([]);
   const [users, setUsers] = useState([]);
   const [callback, setCallback] = state.productsAPI.callback;
@@ -21,9 +22,10 @@ const Dashboard = () => {
   const [isCheck, setIsCheck] = useState(false);
   const [acceptedCount, setAcceptedCount] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [history, setHistory] = state.userAPI.history;
+  const [history, setHistory] = state.orderAPI.allOrder;
   const [isAdmin] = state.userAPI.isAdmin;
   const [isUserLoaded, setIsUserLoaded] = useState(false);
+  const [isStateTrue, setIsStateTrue] = useState(1);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -57,24 +59,7 @@ const Dashboard = () => {
       };
       fetchUsers();
     }
-
-    if (token) {
-      const getHistory = async () => {
-        let res;
-        if (isAdmin) {
-          res = await axios.get(`${API_URL}/api/orders/admin?`, {
-            headers: { Authorization: token },
-          });
-        } else {
-          res = await axios.get(`${API_URL}/api/orders?`, {
-            headers: { Authorization: token },
-          });
-        }
-        setHistory(res.data);
-      };
-      getHistory();
-    }
-  }, [token, isLoaded]);
+  }, [token]);
 
   const deleteProduct = async (id, public_id) => {
     try {
@@ -90,10 +75,22 @@ const Dashboard = () => {
   };
 
   const checkAll = () => {
-    productRole0?.forEach((product) => {
-      product.checked = !isCheck;
+    const items =
+      isStateTrue === 1
+        ? productRole0
+        : isStateTrue === 2
+        ? productRole1
+        : users;
+    items.forEach((item) => {
+      item.checked = !isCheck;
     });
-    setProductRole0([...productRole0]);
+    if (isStateTrue === 1) {
+      setProductRole0([...productRole0]);
+    } else if (isStateTrue === 2) {
+      setProductRole1([...productRole1]);
+    } else {
+      setUsers([...users]);
+    }
     setIsCheck(!isCheck);
   };
 
@@ -101,18 +98,30 @@ const Dashboard = () => {
     try {
       setLoading(true);
       let newAcceptedCount = acceptedCount;
-      for (const product of productRole0) {
-        if (product.checked === true) {
+      const items =
+        isStateTrue === 1
+          ? productRole0
+          : isStateTrue === 2
+          ? productRole1
+          : users;
+      for (const item of items) {
+        if (item.checked === true) {
+          if (isStateTrue === 1 || isStateTrue === 2) {
+            await axios.delete(`${API_URL}/api/products/${item._id}`, {
+              headers: { Authorization: token },
+            });
+          } else {
+            await axios.delete(`${API_URL}/api/users/${item._id}`, {
+              headers: { Authorization: token },
+            });
+          }
           newAcceptedCount -= 1;
           setAcceptedCount(newAcceptedCount);
-          await axios.delete(`${API_URL}/api/products/${product._id}`, {
-            headers: { Authorization: token },
-          });
         }
       }
       if (newAcceptedCount === 0) {
         window.location.reload();
-        alert("Xoá tất cả sản phẩm thành công!");
+        alert("Xoá tất cả thành công!");
       }
       setCallback(!callback);
       setLoading(false);
@@ -121,6 +130,7 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
+
   const calculateTotalRevenue = (history) => {
     // Sử dụng reduce() để tính tổng doanh thu từ mảng history
     const totalRevenue = history.reduce((accumulator, currentItem) => {
@@ -141,20 +151,30 @@ const Dashboard = () => {
 
   const handleCheck = (id) => {
     let newAcceptedCount = acceptedCount;
-    productRole0.forEach((product) => {
-      if (product._id === id) {
-        product.checked = !product.checked;
-        if (product.checked === true) {
+    const items =
+      isStateTrue === 1
+        ? productRole0
+        : isStateTrue === 2
+        ? productRole1
+        : users;
+    items.forEach((item) => {
+      if (item._id === id) {
+        item.checked = !item.checked;
+        if (item.checked === true) {
           newAcceptedCount += 1;
-          setAcceptedCount(newAcceptedCount);
         } else {
           newAcceptedCount -= 1;
-          setAcceptedCount(newAcceptedCount);
         }
+        setAcceptedCount(newAcceptedCount);
       }
     });
-
-    setProductRole0([...productRole0]);
+    if (isStateTrue === 1) {
+      setProductRole0([...productRole0]);
+    } else if (isStateTrue === 2) {
+      setProductRole1([...productRole1]);
+    } else {
+      setUsers([...users]);
+    }
   };
 
   if (loading)
@@ -230,16 +250,36 @@ const Dashboard = () => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredItems = productRole0.filter((product) => {
-    return (
-      getSellerName(product.user_cre)
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      product.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const filteredItems = (
+    isStateTrue === 1 ? productRole0 : isStateTrue === 2 ? productRole1 : users
+  ).filter((item) => {
+    if (isStateTrue === 3) {
+      return (
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    } else {
+      return (
+        getSellerName(item.user_cre)
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
   });
 
-  const totalPages = Math.ceil(productRole0.length / itemsPerPage);
+  const currentItems = filteredItems.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(
+    (isStateTrue === 1
+      ? productRole0.length
+      : isStateTrue === 2
+      ? productRole1.length
+      : users.length) / itemsPerPage
+  );
 
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -291,115 +331,362 @@ const Dashboard = () => {
           </div>
 
           <div className="table-responsive">
-            {productRole0.length === 0 ? (
-              <div>Không có sản phẩm nào chờ xét duyệt</div>
-            ) : (
+            {isStateTrue === 1 ? (
+              <>
+                {productRole0.length === 0 ? (
+                  <div>Không có sản phẩm nào chờ xét duyệt</div>
+                ) : (
+                  <div>
+                    <div className="button-container">
+                      <div className="button-group">
+                        <div className="left-buttons">
+                          <button
+                            className="btn btn-sm btn-page mr-2"
+                            onClick={() => {
+                              setIsStateTrue(1);
+                              setCurrentPage(1);
+                            }}
+                          >
+                            Kiểm duyệt bài đăng
+                          </button>
+                          <button
+                            className="btn btn-sm btn-page mr-2"
+                            onClick={() => {
+                              setIsStateTrue(2);
+                              setCurrentPage(1);
+                            }}
+                          >
+                            Quản lý bài đăng
+                          </button>
+                          <button
+                            className="btn btn-sm btn-page mr-2"
+                            onClick={() => {
+                              setIsStateTrue(3);
+                              setCurrentPage(1);
+                            }}
+                          >
+                            Quản lý người dùng
+                          </button>
+                        </div>
+                        <div className="right-buttons">
+                          <button
+                            className="btn btn-sm btn-success mr-2"
+                            onClick={acceptAll}
+                          >
+                            Duyệt tất cả
+                          </button>
+                          <button
+                            className="btn btn-sm btn-danger"
+                            onClick={deleteAll}
+                          >
+                            Xoá hết
+                          </button>
+                          <div className="checkbox-all">
+                            <input
+                              type="checkbox"
+                              className="small-checkbox"
+                              checked={isCheck}
+                              onChange={checkAll}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <table className="table table-striped table-sm mt-2">
+                      <thead>
+                        <tr>
+                          <th>Tên người đăng</th>
+                          <th>Tiêu đề bài đăng</th>
+                          <th>Số lượng</th>
+                          <th>Loại sản phẩm</th>
+                          <th>Giá</th>
+                          <th>Ngày đăng</th>
+                          <th>Chi tiết</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currentItems.map((product) => (
+                          <tr key={product._id}>
+                            <td>{getSellerName(product.user_cre)}</td>
+                            <td>{product.title}</td>
+                            <td>
+                              {product.types && product.types.length > 0
+                                ? product.types[0].amount
+                                : "N/A"}
+                            </td>
+                            <td>{getCategoryName(product.category)}</td>
+                            <td>
+                              {product.types && product.types.length > 0
+                                ? product.types[0].price.toLocaleString(
+                                    "vi-VN",
+                                    {
+                                      style: "currency",
+                                      currency: "VND",
+                                    }
+                                  )
+                                : "N/A"}
+                            </td>
+                            <td>{formatDate(product.createdAt)}</td>
+                            <td>
+                              <Link to={`/detail/${product._id}`}>Xem</Link>
+                            </td>
+                            <td className="action-buttons">
+                              <button
+                                className="btn btn-sm btn-success"
+                                onClick={() => acceptProduct(product._id)}
+                              >
+                                Duyệt
+                              </button>
+                              <button className="btn btn-sm btn-primary">
+                                <Link to={`/edit_product/${product._id}`}>
+                                  Chỉnh sửa
+                                </Link>
+                              </button>
+                              <button
+                                className="btn btn-sm btn-danger"
+                                onClick={() =>
+                                  deleteProduct(
+                                    product._id,
+                                    product.images.public_id
+                                  )
+                                }
+                              >
+                                Xoá
+                              </button>
+                            </td>
+                            <td className="action-checkbox">
+                              <input
+                                type="checkbox"
+                                className="small-checkbox"
+                                checked={product.checked}
+                                onChange={() => handleCheck(product._id)}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                {productRole0.length > 0 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    handlePreviousPage={handlePreviousPage}
+                    handleNextPage={handleNextPage}
+                    handlePageChange={handlePageChange}
+                  />
+                )}
+              </>
+            ) : isStateTrue === 2 ? (
+              <>
+                {productRole1.length === 0 ? (
+                  <div>Không có sản phẩm nào chờ xét duyệt</div>
+                ) : (
+                  <div>
+                    <div className="button-container">
+                      <div className="button-group">
+                        <div className="left-buttons">
+                          <button
+                            className="btn btn-sm btn-page mr-2"
+                            onClick={() => {
+                              setIsStateTrue(1);
+                              setCurrentPage(1);
+                            }}
+                          >
+                            Kiểm duyệt bài đăng
+                          </button>
+                          <button
+                            className="btn btn-sm btn-page mr-2"
+                            onClick={() => setIsStateTrue(2)}
+                          >
+                            Quản lý bài đăng
+                          </button>
+                          <button
+                            className="btn btn-sm btn-page mr-2"
+                            onClick={() => {
+                              setIsStateTrue(3);
+                              setCurrentPage(1);
+                            }}
+                          >
+                            Quản lý người dùng
+                          </button>
+                        </div>
+                        <div className="right-buttons">
+                          <button
+                            className="btn btn-sm btn-danger"
+                            onClick={deleteAll}
+                          >
+                            Xoá hết
+                          </button>
+                          <div className="checkbox-all">
+                            <input
+                              type="checkbox"
+                              className="small-checkbox"
+                              checked={isCheck}
+                              onChange={checkAll}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <table className="table table-striped table-sm mt-2">
+                      <thead>
+                        <tr>
+                          <th>Tên người đăng</th>
+                          <th>Tiêu đề bài đăng</th>
+                          <th>Số lượng</th>
+                          <th>Loại sản phẩm</th>
+                          <th>Giá</th>
+                          <th>Ngày đăng</th>
+                          <th>Chi tiết</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currentItems.map((product) => (
+                          <tr key={product._id}>
+                            <td>{getSellerName(product.user_cre)}</td>
+                            <td>{product.title}</td>
+                            <td>
+                              {product.types && product.types.length > 0
+                                ? product.types[0].amount
+                                : "N/A"}
+                            </td>
+                            <td>{getCategoryName(product.category)}</td>
+                            <td>
+                              {product.types && product.types.length > 0
+                                ? product.types[0].price.toLocaleString(
+                                    "vi-VN",
+                                    {
+                                      style: "currency",
+                                      currency: "VND",
+                                    }
+                                  )
+                                : "N/A"}
+                            </td>
+                            <td>{formatDate(product.createdAt)}</td>
+                            <td>
+                              <Link to={`/detail/${product._id}`}>Xem</Link>
+                            </td>
+                            <td className="action-buttons">
+                              <button className="btn btn-sm btn-primary">
+                                <Link to={`/edit_product/${product._id}`}>
+                                  Chỉnh sửa
+                                </Link>
+                              </button>
+                              <button
+                                className="btn btn-sm btn-danger"
+                                onClick={() =>
+                                  deleteProduct(
+                                    product._id,
+                                    product.images.public_id
+                                  )
+                                }
+                              >
+                                Xoá
+                              </button>
+                            </td>
+                            <td className="action-checkbox">
+                              <input
+                                type="checkbox"
+                                className="small-checkbox"
+                                checked={product.checked}
+                                onChange={() => handleCheck(product._id)}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                {productRole1.length > 0 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    handlePreviousPage={handlePreviousPage}
+                    handleNextPage={handleNextPage}
+                    handlePageChange={handlePageChange}
+                  />
+                )}
+              </>
+            ) : isStateTrue === 3 ? (
               <div>
-                <div class="button-container">
-                  <div class="button-group">
-                    <button
-                      class="btn btn-sm btn-success mr-2"
-                      onClick={acceptAll}
-                    >
-                      Duyệt tất cả
-                    </button>
-                    <button class="btn btn-sm btn-danger" onClick={deleteAll}>
-                      Xoá hết
-                    </button>
-                    <div className="checkbox-all">
-                      <input
-                        type="checkbox"
-                        class="small-checkbox"
-                        checked={isCheck}
-                        onChange={checkAll}
-                      />
+                <div className="button-container">
+                  <div className="button-group">
+                    <div className="left-buttons">
+                      <button
+                        className="btn btn-sm btn-page mr-2"
+                        onClick={() => {
+                          setIsStateTrue(1);
+                          setCurrentPage(1);
+                        }}
+                      >
+                        Kiểm duyệt bài đăng
+                      </button>
+                      <button
+                        className="btn btn-sm btn-page mr-2"
+                        onClick={() => {
+                          setIsStateTrue(2);
+                          setCurrentPage(1);
+                        }}
+                      >
+                        Quản lý bài đăng
+                      </button>
+                      <button
+                        className="btn btn-sm btn-page mr-2"
+                        onClick={() => setIsStateTrue(3)}
+                      >
+                        Quản lý người dùng
+                      </button>
                     </div>
                   </div>
                 </div>
                 <table className="table table-striped table-sm mt-2">
                   <thead>
                     <tr>
-                      <th>Tên người đăng</th>
-                      <th>Tiêu đề bài đăng</th>
-                      <th>Số lượng</th>
-                      <th>Loại sản phẩm</th>
-                      <th>Giá</th>
-                      <th>Ngày đăng</th>
-                      <th>Chi tiết</th>
+                      <th>Tên người dùng</th>
+                      <th>Email</th>
+                      <th>Ngày đăng ký</th>
+                      <th>Địa chỉ</th>
+                      <th>Số điện thoại</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredItems.map((product) => (
-                      <tr key={product._id}>
-                        <td>{getSellerName(product.user_cre)}</td>
-                        <td>{product.title}</td>
-                        <td>
-                          {product.types && product.types.length > 0
-                            ? product.types[0].amount
-                            : "N/A"}
-                        </td>
-                        <td>{getCategoryName(product.category)}</td>
-                        <td>
-                          {product.types && product.types.length > 0
-                            ? product.types[0].price.toLocaleString("vi-VN", {
-                                style: "currency",
-                                currency: "VND",
-                              })
-                            : "N/A"}
-                        </td>
-                        <td>{formatDate(product.createdAt)}</td>
-                        <td>
-                          <Link to={`/detail/${product._id}`}>Xem</Link>
-                        </td>
+                    {currentItems.map((user) => (
+                      <tr key={user._id}>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>{formatDate(user.createdAt)}</td>
+                        <td>{user.role}</td>
+                        <td>{user.phone}</td>
                         <td className="action-buttons">
-                          <button
-                            className="btn btn-sm btn-success"
-                            onClick={() => acceptProduct(product._id)}
-                          >
-                            Accept
-                          </button>
                           <button className="btn btn-sm btn-primary">
-                            <Link to={`/edit_product/${product._id}`}>
-                              Edit
-                            </Link>
+                            Chỉnh sửa
                           </button>
-                          <button
-                            className="btn btn-sm btn-danger"
-                            onClick={() =>
-                              deleteProduct(
-                                product._id,
-                                product.images.public_id
-                              )
-                            }
-                          >
-                            Delete
-                          </button>
-                        </td>
-                        <td className="action-checkbox">
-                          <input
-                            type="checkbox"
-                            class="small-checkbox"
-                            checked={product.checked}
-                            onChange={() => handleCheck(product._id)}
-                          />
+                          <button className="btn btn-sm btn-danger">Xoá</button>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+                {users.length > 0 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    handlePreviousPage={handlePreviousPage}
+                    handleNextPage={handleNextPage}
+                    handlePageChange={handlePageChange}
+                  />
+                )}
               </div>
+            ) : (
+              <></>
             )}
           </div>
-          {productRole0.length > 0 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              handlePreviousPage={handlePreviousPage}
-              handleNextPage={handleNextPage}
-              handlePageChange={handlePageChange}
-            />
-          )}
         </div>
       </div>
     </div>

@@ -47,7 +47,7 @@ button {
 
 /* ------------- Login/Register ----------------- */
 @import url("./components/mainpages/auth/login.css");
-
+@import url("./components/mainpages/auth/profile.css");
 /* ------------ Cart ------------------- */
 @import url("./components/mainpages/cart/cart.css");
 

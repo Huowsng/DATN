@@ -253,24 +253,26 @@ const ProductManagement = () => {
             ) : (
               <div>
                 <div className="button-container">
-                  <div className="button-group">
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={deleteAll}
-                    >
-                      Xoá hết
-                    </button>
-                    <div className="checkbox-all">
-                      <input
-                        type="checkbox"
-                        className="small-checkbox"
-                        checked={isCheck}
-                        onChange={checkAll}
-                      />
+                  <div className="button-group ">
+                    <div className="left-buttons">
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={deleteAll}
+                      >
+                        Xoá hết
+                      </button>
+                      <div className="checkbox-all">
+                        <input
+                          type="checkbox"
+                          className="small-checkbox"
+                          checked={isCheck}
+                          onChange={checkAll}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <table className="table table-striped table-sm mt-2">
+                <table className="table table-striped table-sm mt-2 text-center table-bordered">
                   <thead>
                     <tr>
                       <th>Tên</th>

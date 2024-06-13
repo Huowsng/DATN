@@ -61,7 +61,7 @@ function OrderHistory() {
       <h4>{history.length} Đơn hàng</h4>
       {history.length > 0 ? (
         isAdmin ? (
-          <table>
+          <table className="text-center table-bordered">
             <thead>
               <tr>
                 <th>ID Thanh Toán</th>
@@ -80,7 +80,7 @@ function OrderHistory() {
             </tbody>
           </table>
         ) : (
-          <table>
+          <table className="text-center table-bordered">
             <thead>
               <tr>
                 <th>Ngày mua</th>

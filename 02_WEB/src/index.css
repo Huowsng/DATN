@@ -34,7 +34,6 @@ button {
   cursor: pointer;
 }
 @import "bootstrap/dist/css/bootstrap.min.css";
-
 /* ---------------- Header ------------ */
 @import url("./components/Header/Header.css");
 
@@ -69,6 +68,7 @@ button {
 @import url("./components/mainpages/dashboard/dashboard.css");
 @import url("./components/mainpages/home/ourservice/service.css");
 /* ----------------- Responsive ------------------ */
+
 @media (max-width: 450px) {
   header ul {
     display: none;
@@ -149,5 +149,5 @@ button {
   }
 }
 a {
-  text-decoration: none;
+  text-decoration: none !important;
 }

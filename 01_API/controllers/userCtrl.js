@@ -244,6 +244,26 @@ const userCtrl = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  deleteUser: async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      console.log(userId);
+
+      // Kiểm tra xem người dùng có tồn tại không
+      const user = await Users.findById(userId);
+      if (!user) {
+        return res.status(404).json({ msg: "User not found." });
+      }
+
+      // Xóa người dùng
+      await Users.findByIdAndDelete(userId);
+
+      res.status(200).json({ msg: "User deleted successfully." });
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      res.status(500).json({ msg: "Internal Server Error" });
+    }
+  },
 };
 
 const createAccessToken = (user) => {

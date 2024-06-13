@@ -3,6 +3,7 @@ import BtnRender from "./BtnRender";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../../../GlobalState";
 import { gsap } from "gsap";
+import "./productItem.css";
 
 function ProductItem({ product, isAdmin, deleteProduct, handleCheck }) {
   const state = useContext(GlobalState);

@@ -35,7 +35,7 @@ function OrderDetails() {
     <div className="history-page">
       {isAdmin ? (
         <>
-          <table>
+          <table className="text-center table-bordered">
             <thead>
               <tr>
                 <th>Tên</th>
@@ -53,7 +53,10 @@ function OrderDetails() {
               </tr>
             </tbody>
           </table>
-          <table style={{ margin: "30px 0px" }}>
+          <table
+            className="text-center table-bordered"
+            style={{ margin: "30px 0px" }}
+          >
             <thead>
               <tr>
                 <th></th>
@@ -98,7 +101,10 @@ function OrderDetails() {
           </table>
         </>
       ) : (
-        <table style={{ margin: "30px 0px" }}>
+        <table
+          className="text-center table-bordered"
+          style={{ margin: "30px 0px" }}
+        >
           <thead>
             <tr>
               <th></th>

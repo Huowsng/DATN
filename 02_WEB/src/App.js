@@ -8,9 +8,9 @@ import { TopHeader } from "./components/top-header/TopHeader";
 
 function App() {
   const location = useLocation();
-  const noHeaderPaths = ["/login", "/register"];
-  const noFooterPaths = ["/dashboard", "/login", "/register"];
-  const noTopHeaderPaths = ["/login", "/register"];
+  const noHeaderPaths = ["/login", "/register", "/success"];
+  const noFooterPaths = ["/dashboard", "/login", "/register", "/success"];
+  const noTopHeaderPaths = ["/login", "/register", "/success"];
   const showHeader = !noHeaderPaths.includes(location.pathname);
   const showFooter = !noFooterPaths.includes(location.pathname);
   const showTopHeader = !noTopHeaderPaths.includes(location.pathname);

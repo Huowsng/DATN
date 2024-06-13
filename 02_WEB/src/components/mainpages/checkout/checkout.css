@@ -83,7 +83,7 @@
   margin: 10px;
 }
 .btn-billing:hover {
-  background-color:rgba(63, 60, 154, 0.9);
+  background-color: rgba(63, 60, 154, 0.9);
   opacity: 1;
 }
 .price {
@@ -110,10 +110,39 @@
   margin-bottom: 10px;
   display: block;
 }
-.container-billing > input[type='text'] {
+.container-billing > input[type="text"] {
   width: 100%;
   margin-bottom: 20px;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 3px;
+}
+
+/* sucess css */
+
+.main-success {
+  max-width: 960px;
+  height: 710px;
+  display: flex;
+  flex-direction: column; /* Phần tử con được sắp xếp từ trên xuống dưới */
+  justify-content: center; /* Căn các phần tử vào giữa theo chiều ngang */
+  align-items: center; /* Căn các phần tử vào giữa theo chiều dọc */
+  margin: 0px auto;
+  background-color: rgb(244, 244, 244);
+  padding: 12px 12px;
+}
+.main-success img {
+  width: 120px;
+  height: 120px;
+}
+.main-success div {
+  margin-top: 20px;
+}
+.success-button {
+  margin-top: 30px;
+}
+.div-success {
+  font-weight: bold;
+  color: #008000;
+  font-size: 25px;
 }

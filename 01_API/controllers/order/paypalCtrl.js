@@ -42,8 +42,8 @@ const paypalCtrl = {
           payment_method: "paypal",
         },
         redirect_urls: {
-          cancel_url: "http://localhost:5000/api/paypal/cancel",
-          return_url: "http://localhost:5000/api/paypal/success",
+          cancel_url: "http://localhost:3000/cancel",
+          return_url: "http://localhost:3000/success",
         },
         transactions: [
           {

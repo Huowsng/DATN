@@ -93,6 +93,18 @@ const Dashboard = () => {
     }
     setIsCheck(!isCheck);
   };
+  const deleteUser = async (id) => {
+    try {
+      setLoading(true);
+      await axios.delete(`${API_URL}/user/deleteUser/${id}`, {
+        headers: { Authorization: token },
+      });
+      window.location.reload();
+      alert("Xoá tài khoản người dùng thành công!");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const deleteAll = async () => {
     try {
@@ -111,7 +123,7 @@ const Dashboard = () => {
               headers: { Authorization: token },
             });
           } else {
-            await axios.delete(`${API_URL}/api/users/${item._id}`, {
+            await axios.delete(`${API_URL}/api/user/${item._id}`, {
               headers: { Authorization: token },
             });
           }
@@ -392,7 +404,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <table className="table table-striped table-sm mt-2">
+                    <table className="table table-striped table-sm mt-2 text-center table-bordered ">
                       <thead>
                         <tr>
                           <th>Tên người đăng</th>
@@ -531,7 +543,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <table className="table table-striped table-sm mt-2">
+                    <table className="table table-striped table-sm mt-2 text-center table-bordered">
                       <thead>
                         <tr>
                           <th>Tên người đăng</th>
@@ -644,7 +656,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <table className="table table-striped table-sm mt-2">
+                <table className="table table-striped table-sm mt-2 text-center table-bordered">
                   <thead>
                     <tr>
                       <th>Tên người dùng</th>
@@ -667,7 +679,12 @@ const Dashboard = () => {
                           <button className="btn btn-sm btn-primary">
                             Chỉnh sửa
                           </button>
-                          <button className="btn btn-sm btn-danger">Xoá</button>
+                          <button
+                            className="btn btn-sm btn-danger"
+                            onClick={() => deleteUser(user._id)}
+                          >
+                            Xoá
+                          </button>
                         </td>
                       </tr>
                     ))}

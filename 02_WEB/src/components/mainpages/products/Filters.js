@@ -5,6 +5,7 @@ import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import API_URL from "../../../api/baseAPI";
 import Loading from "../utils/loading/Loading";
+import "./products.css";
 
 function Filters({ setImageSearch, setIsHidden }) {
   const state = useContext(GlobalState);

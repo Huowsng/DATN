@@ -59,7 +59,7 @@ function SellHistory() {
       <h4>{currentItems.length} Đơn hàng</h4>
       {currentItems.length > 0 ? (
         isAdmin ? (
-          <table>
+          <table className="text-center table-bordered">
             <thead>
               <tr>
                 <th>ID Thanh Toán</th>
@@ -78,7 +78,7 @@ function SellHistory() {
             </tbody>
           </table>
         ) : (
-          <table>
+          <table className="text-center table-bordered">
             <thead>
               <tr>
                 <th>Tên sản phẩm</th>

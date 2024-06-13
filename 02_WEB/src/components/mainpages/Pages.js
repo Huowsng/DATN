@@ -28,19 +28,14 @@ import Comment from "./processed/Comment";
 import Profile from "./auth/Profile";
 import MyFeedback from "./myfeedback/MyFeedback";
 import Loading from "./utils/loading/Loading";
+import SuccessModal from "./checkout/success";
 
 //services
-import Cleaning from "./CService/Cleaning/Cleaning";
-import CareIntruction from "./CService/CareIntruction/CareIntruction";
-import Ranking from "./Ranking/Ranking";
-import Hotel from "./CService/Hotel/Hotel";
-import Grooming from "./CService/Grooming/Grooming";
+
 //Adv
-import AdvSafety from "./Adv/AdvSafety";
 //login
 import Login from "./auth/Login";
 //newpage
-import News from "./Adv/News";
 ///
 import Header from "../Header/Header";
 import { TopHeader } from "../top-header/TopHeader";
@@ -64,13 +59,6 @@ function Pages() {
       <Route path="topheader" element={<TopHeader />} />
       <Route path="footer" element={<Footer />} />
 
-      <Route path="cleaning" element={<Cleaning />} />
-      <Route path="careintruction" element={<CareIntruction />} />
-      <Route path="ranking" element={<Ranking />} />
-      <Route path="advsafety" element={<AdvSafety />} />
-      <Route path="news" element={<News />} />
-      <Route path="hotel" element={<Hotel />} />
-      <Route path="grooming" element={<Grooming />} />
       <Route path="" element={<Home />} />
       <Route path="comment/:id" element={<Comment />} />
       <Route path="products" element={<Products />} />
@@ -78,6 +66,7 @@ function Pages() {
       <Route path="testchat" element={<TestChat />} />
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="detail/:id" element={<DetailProduct />} />
+      <Route path="success" element={<SuccessModal />} />
 
       <Route
         path="processed"

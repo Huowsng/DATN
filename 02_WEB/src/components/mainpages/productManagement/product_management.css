@@ -91,3 +91,8 @@
 .checkbox-all {
   margin-left: 14px;
 }
+.left-buttons {
+  display: flex;
+  gap: 9px; /* Khoảng cách giữa các nút bên trái */
+  margin-left: auto;
+}

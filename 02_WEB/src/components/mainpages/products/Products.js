@@ -7,6 +7,7 @@ import Filters from "./Filters";
 import Pagination from "./pagination";
 import { Link } from "react-router-dom";
 import API_URL from "../../../api/baseAPI";
+import "./products.css";
 
 function Products() {
   const state = useContext(GlobalState);

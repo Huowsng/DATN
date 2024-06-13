@@ -5,6 +5,7 @@ import Loading from "../utils/loading/Loading";
 import { useNavigate, useParams } from "react-router-dom";
 import API_URL from "../../../api/baseAPI";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import "./createProduct.css";
 
 const initialState = {
   title: "",
@@ -271,7 +272,7 @@ function CreateProduct() {
             onChange={handleChangeInput}
           />
         </div>
-        <div className="add-type-container row">
+        <div className="add-type-container">
           <div className="row-type ">
             {(onEdit ? edit.types : product.types).map((item, index) => (
               <div key={index}>
@@ -305,7 +306,11 @@ function CreateProduct() {
               </div>
             ))}
           </div>
-          <button type="button" className="add-type-button" onClick={addType}>
+          <button
+            type="button"
+            className="add-type-button custom-add-type"
+            onClick={addType}
+          >
             Add Type
           </button>
 

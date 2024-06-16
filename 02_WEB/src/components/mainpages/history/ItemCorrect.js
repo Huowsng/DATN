@@ -6,7 +6,6 @@ const ItemCorrect = ({ item: initialItem }) => {
   const state = useContext(GlobalState);
   const [item, setItem] = useState(initialItem);
   const [token] = state.token;
-  s;
   useEffect(() => {
     setItem(initialItem);
   }, [initialItem]);

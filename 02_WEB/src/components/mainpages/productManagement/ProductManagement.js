@@ -138,7 +138,7 @@ const ProductManagement = () => {
 
   const getCategoryName = (categoryId) => {
     const category = categories.find((cat) => cat._id === categoryId);
-    return category ? category.name : "Unknown";
+    return category ? category.name : "";
   };
 
   const getSellerName = (userId) => {
@@ -147,7 +147,7 @@ const ProductManagement = () => {
       userMap[user._id] = user.name;
     });
     const name = userMap[userId];
-    return name ? name : "Unknown";
+    return name ? name : "";
   };
 
   const formatDate = (dateString) => {
@@ -177,6 +177,7 @@ const ProductManagement = () => {
   const filteredOrders = orders.filter(
     (order) =>
       order.status === "Paid" &&
+      order.delivery === "Confirmed" &&
       order.listOrderItems.some((item) => productIds.includes(item.product_id))
   );
 
@@ -254,7 +255,7 @@ const ProductManagement = () => {
               <div>
                 <div className="button-container">
                   <div className="button-group ">
-                    <div className="left-buttons">
+                    <div className="left-button-user">
                       <button
                         className="btn btn-sm btn-danger"
                         onClick={deleteAll}

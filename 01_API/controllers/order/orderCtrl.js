@@ -19,6 +19,7 @@ const orderCtrl = {
       const order = Orders({
         user_id: user_id,
         status: "Pending",
+        delivery: "process",
         address: address,
         phone: phone,
       });
@@ -226,6 +227,7 @@ const orderCtrl = {
           createdAt: 1,
           address: 1,
           phone: 1,
+          delivery: 1,
         }
       );
       res.send(orders);
@@ -247,6 +249,7 @@ const orderCtrl = {
           createdAt: 1,
           address: 1,
           phone: 1,
+          delivery: 1,
         }
       );
       res.send(orders);
@@ -398,6 +401,7 @@ const orderCtrl = {
           phone: 1,
           address: 1,
           name: 1,
+          delivery: 1,
         }
       ).sort({ updatedAt: -1 });
       res.send(orders);
@@ -509,7 +513,37 @@ const orderCtrl = {
       res.status(500).json({ message: "Internal Server Error" });
     }
   },
+
   updateDelivery: async (req, res) => {
+    try {
+      const { delivery, deliveryDate, status } = req.body;
+
+      // Check if the order exists
+      const order = await Orders.findById(req.params.id);
+      if (!order) {
+        return res.status(404).json({ msg: "Order not found" });
+      }
+
+      // Update delivery details
+      const updatedOrder = await Orders.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          delivery,
+          deliveryDate,
+          status,
+        },
+        { new: true }
+      );
+
+      res.send({
+        message: "Delivery details updated successfully",
+        order: updatedOrder,
+      });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  updateDelive: async (req, res) => {
     const { delivery_id, order_id } = req.body;
     if (!delivery_id || !order_id) {
       res

@@ -111,7 +111,7 @@ input {
   position: relative;
 }
 
-.modal {
+.modal-product {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,15 +125,18 @@ input {
 }
 
 /* CSS cho nội dung của modal */
-.modal-content {
-  display: flex;
+.modal-content-product {
   align-items: center;
+  justify-content: center;
   background-color: white;
   width: 500px;
   height: 500px;
   border-radius: 10px;
   padding: 20px;
   position: relative;
+
+  display: flex;
+  flex-direction: column;
 }
 
 /* CSS cho nút close */

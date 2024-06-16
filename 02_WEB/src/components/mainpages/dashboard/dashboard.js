@@ -198,7 +198,7 @@ const Dashboard = () => {
 
   const getCategoryName = (categoryId) => {
     const category = categories.find((cat) => cat._id === categoryId);
-    return category ? category.name : "Unknown";
+    return category ? category.name : "";
   };
 
   const getSellerName = (userId) => {
@@ -207,7 +207,7 @@ const Dashboard = () => {
       userMap[user._id] = user.name;
     });
     const name = userMap[userId];
-    return name ? name : "Unknown";
+    return name ? name : "";
   };
 
   const formatDate = (dateString) => {

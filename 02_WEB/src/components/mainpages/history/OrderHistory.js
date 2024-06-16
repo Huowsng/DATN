@@ -87,7 +87,6 @@ function OrderHistory() {
                 <th>Địa chỉ</th>
                 <th>Số điện thoại</th>
                 <th>Trạng thái</th>
-                <th>Vận chuyển</th>
                 <th>Chi tiết</th>
               </tr>
             </thead>
@@ -104,21 +103,7 @@ function OrderHistory() {
                       ? "Đã thanh toán"
                       : items.status}
                   </td>
-                  <td>
-                    {items.delivery == null ? (
-                      <img
-                        className="img-correct"
-                        src="https://cdn-icons-png.flaticon.com/128/2972/2972531.png"
-                        alt=""
-                      />
-                    ) : (
-                      <img
-                        className="img-correct"
-                        src="https://cdn-icons-png.flaticon.com/128/8888/8888205.png"
-                        alt=""
-                      />
-                    )}
-                  </td>
+
                   <td>
                     <Link to={`/history/${items._id}`}>Xem</Link>
                   </td>

@@ -42,8 +42,8 @@ const paypalCtrl = {
           payment_method: "paypal",
         },
         redirect_urls: {
-          cancel_url: "http://localhost:3000/cancel",
-          return_url: "http://localhost:3000/success",
+          cancel_url: "https://datn-aywu.onrender.com/api/paypal/cancel",
+          return_url: "https://datn-aywu.onrender.com/api/paypal/success",
         },
         transactions: [
           {
@@ -104,7 +104,7 @@ const paypalCtrl = {
               { _id: order_id },
               { status: "Paid" }
             );
-            res.json({ status: "success" }); // Trả về status: success nếu thanh toán thành công
+            res.redirect("https://datn-kappa.vercel.app/success");
           } catch (err) {
             console.log(err);
             res.status(401).json({ status: "error" }); // Trả về status: error nếu có lỗi khi cập nhật trạng thái đơn hàng

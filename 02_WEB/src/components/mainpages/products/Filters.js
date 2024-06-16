@@ -5,7 +5,6 @@ import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import API_URL from "../../../api/baseAPI";
 import Loading from "../utils/loading/Loading";
-import "./products.css";
 
 function Filters({ setImageSearch, setIsHidden }) {
   const state = useContext(GlobalState);
@@ -205,8 +204,8 @@ function Filters({ setImageSearch, setIsHidden }) {
       </div>
 
       {showModal && (
-        <div className="modal">
-          <div className="modal-content">
+        <div className="modal-product">
+          <div className="modal-content-product">
             <span className="close" onClick={() => setShowModal(false)}>
               &times;
             </span>

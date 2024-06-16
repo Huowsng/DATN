@@ -29,8 +29,8 @@ router
 router.route("/cart/checkout").post(auth, orderCtrl.checkoutOrder);
 
 router
-  .route("/delivery")
+  .route("/delivery/:id")
   .get(orderCtrl.getDelivery)
-  .put(auth, authAdmin, orderCtrl.updateDelivery);
+  .put(auth, orderCtrl.updateDelivery);
 
 module.exports = router;

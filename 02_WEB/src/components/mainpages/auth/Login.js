@@ -59,7 +59,7 @@ function Login() {
             >
               <div className="card-body p-5 text-center">
                 <h3 className="mb-5 text-white" style={{ color: "#ffffff" }}>
-                  Sign in
+                  Đăng Nhập
                 </h3>
 
                 <div
@@ -84,7 +84,7 @@ function Login() {
                   <input
                     type="password"
                     name="password"
-                    placeholder="Password"
+                    placeholder="Mật khẩu"
                     id="typePasswordX-2"
                     className="form-control form-control-lg"
                     value={user.password}
@@ -102,7 +102,7 @@ function Login() {
                   />
                   <label className="form-check-label" htmlFor="form1Example3">
                     {" "}
-                    Remember password{" "}
+                    Nhớ mật khẩu{" "}
                   </label>
                 </div>
 
@@ -111,7 +111,7 @@ function Login() {
                   type="submit"
                   onClick={loginSubmit}
                 >
-                  Login
+                  Đăng nhập
                 </button>
 
                 <hr className="my-4" />
@@ -121,7 +121,7 @@ function Login() {
                   style={{ backgroundColor: "#dd4b39" }}
                   type="submit"
                 >
-                  <FaGoogle className="me-2" /> Sign in with google
+                  <FaGoogle className="me-2" /> Đăng nhập với google
                 </button>
                 <button
                   className="btn btn-lg btn-block btn-primary mb-2"
@@ -129,13 +129,13 @@ function Login() {
                   type="submit"
                 >
                   <FaFacebook className="me-2" />
-                  Sign in with facebook
+                  Đăng nhập với facebook
                 </button>
                 <div className="mt-3">
                   <p className="text-white mb-0">
-                    Don't have an account?{" "}
+                    Bạn chưa có tài khoản?{" "}
                     <Link to="/register" className="text-white fw-bold">
-                      Sign up here
+                      Đăng ký tại đây
                     </Link>
                   </p>
                 </div>

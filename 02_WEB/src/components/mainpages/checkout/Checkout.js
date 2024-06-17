@@ -93,18 +93,16 @@ const Checkout = () => {
 
   return (
     <div className="body-checkout">
-      <h1 style={{ textAlign: "center", marginBottom: "10px" }}>
-        Checkout order
-      </h1>
+      <h1 style={{ textAlign: "center", marginBottom: "10px" }}>Đặt hàng</h1>
       <div className="row-billing">
         <div className="col-75">
           <div className="container-billing">
             <form onSubmit={handleSubmit}>
               <div className="row-billing">
                 <div className="col-50">
-                  <h3>Billing Address</h3>
+                  <h3> Địa chỉ nhận hàng</h3>
                   <label forhtml="adr">
-                    <i className="fa fa-address-card-o"></i> Address
+                    <i className="fa fa-address-card-o"></i> Địa chỉ
                   </label>
                   <input
                     type="text"
@@ -113,7 +111,7 @@ const Checkout = () => {
                     value={order.address}
                     onChange={handleChangeInput}
                     name="address"
-                    placeholder="example:!!  Robert Robertson,  1234 NW Bobcat Lane,  St. Robert "
+                    placeholder="Ví dụ:  164 Trần Cao Vân, Tam Thuận, Thanh Khê, Đà Nẵng "
                   />
                   <label forhtml="city">
                     <i className="fa fa-institution"></i> Số điện thoại
@@ -128,20 +126,10 @@ const Checkout = () => {
                     placeholder="+84 065584-5678."
                   />
                 </div>
-                <div className="col-50">
-                  <h3>Payment</h3>
-                  <label forHtml="fname">Accepted Cards</label>
-                  <div className="icon-container">
-                    <i
-                      className="fa fa-cc-paypal"
-                      style={{ color: "navy" }}
-                    ></i>
-                  </div>
-                </div>
               </div>
 
               <button type="submit" className="btn-billing">
-                Continue to checkout
+                Tiếp tục đặt hàng
               </button>
             </form>
           </div>
@@ -149,7 +137,7 @@ const Checkout = () => {
         <div className="col-25">
           <div className="container-billing">
             <h5>
-              Cart{" "}
+              Đơn hàng{" "}
               <span className="price" style={{ color: "black" }}>
                 <i className="fa fa-shopping-cart"></i> <b>{cart.length}</b>
               </span>

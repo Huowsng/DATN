@@ -102,12 +102,13 @@ function Categories() {
           <div className="row" key={category._id}>
             <p>{category.name}</p>
             <div>
-              <button onClick={() => editCategory(category._id, category.name)}>
-                Edit
+              <button
+                className="btn-primary"
+                onClick={() => editCategory(category._id, category.name)}
+              >
+                Chỉnh sửa
               </button>
-              <button onClick={() => deleteCategory(category._id)}>
-                Delete
-              </button>
+              <button onClick={() => deleteCategory(category._id)}>Xoá</button>
             </div>
           </div>
         ))}

@@ -6,7 +6,7 @@ import { BsFacebook, BsInstagram, BsGithub } from "react-icons/bs";
 import classNames from "classnames/bind";
 import styles from "./Footer.module.scss";
 // import { Link } from 'react-router-dom';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { fa0, faArrowAltCircleRight, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
@@ -57,7 +57,7 @@ export const Footer = () => {
           <div className="row-foot">
             <div className="col-md-8 col-sm-6 col-xs-12"></div>
 
-            <div className="col-md-4 col-sm-6 col-xs-12">
+            {/* <div className="col-md-4 col-sm-6 col-xs-12">
               <ul className="social-icons">
                 <li>
                   <a className="facebook" href="/#">
@@ -80,7 +80,7 @@ export const Footer = () => {
                   </a>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
       </footer>

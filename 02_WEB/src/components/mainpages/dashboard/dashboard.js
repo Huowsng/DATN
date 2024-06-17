@@ -144,21 +144,20 @@ const Dashboard = () => {
   };
 
   const calculateTotalRevenue = (history) => {
-    // Sử dụng reduce() để tính tổng doanh thu từ mảng history
     const totalRevenue = history.reduce((accumulator, currentItem) => {
-      // Nếu currentItem.total là một số, thêm giá trị của nó vào accumulator
-      if (!isNaN(currentItem.total)) {
+      if (
+        currentItem.status === "Paid" &&
+        currentItem.delivery === "Confirmed" &&
+        !isNaN(currentItem.total)
+      ) {
         return accumulator + currentItem.total;
       } else {
-        // Nếu currentItem.total không phải là một số, trả về accumulator mà không thay đổi
         return accumulator;
       }
-    }, 0); // Giá trị ban đầu của accumulator là 0
-
+    }, 0);
     return (totalRevenue * 10) / 100;
   };
 
-  // Sử dụng hàm calculateTotalRevenue với mảng history để tính tổng doanh thu
   const totalRevenue = calculateTotalRevenue(history);
 
   const handleCheck = (id) => {
@@ -343,67 +342,67 @@ const Dashboard = () => {
           </div>
 
           <div className="table-responsive">
+            <div className="button-container">
+              <div className="button-group">
+                <div className="left-buttons">
+                  <button
+                    className="btn btn-sm btn-page mr-2"
+                    onClick={() => {
+                      setIsStateTrue(1);
+                      setCurrentPage(1);
+                    }}
+                  >
+                    Kiểm duyệt bài đăng
+                  </button>
+                  <button
+                    className="btn btn-sm btn-page mr-2"
+                    onClick={() => {
+                      setIsStateTrue(2);
+                      setCurrentPage(1);
+                    }}
+                  >
+                    Quản lý bài đăng
+                  </button>
+                  <button
+                    className="btn btn-sm btn-page mr-2"
+                    onClick={() => {
+                      setIsStateTrue(3);
+                      setCurrentPage(1);
+                    }}
+                  >
+                    Quản lý người dùng
+                  </button>
+                </div>
+                <div className="right-buttons">
+                  {isStateTrue === 1 && (
+                    <button
+                      className="btn btn-sm btn-success mr-2"
+                      onClick={acceptAll}
+                    >
+                      Duyệt tất cả
+                    </button>
+                  )}
+                  <button className="btn btn-sm btn-danger" onClick={deleteAll}>
+                    Xoá hết
+                  </button>
+                  <div className="checkbox-all">
+                    <input
+                      type="checkbox"
+                      className="small-checkbox"
+                      checked={isCheck}
+                      onChange={checkAll}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {isStateTrue === 1 ? (
               <>
                 {productRole0.length === 0 ? (
                   <div>Không có sản phẩm nào chờ xét duyệt</div>
                 ) : (
                   <div>
-                    <div className="button-container">
-                      <div className="button-group">
-                        <div className="left-buttons">
-                          <button
-                            className="btn btn-sm btn-page mr-2"
-                            onClick={() => {
-                              setIsStateTrue(1);
-                              setCurrentPage(1);
-                            }}
-                          >
-                            Kiểm duyệt bài đăng
-                          </button>
-                          <button
-                            className="btn btn-sm btn-page mr-2"
-                            onClick={() => {
-                              setIsStateTrue(2);
-                              setCurrentPage(1);
-                            }}
-                          >
-                            Quản lý bài đăng
-                          </button>
-                          <button
-                            className="btn btn-sm btn-page mr-2"
-                            onClick={() => {
-                              setIsStateTrue(3);
-                              setCurrentPage(1);
-                            }}
-                          >
-                            Quản lý người dùng
-                          </button>
-                        </div>
-                        <div className="right-buttons">
-                          <button
-                            className="btn btn-sm btn-success mr-2"
-                            onClick={acceptAll}
-                          >
-                            Duyệt tất cả
-                          </button>
-                          <button
-                            className="btn btn-sm btn-danger"
-                            onClick={deleteAll}
-                          >
-                            Xoá hết
-                          </button>
-                          <div className="checkbox-all">
-                            <input
-                              type="checkbox"
-                              className="small-checkbox"
-                              checked={isCheck}
-                              onChange={checkAll}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                     <table className="table table-striped table-sm mt-2 text-center table-bordered ">
                       <thead>
                         <tr>
@@ -497,52 +496,6 @@ const Dashboard = () => {
                   <div>Không có sản phẩm nào chờ xét duyệt</div>
                 ) : (
                   <div>
-                    <div className="button-container">
-                      <div className="button-group">
-                        <div className="left-buttons">
-                          <button
-                            className="btn btn-sm btn-page mr-2"
-                            onClick={() => {
-                              setIsStateTrue(1);
-                              setCurrentPage(1);
-                            }}
-                          >
-                            Kiểm duyệt bài đăng
-                          </button>
-                          <button
-                            className="btn btn-sm btn-page mr-2"
-                            onClick={() => setIsStateTrue(2)}
-                          >
-                            Quản lý bài đăng
-                          </button>
-                          <button
-                            className="btn btn-sm btn-page mr-2"
-                            onClick={() => {
-                              setIsStateTrue(3);
-                              setCurrentPage(1);
-                            }}
-                          >
-                            Quản lý người dùng
-                          </button>
-                        </div>
-                        <div className="right-buttons">
-                          <button
-                            className="btn btn-sm btn-danger"
-                            onClick={deleteAll}
-                          >
-                            Xoá hết
-                          </button>
-                          <div className="checkbox-all">
-                            <input
-                              type="checkbox"
-                              className="small-checkbox"
-                              checked={isCheck}
-                              onChange={checkAll}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                     <table className="table table-striped table-sm mt-2 text-center table-bordered">
                       <thead>
                         <tr>
@@ -626,36 +579,6 @@ const Dashboard = () => {
               </>
             ) : isStateTrue === 3 ? (
               <div>
-                <div className="button-container">
-                  <div className="button-group">
-                    <div className="left-buttons">
-                      <button
-                        className="btn btn-sm btn-page mr-2"
-                        onClick={() => {
-                          setIsStateTrue(1);
-                          setCurrentPage(1);
-                        }}
-                      >
-                        Kiểm duyệt bài đăng
-                      </button>
-                      <button
-                        className="btn btn-sm btn-page mr-2"
-                        onClick={() => {
-                          setIsStateTrue(2);
-                          setCurrentPage(1);
-                        }}
-                      >
-                        Quản lý bài đăng
-                      </button>
-                      <button
-                        className="btn btn-sm btn-page mr-2"
-                        onClick={() => setIsStateTrue(3)}
-                      >
-                        Quản lý người dùng
-                      </button>
-                    </div>
-                  </div>
-                </div>
                 <table className="table table-striped table-sm mt-2 text-center table-bordered">
                   <thead>
                     <tr>
@@ -685,6 +608,14 @@ const Dashboard = () => {
                           >
                             Xoá
                           </button>
+                        </td>
+                        <td className="action-checkbox">
+                          <input
+                            type="checkbox"
+                            className="small-checkbox"
+                            checked={user.checked}
+                            onChange={() => handleCheck(user._id)}
+                          />
                         </td>
                       </tr>
                     ))}

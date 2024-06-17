@@ -14,6 +14,7 @@ const Processed = () => {
   const [detail] = state.userAPI.detail;
   const [userDetail, setUserDetail] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("visa"); // Track selected payment method
 
   const history = useNavigate();
   const orderId = process._id;
@@ -35,7 +36,9 @@ const Processed = () => {
         }
       );
       setLoading(false);
-      window.open(res.data.url, "_blank");
+      if (paymentMethod === "paypal") {
+        window.open(res.data.url, "_blank");
+      }
       alert("Bạn đã đặt hàng thành công.");
       history("/history");
     }
@@ -46,6 +49,14 @@ const Processed = () => {
       style: "currency",
       currency: "VND",
     }).format(amount);
+  };
+  const formatCurrencyUSD = (amount) => {
+    const exchangeRate = 25400.8;
+    const amountInUSD = (amount / exchangeRate).toFixed(2);
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amountInUSD);
   };
 
   if (loading)
@@ -59,20 +70,20 @@ const Processed = () => {
     <div className="processed">
       <div className="iphone">
         <div className="header">
-          <h1>Payment</h1>
+          <h1>Thanh Toán</h1>
         </div>
         <div className="form">
           <div>
-            <h2>Address</h2>
+            <h2>Địa chỉ nhận hàng</h2>
             <div className="card">
               <address>
                 {detail._id === process.user_id ? (
                   <div>
-                    <b>Name</b> : {detail.name}
+                    <b>Tên</b> : {detail.name}
                     <br />
                     <b>Email</b> : {detail.email}
                     <br />
-                    <b>Address</b> : {process.address}
+                    <b>Địa chỉ</b> : {process.address}
                     <br />
                     <b>Số điện thoại</b> : {process.phone}
                   </div>
@@ -85,25 +96,25 @@ const Processed = () => {
             </div>
           </div>
           <fieldset>
-            <legend>Payment Method</legend>
+            <legend>Phương thức thanh toán</legend>
             <div className="form__radios">
               <div className="form__radio">
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/196/196566.png"
-                  alt="Visa"
+                  alt="PayPal"
                   width="60"
                 />
-                <span>Thanh toán bằng Visa</span>
-                <label htmlFor="visa">
+                <span>Thanh toán bằng PayPal</span>
+                <label htmlFor="paypal">
                   <svg className="icon">
                     <use href="https://cdn-icons-png.flaticon.com/512/196/196566.png" />
                   </svg>
                 </label>
                 <input
-                  defaultChecked
-                  id="visa"
+                  id="paypal"
                   name="payment-method"
                   type="radio"
+                  onChange={() => setPaymentMethod("paypal")}
                 />
               </div>
               <div className="form__radio">
@@ -114,7 +125,12 @@ const Processed = () => {
                     <use href="https://cdn-icons-png.flaticon.com/512/732/732223.png" />
                   </svg>
                 </label>
-                <input id="momo" name="payment-method" type="radio" />
+                <input
+                  id="momo"
+                  name="payment-method"
+                  type="radio"
+                  onChange={() => setPaymentMethod("momo")}
+                />
               </div>
 
               <div className="form__radio">
@@ -129,31 +145,37 @@ const Processed = () => {
                     <use href="https://cdn-icons-png.flaticon.com/512/216/216486.png" />
                   </svg>
                 </label>
-                <input id="cash" name="payment-method" type="radio" />
+                <input
+                  id="cash"
+                  name="payment-method"
+                  type="radio"
+                  onChange={() => setPaymentMethod("cash")}
+                />
               </div>
             </div>
           </fieldset>
 
           <div className="process-table">
-            <h2>Shopping Bill</h2>
+            <h2>Hoá đơn</h2>
 
-            <table>
+            <table className="table table-striped table-sm mt-2 text-center table-bordered">
               <tbody>
                 <tr>
-                  <td>Free ship</td>
+                  <td>Phí vận chuyển</td>
                   <td align="right">0 VND</td>
                 </tr>
-                <tr>
-                  <td>Price Total</td>
-                  <td align="right">{formatCurrency(process.total)}</td>
-                </tr>
+                {paymentMethod === "paypal" ? (
+                  <tr>
+                    <td>Tổng hoá đơn</td>
+                    <td align="right">{formatCurrencyUSD(process.total)}</td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td>Tổng hoá đơn</td>
+                    <td align="right">{formatCurrency(process.total)}</td>
+                  </tr>
+                )}
               </tbody>
-              <tfoot>
-                <tr>
-                  <td>Total</td>
-                  <td align="right">{formatCurrency(process.total)}</td>
-                </tr>
-              </tfoot>
             </table>
           </div>
           <div className="btn-processed">
@@ -164,7 +186,7 @@ const Processed = () => {
               <svg className="icon">
                 <use href="#icon-shopping-bag" />
               </svg>
-              Buy Now
+              Đặt hàng ngay
             </button>
           </div>
         </div>

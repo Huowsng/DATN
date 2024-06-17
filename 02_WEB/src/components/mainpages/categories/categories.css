@@ -27,11 +27,15 @@ button {
   width: 210px;
 }
 .categories button {
-  width: 70px;
+  width: 100px;
   background: #07055b;
   color: white;
   margin-left: 10px;
   border-radius: 20px;
+  margin-top: 10px;
+}
+.categories p {
+  font-size: 20px;
 }
 .categories .row {
   min-width: 290px;

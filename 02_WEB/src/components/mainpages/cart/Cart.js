@@ -169,7 +169,7 @@ function Cart() {
               console.log(JSON.stringify(cart));
             }}
           >
-            Checkout
+            Tiến hành đặt hàng
           </Link>
         </div>
       </form>

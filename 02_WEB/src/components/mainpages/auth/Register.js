@@ -135,7 +135,7 @@ function Register() {
                   style={{ backgroundColor: "#dd4b39" }}
                   type="submit"
                 >
-                  <FaGoogle className="me-2" /> Sign in with google
+                  <FaGoogle className="me-2" /> Đăng nhập bằng Google
                 </button>
                 <button
                   className="btn btn-lg btn-block btn-primary mb-2"
@@ -143,7 +143,7 @@ function Register() {
                   type="submit"
                 >
                   <FaFacebook className="me-2" />
-                  Sign in with facebook
+                  Đăng nhập bằng Facebook
                 </button>
                 <div className="mt-3">
                   <p className="text-white mb-0">

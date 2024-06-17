@@ -86,7 +86,7 @@ function Banner() {
             <p>Mua hàng</p>
           </li>
           <li class="li-banner">
-            <div className="div-banner" onClick={() => navigate("/success")}>
+            <div className="div-banner">
               <img src={logo2} alt="Image" />
             </div>
             <p>Săn ưu đãi</p>

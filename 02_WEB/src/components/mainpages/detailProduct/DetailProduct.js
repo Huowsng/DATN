@@ -2,14 +2,13 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { GlobalState } from "../../../GlobalState";
 import ProductItem from "../utils/productItem/ProductItem";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Feedback from "./Feedback";
 import axios from "axios";
 import FeedbackItem from "./FeedbackItem";
 import Rating from "react-rating";
 import gsap from "gsap";
 import API_URL from "../../../api/baseAPI";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 function DetailProduct() {
   const params = useParams();
@@ -30,7 +29,6 @@ function DetailProduct() {
     if (params.id) {
       products.forEach((product) => {
         if (product._id === params.id) {
-          console.log("product", product);
           setDetailProduct(product);
           setType(product.types[0]);
         }
@@ -44,7 +42,6 @@ function DetailProduct() {
         try {
           const res = await axios.get(`${API_URL}/api/products/${params.id}`);
           setFeedback(res.data.feedbacks);
-          console.log("data", res.data.feedbacks);
         } catch (err) {
           alert(err.response.data.msg);
         }
@@ -52,53 +49,53 @@ function DetailProduct() {
       getFeedback();
     }
   }, [params.id]);
+
   useEffect(() => {
-    if (feedback) {
+    if (feedback.length) {
       var total = 0;
-      feedback.map((item) => {
+      feedback.forEach((item) => {
         total += item.rating;
       });
       setResult(total / feedback.length);
     }
   }, [feedback]);
+
   const handleAddItem = () => {
-    console.log("detail", detailProduct);
-    console.log("test", detailProduct.user_cre);
-    console.log("id", user_id);
     if (isLogged) {
       alert("Vui lòng đăng nhập");
     } else {
       addCart(detailProduct, type);
     }
   };
+
   useEffect(() => {
-    feedback.map((item) => {
-      console.log(item.rating);
-    });
     setTotal(total);
-  }, []);
-  var sum = 0;
+  }, [total]);
+
   useEffect(() => {
-    const obj = feedback.forEach((item) => {
+    feedback.forEach((item) => {
       setScore(item.rating);
     });
-  }, []);
+  }, [feedback]);
 
   const onLeave = ({ currentTarget }) => {
     gsap.to(currentTarget, { scale: 1 });
   };
 
   if (detailProduct.length === 0) return null;
+
   const checktype = (event) => {
     const id = event.target.value;
     const types = detailProduct.types;
     const type2 = types.filter((t) => t._id === id);
     setType(type2[0]);
   };
+
   const colors = {
     orange: "#FFA500",
     grey: "#808080",
   };
+
   const handlePrevImage = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? detailProduct.images.length - 1 : prevIndex - 1
@@ -235,11 +232,11 @@ function DetailProduct() {
       </div>
       <br />
       <div className="description-detail"></div>
-      <Feedback feedback={feedback} />
+      {feedback.length > 0 && <Feedback feedback={feedback} />}
       <br />
       <div className="product-info-tabs">
         <div className="header-feedback">
-          <h3> xem xét sản phẩm ({feedback.length})</h3>
+          <h3> Đánh giá sản phẩm ({feedback.length})</h3>
           <div className="underline2"></div>
         </div>
         <div className="feedback-item">

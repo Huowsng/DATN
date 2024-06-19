@@ -199,7 +199,9 @@ function CreateProduct() {
       }
 
       alert(
-        isAdmin
+        onEdit
+          ? "Chỉnh sửa sản phẩm thành công!"
+          : isAdmin
           ? "Đăng tải sản phẩm thành công!"
           : "Đăng tải sản phẩm thành công, Vui lòng chờ xét duyệt!"
       );

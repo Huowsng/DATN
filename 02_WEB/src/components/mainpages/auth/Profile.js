@@ -39,7 +39,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       // Gửi yêu cầu PUT đến backend để cập nhật thông tin người dùng
-      const response = await axios.put(
+      await axios.put(
         `${API_URL}/user/infor`,
         {
           avatar: avatar,
@@ -52,7 +52,7 @@ const Profile = () => {
         }
       );
 
-      console.log(response.data);
+      window.location.reload();
     } catch (error) {
       console.error("Error updating user:", error);
     }

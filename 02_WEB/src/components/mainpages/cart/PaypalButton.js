@@ -5,18 +5,15 @@ export default class PaypalButton extends React.Component {
   render() {
     const onSuccess = (details, data) => {
       // Xử lý khi thanh toán thành công
-      console.log("The payment was succeeded!", details);
       this.props.tranSuccess(details);
     };
 
     const onCancel = (data) => {
       // Xử lý khi người dùng hủy thanh toán
-      console.log("The payment was cancelled!", data);
     };
 
     const onError = (err) => {
       // Xử lý khi có lỗi xảy ra trong quá trình thanh toán
-      console.log("Error!", err);
     };
 
     let env = "sandbox"; // Bạn có thể đặt ở đây thành 'production' cho môi trường sản phẩm

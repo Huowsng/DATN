@@ -13,8 +13,6 @@ function Cart() {
   //const addOrder = state.orderAPI.order;
   const [token] = state.token;
   const [total, setTotal] = useState(0);
-  console.log(cart);
-
   useEffect(() => {
     const getTotal = () => {
       const total = cart.reduce((prev, item) => {
@@ -79,7 +77,6 @@ function Cart() {
   };
 
   const tranSuccess = async (payment) => {
-    console.log("payment = " + payment);
     const { paymentID, address } = payment;
 
     //paypal
@@ -107,7 +104,6 @@ function Cart() {
           headers: { Authorization: token },
         }
       );
-      console.log("Checkout successful"); // Log thông báo nếu không có lỗi
     } catch (error) {
       console.error("Error during checkout:", error);
       // Xử lý lỗi ở đây, ví dụ hiển thị thông báo cho người dùng hoặc thực hiện các hành động cần thiết.

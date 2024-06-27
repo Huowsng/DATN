@@ -24,8 +24,6 @@ const Checkout = () => {
   const [cart, setCart] = state.userAPI.cart;
   const [process, setProcess] = state.orderAPI.processed;
   const [loading, setLoading] = useState(false);
-  console.log("process", process);
-  console.log("cart", cart);
   const history = useNavigate();
   const [token] = state.token;
   //const [orderitem,setOrderItem] = useState();

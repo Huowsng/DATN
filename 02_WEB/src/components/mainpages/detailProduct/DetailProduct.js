@@ -14,6 +14,7 @@ function DetailProduct() {
   const params = useParams();
   const state = useContext(GlobalState);
   const [products] = state.productsAPI.products;
+  const [productRole1, setProductRole1] = state.productsAPI.productRole1 ?? [];
   const addCart = state.userAPI.addCart;
   const [detailProduct, setDetailProduct] = useState([]);
   const [type, setType] = useState();
@@ -249,8 +250,8 @@ function DetailProduct() {
       <br />
       <div>
         <h2 className="h2">Sản phẩm liên quan</h2>
-        <div className="products">
-          {products.map((product) => {
+        <div className="products products-item">
+          {productRole1.map((product) => {
             return product.category === detailProduct.category ? (
               <ProductItem key={product._id} product={product} />
             ) : null;

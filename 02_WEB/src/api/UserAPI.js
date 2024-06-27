@@ -17,7 +17,6 @@ function UserAPI(token) {
             headers: { Authorization: token },
           });
           setDetail(res.data);
-          console.log(res.data);
           setUserID(res.data._id);
           setIsLogged(true);
           res.data.role === 1 ? setIsAdmin(true) : setIsAdmin(false);

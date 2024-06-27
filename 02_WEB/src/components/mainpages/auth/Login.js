@@ -24,7 +24,6 @@ function Login() {
     e.preventDefault();
     try {
       const users = await axios.post(`${API_URL}/user/login`, { ...user });
-      console.log(users.data.accesstoken);
       localStorage.setItem("firstLogin", true);
       localStorage.setItem("accesstoken", users?.data?.accesstoken);
 

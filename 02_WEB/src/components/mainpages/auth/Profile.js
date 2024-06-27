@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { GlobalState } from "../../../GlobalState";
 import axios from "axios";
 import API_URL from "../../../api/baseAPI";
+
 const Profile = () => {
   const state = useContext(GlobalState);
   const [token] = state.token;
@@ -15,6 +16,7 @@ const Profile = () => {
   const [address, setAddress] = useState(user.address);
   const [avatar, setAvatar] = useState(user.avatar);
   const [isEditing, setIsEditing] = useState(false);
+
   const handleFirstNameChange = (e) => setFirstName(e.target.value);
   const handleAddress = (e) => setAddress(e.target.value);
   const handleGenderChange = (e) => setSex(e.target.value);
@@ -38,7 +40,6 @@ const Profile = () => {
   const submitEditUser = async (e) => {
     e.preventDefault();
     try {
-      // Gửi yêu cầu PUT đến backend để cập nhật thông tin người dùng
       await axios.put(
         `${API_URL}/user/infor`,
         {
@@ -57,8 +58,8 @@ const Profile = () => {
       console.error("Error updating user:", error);
     }
   };
-  const birthdayDate = new Date(birthDate);
 
+  const birthdayDate = new Date(birthDate);
   const formattedBirthday = `${birthdayDate.getDate()}/${
     birthdayDate.getMonth() + 1
   }/${birthdayDate.getFullYear()}`;
@@ -143,17 +144,20 @@ const Profile = () => {
               </div>
               <div className="form-group">
                 <label>Ngày sinh</label>
-                {isEditing ? ( // Nếu đang trong trạng thái sửa đổi, hiển thị input
+                {isEditing ? (
                   <input
                     type="date"
                     value={birthDate}
                     onChange={handleBirthDateChange}
                   />
                 ) : (
-                  // Ngược lại, hiển thị div đã định dạng
                   <div>{formattedBirthday}</div>
                 )}
-                <button className="btn btn-primary" onClick={handleEditToggle}>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleEditToggle}
+                >
                   {isEditing ? "Huỷ bỏ" : "Chỉnh sửa"}
                 </button>
               </div>

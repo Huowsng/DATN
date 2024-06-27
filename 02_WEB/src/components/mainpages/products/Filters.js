@@ -20,14 +20,6 @@ function Filters({ setImageSearch, setIsHidden }) {
   const [imageAi, setImageAi] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  useEffect(() => {
-    console.log("Categories:", categories); // Log the categories array
-    console.log(
-      "Categories Structure:",
-      categories.map((cat) => ({ name: cat.name, id: cat._id }))
-    );
-  }, [categories, sort]);
-
   const handleCategory = (e) => {
     setCategory(e.target.value);
     setSearch("");
@@ -107,8 +99,6 @@ function Filters({ setImageSearch, setIsHidden }) {
 
       // Trích xuất tên danh mục từ phản hồi
       const categoryName = res.data.trim();
-      console.log("Tên danh mục:", categoryName);
-
       // Tìm danh mục phù hợp từ danh sách các danh mục
       const matchedCategory = categories.find(
         (cat) => cat.name.trim().toLowerCase() === categoryName.toLowerCase()
@@ -137,7 +127,6 @@ function Filters({ setImageSearch, setIsHidden }) {
             productImages
           );
           const analyzedProducts = analysisRes.data;
-          console.log("Các sản phẩm đã được phân tích:", analyzedProducts);
           // Xử lý các sản phẩm đã được phân tích theo cách cần thiết...
 
           // Hiển thị các sản phẩm đã được phân tích từ trên xuống

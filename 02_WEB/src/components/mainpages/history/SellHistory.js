@@ -68,13 +68,15 @@ function SellHistory() {
     try {
       const res = await axios.put(
         `${API_URL}/api/delivery/${orderId}`,
-        { delivery: "transport", deliveryDate: new Date() },
+        { delivery: "transport", deliveryDate: new Date(), status: "Pending" },
         { headers: { Authorization: token } }
       );
       if (res.data) {
         setOrderDetails((prevDetails) =>
           prevDetails.map((order) =>
-            order._id === orderId ? { ...order, delivery: "transport" } : order
+            order._id === orderId
+              ? { ...order, delivery: "transport", status: "Pending" }
+              : order
           )
         );
       }
@@ -118,7 +120,7 @@ function SellHistory() {
               <th>Số điện thoại</th>
               <th>Trạng thái</th>
               <th>Vận chuyển</th>
-              <th>Chi tiết</th>
+              {/* <th>Chi tiết</th> */}
             </tr>
           </thead>
           <tbody>
@@ -156,9 +158,9 @@ function SellHistory() {
                     <div>Đang xử lý</div>
                   )}
                 </td>
-                <td>
+                {/* <td>
                   <Link to={`/history/${items._id}`}>Xem</Link>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

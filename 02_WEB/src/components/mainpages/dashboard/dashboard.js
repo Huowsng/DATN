@@ -596,12 +596,13 @@ const Dashboard = () => {
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{formatDate(user.createdAt)}</td>
-                        <td>{user.role}</td>
+                        <td>
+                          {user.address
+                            ? user.address
+                            : "Chưa cập nhật địa chỉ"}
+                        </td>
                         <td>{user.phone}</td>
                         <td className="action-buttons">
-                          <button className="btn btn-sm btn-primary">
-                            Chỉnh sửa
-                          </button>
                           <button
                             className="btn btn-sm btn-danger"
                             onClick={() => deleteUser(user._id)}

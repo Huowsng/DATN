@@ -85,12 +85,10 @@ function Products() {
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    console.log("do dai", imageSearch);
   };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    console.log("do dai", orderedMatchingProducts);
   };
   const matchingProducts = [];
 
@@ -172,7 +170,7 @@ function Products() {
       {isAdmin && (
         <div className="delete-all">
           <button className="check-button" onClick={checkAll} checked={isCheck}>
-          {isCheck ? "Bỏ chọn Tất cả" : "Chọn Tất cả"}
+            {isCheck ? "Bỏ chọn Tất cả" : "Chọn Tất cả"}
           </button>
           <button onClick={deleteAll}>Xoá hết</button>
         </div>
